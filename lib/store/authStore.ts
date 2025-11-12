@@ -1,18 +1,18 @@
-import { create } from 'zustand';
-import { loginUser, logoutUser } from '../api/clientApi';
-import type { User } from '@/types/user';
+import { create } from "zustand";
+import { loginUser, logoutUser } from "../api/clientApi";
+import type { User } from "@/types/user";
 
 interface AuthState {
   user: User | null;
   isAuthenticated: boolean;
   loading: boolean;
-  initialized: boolean; 
+  initialized: boolean;
   login: (email: string, password: string) => Promise<boolean>;
   logout: () => Promise<void>;
   setUser: (user: User | null) => void;
   clearIsAuthenticated: () => void;
   setLoading: (state: boolean) => void;
-  initAuth: () => Promise<void>; 
+  initAuth: () => Promise<void>;
 }
 
 export const useAuthStore = create<AuthState>()((set) => ({
@@ -27,9 +27,9 @@ export const useAuthStore = create<AuthState>()((set) => ({
       isAuthenticated: !!user,
     });
     if (user) {
-      localStorage.setItem('authUser', JSON.stringify(user));
+      localStorage.setItem("authUser", JSON.stringify(user));
     } else {
-      localStorage.removeItem('authUser');
+      localStorage.removeItem("authUser");
     }
   },
 
@@ -38,7 +38,7 @@ export const useAuthStore = create<AuthState>()((set) => ({
       user: null,
       isAuthenticated: false,
     });
-    localStorage.removeItem('authUser');
+    localStorage.removeItem("authUser");
   },
 
   login: async (email: string, password: string): Promise<boolean> => {
@@ -52,9 +52,9 @@ export const useAuthStore = create<AuthState>()((set) => ({
         loading: false,
       });
 
-      localStorage.setItem('authUser', JSON.stringify(userData));
+      localStorage.setItem("authUser", JSON.stringify(userData));
       return true;
-    } catch (error) {
+    } catch {
       set({ loading: false });
       return false;
     }
@@ -64,13 +64,13 @@ export const useAuthStore = create<AuthState>()((set) => ({
     try {
       await logoutUser();
     } catch (error) {
-      console.error('Logout error:', error);
+      console.error("Logout error:", error);
     } finally {
       set({
         user: null,
         isAuthenticated: false,
       });
-      localStorage.removeItem('authUser');
+      localStorage.removeItem("authUser");
     }
   },
 
@@ -80,13 +80,13 @@ export const useAuthStore = create<AuthState>()((set) => ({
 
   initAuth: async () => {
     try {
-      const stored = localStorage.getItem('authUser');
+      const stored = localStorage.getItem("authUser");
       if (stored) {
         const parsed: User = JSON.parse(stored);
         set({ user: parsed, isAuthenticated: true });
       }
     } catch (err) {
-      console.error('Failed to restore auth:', err);
+      console.error("Failed to restore auth:", err);
     } finally {
       set({ initialized: true });
     }
