@@ -30,7 +30,7 @@ export default function AuthForm({ mode }: AuthFormProps) {
         return await loginUser({ email: values.email!, password: values.password! });
       } else {
         return await registerUser({
-          username: values.username!,
+          name: values.username!,
           email: values.email!,
           password: values.password!,
         });

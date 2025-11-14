@@ -9,7 +9,7 @@ interface AuthPayload {
 // ================ Session and Login ========
 
 export async function getAuthSession() {
-  const res = await api.get('/auth/session');
+  const res = await api.get("/auth/refresh-session");
   return res.data;
 }
 
