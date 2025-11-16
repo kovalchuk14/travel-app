@@ -23,7 +23,7 @@ export const fetchTravellers = async (
   totalPages: number;
 }> => {
   const response = await axios.get<TravellersHttpResponse>(
-    `http://localhost:3000/users?page=${page}&perPage=${perPage}`
+    `http://localhost:3000/api/users?page=${page}&perPage=${perPage}`
   );
   console.log(response.data);
   return response.data.data;

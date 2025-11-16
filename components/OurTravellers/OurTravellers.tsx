@@ -1,5 +1,4 @@
 "use client";
-
 import css from "@/styles/travellers/OurTravellers.module.css";
 import { useState } from "react";
 import { useEffect } from "react";
@@ -23,12 +22,15 @@ export default function OurTravellers({ perPage }: OurTravellersProps) {
     const loadTravellers = async () => {
       try {
         setIsLoading(true);
+        const result = await fetchTravellers(page, perPage);
 
-        const result = await fetchTravellers(1, perPage);
+        if (page === 1) {
+          setTravellers(result.data);
+        } else {
+          setTravellers((prev) => [...prev, ...result.data]);
+        }
 
-        setTravellers(result.data);
         setTotalPages(result.totalPages);
-        setPage(2);
       } catch {
         toast.error("Не вдалося завантажити дані!");
       } finally {
@@ -37,24 +39,11 @@ export default function OurTravellers({ perPage }: OurTravellersProps) {
     };
 
     loadTravellers();
-  }, [perPage]);
+  }, [page, perPage]);
 
-  const handleClick = async () => {
-    try {
-      setIsLoading(true);
-
-      if (totalPages !== null && page > totalPages) return;
-
-      const result = await fetchTravellers(page, perPage);
-
-      setTravellers((prev) => [...prev, ...result.data]);
-      setTotalPages(result.totalPages);
-
+  const handleClick = () => {
+    if (totalPages !== null && page < totalPages) {
       setPage((prev) => prev + 1);
-    } catch {
-      toast.error("Не вдалося завантажити дані!");
-    } finally {
-      setIsLoading(false);
     }
   };
 
