@@ -24,7 +24,7 @@ export default function StoryDetails() {
       </div>
 
       <picture className={css.imageWrapper}>
-        <source srcSet="/images/story-mobile.jpg" media="(max-width: 767px)" />
+        <source srcSet="/images/story-mobile.jpg" media="(max-width: 767px) " />
         <source srcSet="/images/story-tab.jpg" media="(max-width: 1439px)" />
         <source srcSet="/images/story-desk.jpg" media="(min-width: 1440px)" />
         <img src="/images/story-mobile.jpg" alt="story pictures " />

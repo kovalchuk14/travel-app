@@ -13,6 +13,7 @@
   letter-spacing: -0.01em;
   max-width: 100%;
   overflow-wrap: break-word;
+  color: #000000;
 }
 
 .info {
@@ -24,6 +25,7 @@
   font-weight: 700;
   font-size: 16px;
   line-height: 150%;
+  color: #000000;
 }
 
 .date,
@@ -32,23 +34,26 @@
   margin-left: 8px;
   font-size: 16px;
   line-height: 150%;
-  color: #000000;
+  color: rgba(0, 0, 0, 0.953);
 }
 
 .category {
   margin-top: 16px;
-  border: 1px solid rgb(0, 0, 0, -5);
+  border: 1px solid rgb(0, 0, 0, 0.05);
   border-radius: 6px;
   padding: 4px 10px;
   width: 76px;
+  font-size: 12px;
   height: 26px;
   background: rgba(0, 0, 0, 0.052);
   display: flex;
   align-items: center;
   justify-content: center;
+  color: #000000;
 }
 
 .imageWrapper {
+  padding-top: 16px;
   width: 100%;
   max-width: 768px;
   height: auto;
@@ -58,6 +63,7 @@
 }
 
 .content {
+  padding-top: 64px;
   font-weight: 400;
   font-size: 16px;
   width: 335px;
@@ -66,7 +72,8 @@
 }
 
 .cta {
-  border: 0px solid rgb(0, 0, 0, -15);
+  margin-top: 24px;
+  border: 0px solid rgb(0, 0, 0, 0.05);
   border-radius: 24px;
   width: 335px;
   height: 217px;
@@ -134,7 +141,7 @@
   }
 
   .imageWrapper {
-    width: 704px;
+    width: 500px;
   }
   .content {
     width: 704px;
@@ -152,9 +159,11 @@
     line-height: 140%;
     letter-spacing: -0.01em;
     font-size: 26px;
+    color: #000000;
   }
 
   .ctaText {
+    padding-top: 16px;
     font-weight: 400px;
     font-size: 16px;
     width: 300px;
@@ -173,6 +182,7 @@
     font-size: 16px;
     line-height: 150%;
     color: #ffffff;
+    margin-top: 16px;
   }
 }
 

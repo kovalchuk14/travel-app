@@ -1,5 +1,4 @@
 import { api } from "./api";
-// import type { Story } from "@/types/story";
 import type { User } from "@/types/user";
 
 interface AuthPayload {
@@ -15,8 +14,8 @@ export async function getAuthSession() {
 }
 
 export async function getCurrentUser(): Promise<User> {
-  const res = await api.get<User>("/users/me");
-  return res.data;
+  const res = await api.get("/users/me");
+  return res.data.data; //Don't ask. Some backend problem
 }
 
 export async function patchUserProfile(data: Partial<User>): Promise<User> {

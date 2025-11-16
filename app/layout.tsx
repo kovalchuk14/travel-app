@@ -1,18 +1,19 @@
 import type { Metadata } from "next";
 import Header from "@/components/Header/Header";
-import { Nunito_Sans, Sora } from "next/font/google";
+import { Mina, Nunito_Sans, Sora } from "next/font/google";
 import Footer from "@/components/Footer/Footer";
 import TanStackProvider from "@/components/TanStackProvider/TanStackProvider";
 import AuthProvider from "@/components/AuthProvider/AuthProvider";
+import "./globals.css";
 
 const nunito = Nunito_Sans({
   subsets: ["latin"],
-  variable: "--second-family",
+  variable: "--font-nunito",
   weight: ["400", "500", "600", "700"],
 });
 const sora = Sora({
   subsets: ["latin"],
-  variable: "--first-family",
+  variable: "--font-sora",
   weight: ["400", "700"],
 });
 
@@ -27,8 +28,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`${nunito.variable} ${sora.variable}`}>
-      <body>
+    <html lang="en">
+      <body className={`${nunito.variable} ${sora.variable}`}>
         <TanStackProvider>
           <AuthProvider>
             <Header />
