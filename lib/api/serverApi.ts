@@ -1,5 +1,5 @@
 import { api } from "./api";
-// import { Story } from "@/types/story";
+import { Story } from "@/types/story";
 import { cookies } from "next/headers";
 import type { User } from "@/types/user";
 
@@ -55,7 +55,15 @@ export async function checkServerSession() {
   return res;
 }
 
-// export async function getCurrentStory(storyId: string) {
-//   const res = await api.get<Story>(`/stories/${storyId}`);
-//   return res.data;
-// }
+export const getCurrentStory = async (storyId: string) => {
+  const cookieStore = await cookies();
+  const cookieHeader = cookieStore.toString();
+
+  const res = await api.get<Story>(`/stories/${storyId}`, {
+    headers: {
+      Cookie: cookieHeader,
+    },
+  });
+
+  return res.data;
+};

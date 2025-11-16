@@ -1,3 +1,4 @@
+import { Story } from "@/types/story";
 import { api } from "./api";
 import type { User } from "@/types/user";
 
@@ -41,3 +42,8 @@ export async function logoutUser(): Promise<void> {
 //   const res = await api.post<Story>(`saved-articles/${articleId}`);
 //   return res.data;
 // }
+
+export async function getCurrentStory(storyId: string) {
+  const res = await api.get<Story>(`/stories/${storyId}`);
+  return res.data;
+}
