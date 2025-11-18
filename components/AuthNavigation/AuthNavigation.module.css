@@ -1,0 +1,76 @@
+.loginBtn {
+  padding: 6px 10px;
+
+  text-align: center;
+  color: #000000;
+
+  border-radius: 8px;
+  border: none;
+
+  background: #eaeaea;
+  border: 1px solid rgb(205, 205, 205);
+}
+.loginBtn:hover,
+.loginBtn:focus {
+  background: #d6d6d6;
+}
+
+.registerBtn {
+  padding: 6px 10px;
+
+  text-align: center;
+  color: #ffffff;
+
+  border-radius: 8px;
+  background-color: #4169e1;
+  border: 1px solid #4169e1;
+}
+.registerBtn:hover,
+.registerBtn:focus {
+  background: var(--Color-Royal-Blue, #2d5ae0);
+}
+
+/* ------------------ Authenticated ----------- */
+.userAvatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
+  overflow: hidden;
+}
+.userEmail {
+  color: rgb(0, 0, 0);
+  font-size: 0.9rem;
+}
+.separator {
+  height: 29px;
+  width: 2px;
+  border-radius: 50%;
+  background-color: #d5d5d5;
+}
+
+.logoutButton {
+  background: transparent;
+  border: none;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.navogationList {
+  display: flex;
+  align-items: center;
+  justify-content: end;
+  gap: 8px;
+}
+
+.navigationLink {
+  text-decoration: none;
+  color: rgb(0, 0, 0);
+  font-size: 1rem;
+}
+
+.navigationLink:hover {
+  color: #000000;
+}
