@@ -35,6 +35,8 @@ export default function AuthProvider({ children }: AuthProviderProps) {
           const userData = await getCurrentUser();
 
           if (userData) {
+            console.log("USERDATA", userData);
+
             setUser(userData);
             return;
           }
