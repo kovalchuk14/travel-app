@@ -123,9 +123,7 @@ function TravellersStories({
 
               <h3 className={styles.cardTitle}>{story.title}</h3>
 
-              <p className={styles.cardDescription}>
-                {story.description}
-              </p>
+              <p className={styles.cardDescription}>{story.description}</p>
 
               <div className={styles.cardFooter}>
                 <div className={styles.cardAuthor}>
@@ -194,6 +192,7 @@ export default async function TravellerPage({
   return (
     <main className={styles.page}>
       <TravellerInfo user={user} />
+
       {stories.length === 0 ? (
         <MessageNoStories />
       ) : (
