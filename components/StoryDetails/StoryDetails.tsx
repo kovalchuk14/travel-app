@@ -1,46 +1,74 @@
-// import { Story } from "@/types/story";
-import css from "@/components/StoryDetails/StoryDetails.module.css";
-// type StoryDetailsProps = {
-//   story: Story;
-// };
+"use client";
 
-export default function StoryDetails() {
+import { Story } from "@/types/story";
+import css from "./StoryDetails.module.css";
+import Image from "next/image";
+import { useState } from "react";
+// import { savedArticles } from "@/lib/api/clientApi";
+// import { useRouter } from "next/navigation";
+// import { useAuthStore } from "@/lib/store/authStore";
+
+type StoryDetailsProps = {
+  data: Story;
+};
+
+export default function StoryDetails({ data }: StoryDetailsProps) {
+  // const [saved, setSaved] = useState(false);
+  // const [loading, setLoading] = useState(false);
+  // const router = useRouter();
+  // const user = useAuthStore((state) => state.user);
+  // const token = useAuthStore((state) => state.isAuthenticated);
+
+  if (!data) {
+    return <p className={css.noStory}>Історія не знайдена</p>;
+  }
+
+  // const handleSave = () => {
+  //   if (!user || !token) {
+  //     router.push("/auth/register");
+  //     return;
+  //   }
+
+  //   setLoading(true);
+  //   savedArticles(story._id);
+  //   setSaved(true);
+  // };
+ 
+
   return (
     <div className={css.container}>
-      <h2 className={css.title}>
-        Венеція без туристів: маршрути для справжніх мандрівників
-      </h2>
+      <h2 className={css.title}>{data.title}</h2>
+
       <div className={css.info}>
         <div className={css.info_row}>
           <p className={css.meta}>
-            Автор статті <span className={css.author}> Ім`я автора</span>
+            Автор статті
+            <span className={css.author}>{data.ownerId?.name}</span>
           </p>
           <p className={css.meta}>
-            Опубліковано<span className={css.date}>23.07.2025</span>
+            Опубліковано
+            <span className={css.date}>{data.date}</span>
           </p>
         </div>
-
-        <p className={css.category}>Категорія</p>
+        <p className={css.category}>{data.category?.name}</p>
       </div>
 
-      <picture className={css.imageWrapper}>
-        <source srcSet="/images/story-mobile.jpg" media="(max-width: 767px) " />
-        <source srcSet="/images/story-tab.jpg" media="(max-width: 1439px)" />
-        <source srcSet="/images/story-desk.jpg" media="(min-width: 1440px)" />
-        <img src="/images/story-mobile.jpg" alt="story pictures " />
+      <picture>
+        <source media="(max-width: 767px)" srcSet={data.img} />
+        <source media="(max-width: 1439px)" srcSet={data.img} />
+
+        <Image
+          src={data.img}
+          alt={data.title}
+          width={1312}
+          height={874}
+          className={css.imageWrapper}
+        />
       </picture>
+
       <div className={css.container_story_save}>
         <article className={css.content}>
-          <p>
-            Венеція — це не лише площа Святого Марка і гондоли на Канале Ґранде.
-            Ми вирішили дослідити місто з іншого боку — вулицями, де не ходять
-            натовпи, де старі венеціанці щодня п`ють еспресо на розі, а сусідки
-            обговорюють погоду через балкони. Виявляється, є цілий район —
-            Кастелло, де майже немає туристів, але є мальовничі канали,
-            старовинні церкви і рибні ринки. Відкрили для себе і острів Джудекка
-            — справжню Венецію без пафосу. У блозі ділюсь маршрутами, куди варто
-            заглянути, аби побачити справжнє місто.
-          </p>
+          <p>{data.article}</p>
         </article>
 
         <section className={css.cta} aria-label="Saving history">
@@ -48,7 +76,12 @@ export default function StoryDetails() {
           <p className={css.ctaText}>
             Вона буде доступна у вашому профілі у розділі збережене
           </p>
-          <button className={css.saveButton}>Зберегти</button>
+          <button
+            className={css.saveButton}
+            // onClick={handleSave}
+          >
+            Зберегти
+          </button>
         </section>
       </div>
     </div>
