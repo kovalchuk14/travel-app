@@ -1,6 +1,6 @@
 import axios from "axios";
 
 export const api = axios.create({
-  baseURL: "https://travel-app-backend-9pto.onrender.com",
+  baseURL: "http://localhost:3000/api",
   withCredentials: true,
 });

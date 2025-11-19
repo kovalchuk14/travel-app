@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Header from "@/components/Header/Header";
+import Hero from "@/components/Hero/Hero";
 import { Mina, Nunito_Sans, Sora } from "next/font/google";
 import Footer from "@/components/Footer/Footer";
 import TanStackProvider from "@/components/TanStackProvider/TanStackProvider";
