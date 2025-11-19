@@ -2,8 +2,13 @@
 
 .container {
   width: 100%;
+  max-width: 320px;
+  margin: 0 auto;
   padding: 0 20px;
-  min-width: 320px;
+}
+.section {
+  padding-top: 32px;
+  padding-bottom: 64px;
 }
 
 .title {
@@ -25,6 +30,8 @@
 }
 
 .item {
+  display: flex;
+  flex-direction: column;
   padding: 24px;
   border-radius: 16px;
   background-color: #e8eeff;
@@ -68,6 +75,7 @@
   color: #000;
   line-height: 1.5;
   font-weight: 500;
+  margin-top: auto;
 }
 .btnUser:hover {
   background: rgba(0, 0, 0, 0.1);
@@ -106,10 +114,17 @@
   height: 100px;
 }
 
+@media (min-width: 376px) {
+  .container {
+    max-width: 375px;
+  }
+}
+
 /*      TABLET 768px      */
 
 @media (min-width: 768px) {
   .container {
+    max-width: 768px;
     padding: 0 32px;
   }
 
@@ -146,7 +161,10 @@
     max-width: 1440px;
     padding: 0 64px;
   }
-
+  .section {
+    padding-top: 48px;
+    padding-bottom: 72px;
+  }
   .title {
     font-size: 56px;
   }

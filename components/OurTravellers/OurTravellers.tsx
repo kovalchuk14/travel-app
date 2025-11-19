@@ -1,5 +1,5 @@
 "use client";
-import css from "@/styles/travellers/OurTravellers.module.css";
+import css from "../../app/css/OurTravellers.module.css";
 import { useState } from "react";
 import { useEffect } from "react";
 import TravellersList from "@/components/OurTravellers/TravellersList";
@@ -50,7 +50,7 @@ export default function OurTravellers({ perPage }: OurTravellersProps) {
   const isDisabled = totalPages !== null && page > totalPages;
 
   return (
-    <>
+    <section className={css.section}>
       <div className={css.container}>
         <Toaster position="top-right" />
         {travellers.length > 0 && <TravellersList items={travellers} />}
@@ -73,6 +73,6 @@ export default function OurTravellers({ perPage }: OurTravellersProps) {
           Переглянути ще
         </button>
       </div>
-    </>
+    </section>
   );
 }
