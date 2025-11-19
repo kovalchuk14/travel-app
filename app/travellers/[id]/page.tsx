@@ -6,8 +6,8 @@ import styles from "./page.module.css";
 
 type TravellerUser = User & {
   username?: string;
-  bio?: string;
   avatarUrl?: string;
+  bio?: string;
   avatar?: string;
 };
 
@@ -33,18 +33,6 @@ type TravellerPageProps = {
   searchParams?: { page?: string };
 };
 
-type TravellerInfoProps = {
-  user: TravellerUser;
-};
-
-type TravellersStoriesProps = {
-  stories: Story[];
-  user: TravellerUser;
-  page: number;
-  totalPages: number;
-  travellerId: string;
-};
-
 function formatDate(iso?: string) {
   if (!iso) return "";
   const d = new Date(iso);
@@ -55,10 +43,10 @@ function formatDate(iso?: string) {
   });
 }
 
-function TravellerInfo({ user }: TravellerInfoProps) {
-  const username = user.username || (user as any).name || "Мандрівник";
+function TravellerInfo({ user }: { user: TravellerUser }) {
+  const username = user.username || "Мандрівник";
   const avatar =
-    user.avatarUrl || (user as any).avatar || "/images/story-mobile.jpg";
+    user.avatarUrl || user.avatar || "/images/story-mobile.jpg";
   const bio = user.bio;
 
   return (
@@ -66,6 +54,7 @@ function TravellerInfo({ user }: TravellerInfoProps) {
       <div className={styles.avatarWrapper}>
         <img src={avatar} alt={username} className={styles.avatar} />
       </div>
+
       <div className={styles.headerInfo}>
         <h1 className={styles.name}>{username}</h1>
         {bio && <p className={styles.bio}>{bio}</p>}
@@ -78,10 +67,12 @@ function MessageNoStories() {
   return (
     <section className={styles.noStoriesSection}>
       <h2 className={styles.sectionTitle}>Історії Мандрівника</h2>
+
       <div className={styles.noStoriesBox}>
         <p className={styles.noStoriesText}>
           Цей користувач ще не публікував історії
         </p>
+
         <Link href="/stories" className={styles.noStoriesButton}>
           Назад до історій
         </Link>
@@ -96,10 +87,16 @@ function TravellersStories({
   page,
   totalPages,
   travellerId,
-}: TravellersStoriesProps) {
-  const username = user.username || (user as any).name || "Мандрівник";
+}: {
+  stories: Story[];
+  user: TravellerUser;
+  page: number;
+  totalPages: number;
+  travellerId: string;
+}) {
+  const username = user.username || "Мандрівник";
   const avatar =
-    user.avatarUrl || (user as any).avatar || "/images/story-mobile.jpg";
+    user.avatarUrl || user.avatar || "/images/story-mobile.jpg";
 
   return (
     <section className={styles.storiesSection}>
@@ -126,7 +123,9 @@ function TravellersStories({
 
               <h3 className={styles.cardTitle}>{story.title}</h3>
 
-              <p className={styles.cardDescription}>{story.description}</p>
+              <p className={styles.cardDescription}>
+                {story.description}
+              </p>
 
               <div className={styles.cardFooter}>
                 <div className={styles.cardAuthor}>
@@ -135,8 +134,10 @@ function TravellersStories({
                     alt={username}
                     className={styles.cardAuthorAvatar}
                   />
+
                   <div>
                     <p className={styles.cardAuthorName}>{username}</p>
+
                     <p className={styles.cardMeta}>
                       {formatDate(story.createdAt)}
                     </p>
@@ -174,12 +175,16 @@ export default async function TravellerPage({
   searchParams,
 }: TravellerPageProps) {
   const travellerId = params.id;
-  const currentPage = Number(searchParams?.page || "1") || 1;
+  const currentPage = Number(searchParams?.page || "1");
 
   const [userRes, storiesRes] = await Promise.all([
     api.get<TravellerUser>(`/users/${travellerId}`),
     api.get<StoriesResponse>("/stories", {
-      params: { userId: travellerId, page: currentPage, limit: 6 },
+      params: {
+        userId: travellerId,
+        page: currentPage,
+        limit: 6,
+      },
     }),
   ]);
 
