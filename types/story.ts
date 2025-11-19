@@ -15,3 +15,9 @@ export type Story = {
   date: string;
   favoriteCount: number;
 };
+
+export type StoryResponse = {
+  data: Story;
+  status: string;
+  message: string;
+};

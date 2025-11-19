@@ -1,4 +1,4 @@
-import { Story } from "@/types/story";
+import { Story, StoryResponse } from "@/types/story";
 import { AxiosResponse } from "axios";
 import { api } from "./api";
 import type { User } from "@/types/user";
@@ -45,12 +45,12 @@ export async function logoutUser(): Promise<void> {
   await api.post("/auth/logout");
 }
 
-// export async function savedArticles(articleId: string): Promise<Story> {
-//   const res = await api.post<Story>(`/saved-articles/${articleId}`);
-//   return res.data;
-// }
+export async function savedArticles(articleId: string): Promise<Story> {
+  const res = await api.post<Story>(`/saved-articles/${articleId}`);
+  return res.data;
+}
 
-export async function getCurrentStory(storyId: string): Promise<Story> {
-  const res = await api.get<Story>(`/stories/${storyId}`);
+export async function getCurrentStory(storyId: string): Promise<StoryResponse> {
+  const res = await api.get<StoryResponse>(`/stories/${storyId}`);
   return res.data;
 }
