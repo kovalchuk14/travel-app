@@ -4,13 +4,6 @@ import type { Story as BaseStory } from "@/types/story";
 import Link from "next/link";
 import styles from "./page.module.css";
 
-type TravellerUser = User & {
-  username?: string;
-  avatarUrl?: string;
-  bio?: string;
-  avatar?: string;
-};
-
 type Story = BaseStory & {
   storyImage?: string;
   createdAt?: string;
@@ -29,8 +22,20 @@ type StoriesResponse = {
 };
 
 type TravellerPageProps = {
-  params: { id: string };
+  params: { travellerId: string };
   searchParams?: { page?: string };
+};
+
+type TravellerInfoProps = {
+  user: User;
+};
+
+type TravellersStoriesProps = {
+  stories: Story[];
+  user: User;
+  page: number;
+  totalPages: number;
+  travellerId: string;
 };
 
 function formatDate(iso?: string) {
@@ -43,18 +48,17 @@ function formatDate(iso?: string) {
   });
 }
 
-function TravellerInfo({ user }: { user: TravellerUser }) {
-  const username = user.username || "Мандрівник";
-  const avatar =
-    user.avatarUrl || user.avatar || "/images/story-mobile.jpg";
-  const bio = user.bio;
+function TravellerInfo({ user }: TravellerInfoProps) {
+  const username =
+    (user as any).username || (user as any).name || "Мандрівник";
+  const avatar = (user as any).avatar || "/images/story-mobile.jpg";
+  const bio = (user as any).bio;
 
   return (
     <section className={styles.header}>
       <div className={styles.avatarWrapper}>
         <img src={avatar} alt={username} className={styles.avatar} />
       </div>
-
       <div className={styles.headerInfo}>
         <h1 className={styles.name}>{username}</h1>
         {bio && <p className={styles.bio}>{bio}</p>}
@@ -67,12 +71,10 @@ function MessageNoStories() {
   return (
     <section className={styles.noStoriesSection}>
       <h2 className={styles.sectionTitle}>Історії Мандрівника</h2>
-
       <div className={styles.noStoriesBox}>
         <p className={styles.noStoriesText}>
           Цей користувач ще не публікував історії
         </p>
-
         <Link href="/stories" className={styles.noStoriesButton}>
           Назад до історій
         </Link>
@@ -87,23 +89,17 @@ function TravellersStories({
   page,
   totalPages,
   travellerId,
-}: {
-  stories: Story[];
-  user: TravellerUser;
-  page: number;
-  totalPages: number;
-  travellerId: string;
-}) {
-  const username = user.username || "Мандрівник";
-  const avatar =
-    user.avatarUrl || user.avatar || "/images/story-mobile.jpg";
+}: TravellersStoriesProps) {
+  const username =
+    (user as any).username || (user as any).name || "Мандрівник";
+  const avatar = (user as any).avatar || "/images/story-mobile.jpg";
 
   return (
     <section className={styles.storiesSection}>
       <h2 className={styles.sectionTitle}>Історії Мандрівника</h2>
 
       <div className={styles.grid}>
-        {stories.map((story, index) => (
+        {stories.map((story: Story, index: number) => (
           <article
             key={story._id}
             className={`${styles.card} ${
@@ -132,12 +128,10 @@ function TravellersStories({
                     alt={username}
                     className={styles.cardAuthorAvatar}
                   />
-
                   <div>
                     <p className={styles.cardAuthorName}>{username}</p>
-
                     <p className={styles.cardMeta}>
-                      {formatDate(story.createdAt)}
+                      {formatDate(story.createdAt)} 
                     </p>
                   </div>
                 </div>
@@ -172,17 +166,13 @@ export default async function TravellerPage({
   params,
   searchParams,
 }: TravellerPageProps) {
-  const travellerId = params.id;
-  const currentPage = Number(searchParams?.page || "1");
+  const { travellerId } = params;
+  const currentPage = Number(searchParams?.page || "1") || 1;
 
   const [userRes, storiesRes] = await Promise.all([
-    api.get<TravellerUser>(`/users/${travellerId}`),
+    api.get<User>(`/users/${travellerId}`),
     api.get<StoriesResponse>("/stories", {
-      params: {
-        userId: travellerId,
-        page: currentPage,
-        limit: 6,
-      },
+      params: { userId: travellerId, page: currentPage, limit: 6 },
     }),
   ]);
 
@@ -192,7 +182,6 @@ export default async function TravellerPage({
   return (
     <main className={styles.page}>
       <TravellerInfo user={user} />
-
       {stories.length === 0 ? (
         <MessageNoStories />
       ) : (

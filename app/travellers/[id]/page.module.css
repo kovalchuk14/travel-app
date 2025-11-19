@@ -34,9 +34,8 @@
 }
 
 .name {
-  font-family: var(--font-sora);
-  font-weight: 700;
   font-size: 24px;
+  font-weight: 700;
 }
 
 .bio {
@@ -107,6 +106,7 @@
   line-height: 1.5;
   display: -webkit-box;
   line-clamp: 2;
+  -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
@@ -221,6 +221,7 @@
   opacity: 0.9;
 }
 
+/* TABLET: 768–1439 */
 @media (min-width: 768px) and (max-width: 1439px) {
   .page {
     padding: 32px 24px 56px;
@@ -235,6 +236,7 @@
   }
 }
 
+/* MOBILE: до 767 */
 @media (max-width: 767px) {
   .page {
     padding: 24px 16px 48px;
