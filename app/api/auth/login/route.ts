@@ -1,3 +1,5 @@
+export const runtime = "nodejs";
+
 import { NextRequest, NextResponse } from "next/server";
 import { api } from "../../api";
 import { cookies } from "next/headers";
@@ -17,6 +19,8 @@ export async function POST(req: NextRequest) {
       const cookieArray = Array.isArray(setCookie) ? setCookie : [setCookie];
       for (const cookieStr of cookieArray) {
         const parsed = parse(cookieStr);
+        console.log(parsed);
+
         const options = {
           expires: parsed.Expires ? new Date(parsed.Expires) : undefined,
           path: parsed.Path,
@@ -30,7 +34,7 @@ export async function POST(req: NextRequest) {
           cookieStore.set("sessionId", parsed.sessionId, options);
       }
 
-      return NextResponse.json(apiRes.data, { status: apiRes.status });
+      return NextResponse.json(apiRes, { status: apiRes.status });
     }
 
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
