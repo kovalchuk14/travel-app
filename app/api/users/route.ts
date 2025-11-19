@@ -1,6 +1,5 @@
 import { NextResponse } from "next/server";
-import clientPromise from "@/lib/mongodb";
-import type { Traveller } from "@/types/traveller";
+import { api } from "../api";
 
 export async function GET(request: Request) {
   try {
@@ -8,30 +7,14 @@ export async function GET(request: Request) {
     const page = parseInt(searchParams.get("page") || "1");
     const perPage = parseInt(searchParams.get("perPage") || "4");
 
-    const client = await clientPromise;
-    const db = client.db("Name of db");
-    const travellersCollection = db.collection<Traveller>("users");
-
-    const totalItems = await travellersCollection.countDocuments();
-    const totalPages = Math.ceil(totalItems / perPage);
-
-    const data = await travellersCollection
-      .find()
-      .skip((page - 1) * perPage)
-      .limit(perPage)
-      .toArray();
-
-    return NextResponse.json({
-      status: 200,
-      message: "OK",
-      data: {
-        data,
+    const res = await api("/notes", {
+      params: {
         page,
         perPage,
-        totalItems,
-        totalPages,
       },
     });
+
+    return NextResponse.json(res.data, { status: res.status });
   } catch (error) {
     console.error("API /users error:", error);
     return NextResponse.json(

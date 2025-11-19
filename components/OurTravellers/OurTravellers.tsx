@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useEffect } from "react";
 import TravellersList from "@/components/OurTravellers/TravellersList";
 import type { Traveller } from "@/types/traveller";
-import { fetchTravellers } from "@/services/travellerService";
+import { fetchTravellers } from "@/lib/api/travellerService";
 import { RotatingTriangles } from "react-loader-spinner";
 import toast, { Toaster } from "react-hot-toast";
 

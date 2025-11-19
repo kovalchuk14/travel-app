@@ -1,5 +1,6 @@
 import axios from "axios";
-import type { Traveller } from "../types/traveller";
+import type { Traveller } from "../../types/traveller";
+import { api } from "./api";
 
 interface TravellersHttpResponse {
   status: number;
@@ -22,9 +23,9 @@ export const fetchTravellers = async (
   perPage: number;
   totalPages: number;
 }> => {
-  const response = await axios.get<TravellersHttpResponse>(
-    `http://localhost:3000/api/users?page=${page}&perPage=${perPage}`
+  const response = await api.get<TravellersHttpResponse>(
+    `/users?page=${page}&perPage=${perPage}`
   );
-  console.log(response.data);
+
   return response.data.data;
 };
