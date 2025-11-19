@@ -20,7 +20,7 @@ const StoryDetailsClient = () => {
 
   return (
     <div>
-      <StoryDetails data={story.data} />
+      <StoryDetails story={story.data} />
       <Popular />
     </div>
   );
