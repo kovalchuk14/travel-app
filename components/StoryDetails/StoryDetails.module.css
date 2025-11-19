@@ -118,6 +118,7 @@
 
 .saveButton:active {
   background-color: #7a96ea;
+  color: #ffffff;
 }
 
 @media (min-width: 768px) {
