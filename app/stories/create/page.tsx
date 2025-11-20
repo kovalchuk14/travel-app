@@ -9,11 +9,12 @@ import { useMutation } from "@tanstack/react-query";
 import styles from "./AddStoryPage.module.css";
 import { Story } from "@/types/story";
 import { useRef } from "react";
+import { postNewStory } from "@/lib/api/clientApi";
 
-type FormValues = {
+type FormData = {
   storyImage: File | null;
   title: string;
-  shortDescription: string;
+  // shortDescription: string;
   description: string;
   category: string;
 };
@@ -42,14 +43,11 @@ export default function AddStoryPage() {
   // React Query Mutation
   const createStoryMutation = useMutation({
     mutationFn: async (formData: FormData) => {
-      const response = await fetch("/stories", {
-        method: "POST",
-        body: formData,
-      });
-      if (!response.ok) throw new Error("Помилка збереження");
-      return response.json() as Promise<Story>;
+      return await postNewStory(formData);
     },
     onSuccess: (data) => {
+      console.log(`/stories/${data._id}`);
+
       router.push(`/stories/${data._id}`);
     },
     onError: () => {
@@ -62,7 +60,7 @@ export default function AddStoryPage() {
     title: Yup.string()
       .max(80, "Максимум 80 символів")
       .required("Введіть заголовок"),
-    shortDescription: Yup.string().max(61, "Максимум 61 символ"),
+    // shortDescription: Yup.string().max(61, "Максимум 61 символ"),
     // .required("Введіть короткий опис"),
     description: Yup.string()
       .max(2500, "Максимум 2500 символів")
@@ -70,34 +68,32 @@ export default function AddStoryPage() {
     category: Yup.string().required("Оберіть категорію"),
   });
 
-  const formik = useFormik<FormValues>({
+  const formik = useFormik<FormData>({
     initialValues: {
       storyImage: null,
       title: "",
-      shortDescription: "",
+      // shortDescription: "",
       description: "",
       category: "",
     },
     validateOnMount: true,
     validationSchema,
     onSubmit: (
-      values: FormValues,
-      { setSubmitting }: FormikHelpers<FormValues>
+      values: FormData,
+      { setSubmitting }: FormikHelpers<FormData>
     ) => {
       const formData = new FormData();
 
       if (values.storyImage) {
-        formData.append("img", values.storyImage as Blob);
+        formData.append("storyImage", values.storyImage as Blob);
       }
 
-      
       formData.append("title", values.title);
-      formData.append("shortDescription", values.shortDescription);
+      // formData.append("shortDescription", values.shortDescription);
       formData.append("description", values.description);
       formData.append("category", values.category);
 
-  
-      formData.append("date", new Date().toISOString());
+      // formData.append("date", new Date().toISOString());
 
       createStoryMutation.mutate(formData);
       setSubmitting(false);
@@ -194,7 +190,7 @@ export default function AddStoryPage() {
           </div>
 
           {/* Короткий опис */}
-          <div className={styles.hidden}>
+          {/* <div className={styles.hidden}>
             <div className={styles.field}>
               <label className={styles.shortDescLabel}>Короткий опис</label>
               <textarea
@@ -216,7 +212,7 @@ export default function AddStoryPage() {
                   </p>
                 )}
             </div>
-          </div>
+          </div> */}
 
           {/* Текст історії */}
           <div className={styles.field}>
