@@ -1,4 +1,4 @@
-import { Story } from "@/types/story";
+import { Story, SavedStory, StoriesResponse, UserSavedArticlesResponse } from "@/types/story";
 import { AxiosResponse } from "axios";
 import { localAPI } from "../localAPI";
 import type { User } from "@/types/user";
@@ -54,4 +54,34 @@ export async function logoutUser(): Promise<void> {
 export async function getCurrentStory(storyId: string): Promise<Story> {
   const res = await localAPI.get<Story>(`/stories/${storyId}`);
   return res.data;
+}
+
+
+
+export async function fetchStories(
+  page = 1,
+  perPage = 3,
+  categoryId?: string
+): Promise<Story[]> {
+  const res = await api.get<StoriesResponse>("/stories", {
+    params: { page, perPage, sort: 'favoriteCount', category: categoryId },
+  });
+  return res.data?.data?.data || [];
+}
+ 
+export async function fetchSavedStoriesByUserId(
+  userId: string
+): Promise<SavedStory[]> {
+  const res = await api.get<UserSavedArticlesResponse>(
+    `/users/${userId}/saved-articles`
+  );
+  return res.data.data.savedStories;
+}
+
+export async function addStoryToFavorites(storyId: string): Promise<void> {
+  await api.post(`/users/me/saved/${storyId}`);
+}
+
+export async function deleteStoryFromFavorites(storyId: string): Promise<void> {
+  await api.delete(`/users/me/saved/${storyId}`);
 }
