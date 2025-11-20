@@ -1,13 +1,12 @@
+"use client";
 import { FaFacebookF, FaInstagram, FaYoutube } from "react-icons/fa";
 import { FaXTwitter } from "react-icons/fa6";
 import styles from "./Footer.module.css";
+import { useAuthStore } from "@/lib/store/authStore";
 
-interface FooterProps {
-  authenticate: boolean;
-}
-
-const Footer: React.FC<FooterProps> = ({ authenticate }) => {
+const Footer: React.FC = () => {
   const year = new Date().getFullYear();
+  const { isAuthenticated } = useAuthStore();
 
   const socialLinks = [
     {
@@ -38,7 +37,7 @@ const Footer: React.FC<FooterProps> = ({ authenticate }) => {
     { label: "Мандрівники", path: "/travelers" },
   ];
 
-  const getPath = (path: string) => (authenticate ? path : "/auth/register");
+  const getPath = (path: string) => (isAuthenticated ? path : "/auth/register");
 
   return (
     <footer className={styles.footer}>
@@ -55,7 +54,7 @@ const Footer: React.FC<FooterProps> = ({ authenticate }) => {
               xmlns="http://www.w3.org/2000/svg"
             >
               {" "}
-              <g clip-path="url(#clip0_14214_159)">
+              <g clipPath="url(#clip0_14214_159)">
                 {" "}
                 <path
                   d="M2.24219 22.0852C2.24219 22.0706 4.91456 19.8022 11.2163 19.8022C17.3375 19.8022 20.1905 22.0706 20.1905 22.0852H2.24219Z"
