@@ -1,0 +1,168 @@
+/* Main page container */
+.page {
+  min-height: 100vh;
+  background: #f7f9ff;
+  padding: 32px 20px 64px;
+}
+
+.container {
+  max-width: 1312px;
+  margin: 0 auto;
+  /* padding: 48px 64px 72px; */
+}
+
+/* Loader wrapper */
+.loaderWrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 300px;
+}
+
+/* Error and empty states */
+.error,
+.empty {
+  text-align: center;
+  padding: 60px 20px;
+  font-size: 16px;
+  color: #6b4560;
+  background: rgba(255, 255, 255, 0.6);
+  border-radius: 12px;
+  margin: 20px 0;
+}
+
+.error {
+  color: #c41e3a;
+  background: rgba(255, 220, 230, 0.6);
+}
+
+/* Loader wrapper */
+.loaderWrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 300px;
+}
+
+/* Error and empty states */
+.error,
+.empty {
+  text-align: center;
+  padding: 60px 20px;
+  font-size: 16px;
+  color: #6b4560;
+  background: rgba(255, 255, 255, 0.6);
+  border-radius: 12px;
+  margin: 60px 0 20px;
+}
+
+.error {
+  color: #c41e3a;
+  background: rgba(255, 220, 230, 0.6);
+}
+
+/* Stories section */
+.storiesSection {
+  margin-top: 32px;
+}
+
+/* Tabs */
+.tabs {
+  display: flex;
+  margin-bottom: 40px;
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  gap: 8px;
+  background: #e8eeff;
+  padding: 4px;
+  border-radius: 10px;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0);
+}
+
+.tabButton {
+  flex: 1;
+  padding: 4px 12px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+  font-family: "Nunito Sans", sans-serif;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 1.5;
+  color: #000;
+}
+
+.tabButtonActive {
+  border-radius: 8px;
+  font-size: 16px;
+
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  background: #f7f9ff;
+  color: #000;
+  font-weight: 500;
+}
+
+/* Stories inner container */
+/* .storiesInner {
+  /* min-height: 400px; 
+} */
+
+/* ===== MOBILE 375px  ===== */
+
+@media (min-width: 375px) {
+  .container {
+    padding: 0;
+  }
+  .tabs {
+    max-width: 335px;
+  }
+}
+
+/* ===== TABLET 768 ===== */
+@media (min-width: 768px) {
+  .page {
+    padding: 0px 32px 64px;
+  }
+
+  .tabs {
+    max-width: 422px;
+    margin-left: 0;
+  }
+
+  .tabButton {
+    flex: start;
+    font-size: 16px;
+  }
+
+  .storiesSection {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    /* justify-content: flex-start; */
+  }
+}
+
+@media (min-width: 1440px) {
+  .page {
+    min-height: 100vh;
+    background: #f7f9ff;
+    padding: 0px 64px 72px;
+  }
+
+  .tabButton {
+    padding: 4px 12px;
+    font-size: 18px;
+  }
+
+  .storiesSection {
+    margin-top: 48px;
+  }
+
+  .error {
+    margin: 100px 0 20px;
+  }
+}

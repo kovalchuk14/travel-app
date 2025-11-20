@@ -30,6 +30,9 @@ const Header: React.FC = () => {
             <li><Link href="/" className={css.navLink}>Головна</Link></li>
             <li><a href="#stories" className={css.navLink}>Історії</a></li>
             <li><a href="#travelers" className={css.navLink}>Мандрівники</a></li>
+            <Link href="/profile" >
+                Мій Профіль
+              </Link>
             <AuthNavigation/>
           </ul>
         </nav>
