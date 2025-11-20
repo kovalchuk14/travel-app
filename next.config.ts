@@ -1,23 +1,22 @@
-// 
-/** @type {import('next').NextConfig} */
-const nextConfig = {
+import { NextConfig } from "next";
+
+const nextConfig: NextConfig = {
   images: {
     remotePatterns: [
-    // Cloudinary
+      // Cloudinary
       {
-        protocol: 'https',
-        hostname: 'res.cloudinary.com',
-        pathname: '/**',
+        protocol: "https",
+        hostname: "res.cloudinary.com",
+        pathname: "/**",
       },
-
-      // ftp.goit.study
+      // FTP GoIT
       {
-        protocol: 'https',
-        hostname: 'ftp.goit.study',
-        pathname: '/**',
+        protocol: "https",
+        hostname: "ftp.goit.study",
+        pathname: "/img/**", // дозволяє завантажувати всі зображення з /img/
       },
     ],
   },
 };
 
-module.exports = nextConfig;
+export default nextConfig;
