@@ -3,8 +3,8 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  margin-top: 124px;
-  margin-bottom: 331px;
+  padding-top: 124px;
+  padding-bottom: 331px;
 
   
 }
@@ -68,6 +68,19 @@
   background-color: #7A96EA;
   color:#000;
 }
+@media (min-width: 320px) and (max-width:375px) {
+  .moreButton{
+  width: auto;         
+  display: block;
+  margin-left: 32px;
+  margin: 0;
+
+}
+.hero {
+  display: flex;
+  justify-content: center;
+}
+}
 
 @media (min-width: 768px) and (max-width: 1439px) {
   .title {
@@ -77,8 +90,8 @@
   font-size: 16px;
 }
 .hero {
-  margin-bottom: 117px;
-  margin-top: 172px;
+  padding-bottom: 117px;
+  padding-top: 172px;
   align-items: flex-start;
 }
 .moreButton{
@@ -103,9 +116,9 @@
     font-size: 20px;
   }
   .hero {
-  margin-bottom: 346px;
-  margin-top: 172px;
-  margin-right: 553px;
+  padding-bottom: 346px;
+  padding-top: 172px;
+  padding-right: 553px;
   align-items: flex-start;
 }
 .content {
