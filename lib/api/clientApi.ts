@@ -1,4 +1,4 @@
-import { AxiosResponse } from "axios";
+import axios, { AxiosResponse } from "axios";
 import { api } from "./api";
 import type { User } from "@/types/user";
 
@@ -12,11 +12,24 @@ interface RegisterPayload {
   password: string;
 }
 
-// ================ Session and Login ========
-
 export async function getAuthSession() {
-  const res = await api.post("/auth/refresh-session");
-  return res.data;
+  try {
+    const res = await api.post("/auth/refresh-session");
+    return res.data;
+  } catch (error) {
+    
+    if (
+      axios.isAxiosError(error) &&
+      error.response &&
+      error.response.status === 401
+    ) {
+      
+      return null;
+    }
+
+    
+    throw error;
+  }
 }
 
 export async function getCurrentUser(): Promise<User> {
@@ -43,8 +56,4 @@ export async function loginUser(data: AuthPayload): Promise<User> {
 export async function logoutUser(): Promise<void> {
   await api.post("/auth/logout");
 }
-
-// export async function savedArticles(articleId: string) {
-//   const res = await api.post<Story>(`saved-articles/${articleId}`);
-//   return res.data;
-// }
+ 

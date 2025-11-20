@@ -22,7 +22,7 @@ type StoriesResponse = {
 };
 
 type TravellerPageProps = {
-  params: { travellerId: string };
+  params: { id: string };
   searchParams?: { page?: string };
 };
 
@@ -131,7 +131,7 @@ function TravellersStories({
                   <div>
                     <p className={styles.cardAuthorName}>{username}</p>
                     <p className={styles.cardMeta}>
-                      {formatDate(story.createdAt)} 
+                      {formatDate(story.createdAt)}
                     </p>
                   </div>
                 </div>
@@ -166,7 +166,7 @@ export default async function TravellerPage({
   params,
   searchParams,
 }: TravellerPageProps) {
-  const { travellerId } = params;
+  const travellerId = params.id;
   const currentPage = Number(searchParams?.page || "1") || 1;
 
   const [userRes, storiesRes] = await Promise.all([
