@@ -3,6 +3,7 @@ import { cookies } from "next/headers";
 import { localAPI } from "@/lib/localAPI";
 import { logErrorResponse } from "@/app/api/_utils/utils";
 import { isAxiosError } from "axios";
+import { backendAPI } from "@/lib/backendAPI";
 
 type Props = {
   params: Promise<{ storyId: string }>;
@@ -13,7 +14,7 @@ export async function GET(req: Request, { params }: Props) {
     const cookieStore = await cookies();
     const { storyId } = await params;
 
-    const res = await localAPI.get(`/stories/${storyId}`, {
+    const res = await backendAPI.get(`/stories/${storyId}`, {
       headers: {
         Cookie: cookieStore.toString(),
         // Authorization: `Bearer ${accessToken}`, // если нужен токен

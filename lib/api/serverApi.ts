@@ -2,6 +2,7 @@ import { localAPI } from "../localAPI";
 import { Story } from "@/types/story";
 import { cookies } from "next/headers";
 import type { User } from "@/types/user";
+import { backendAPI } from "../backendAPI";
 
 export async function getAuthSessionServer() {
   const cookieStore = await cookies();
@@ -61,7 +62,7 @@ export const getServerCurrentStory = async (
   const cookieStore = await cookies();
   const cookieHeader = cookieStore.toString();
 
-  const res = await localAPI.get<Story>(`/stories/${storyId}`, {
+  const res = await backendAPI.get<Story>(`/stories/${storyId}`, {
     headers: {
       Cookie: cookieHeader,
     },
