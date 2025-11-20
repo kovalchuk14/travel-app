@@ -12,7 +12,7 @@ const storyId = async ({ params }: Props) => {
 
   return (
     <div>
-      <StoryDetails />
+      {/* <StoryDetails /> */}
       <Popular />
     </div>
   );

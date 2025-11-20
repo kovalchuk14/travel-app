@@ -1,0 +1,327 @@
+.page {
+    width: 100%;
+    max-width: 100%;
+    margin: 0 auto;
+    padding: 32px 20px;
+    background: #f7f9ff;
+    box-sizing: border-box;
+
+}
+
+.title {
+    font-size: 28px;
+    line-height: 1.2;
+    font-weight: 700;
+    color: #111827;
+    margin-bottom: 32px;
+    /* text-align: left; */
+   
+}
+
+.formContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    width: 335px;
+    height: auto;
+    background-color: #f7f9ff;
+}
+
+
+.label {
+        font-weight: 400;
+        font-size: 16px;
+        line-height: 1.5;
+        color: #000;
+}
+
+.image {
+    border-radius: 16px;
+    width: 335px;
+    height: 223px;
+  
+}
+
+/* Обкладинка */
+.imageUploadArea {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.imagePlaceholder {
+    border-radius: 16px;
+    width: 335px;
+    height: 223px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.imageText {
+    color: #9ca3af;
+    font-size: 14px;
+}
+
+.hiddenInput {
+    display: none;
+    border-radius: 16px;
+}
+
+.uploadButton {
+    padding: 4px 10px;
+    border-radius: 8px;
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    background-color: rgba(0, 0, 0, 0.05);
+    font-size: 16px;
+    cursor: pointer;
+    width: 163px;
+    height: 32px;
+}
+
+.uploadButton:hover {
+    background-color: #4169e1;
+    color: #fff;
+}
+
+/* Інпути */
+.formField {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.textInput,
+.selectInput,
+.textareaInput {
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    width: 335px;
+    padding: 8px ;
+    border-radius: 8px;
+    font-size: 14px;
+    background-color: rgba(255, 255, 255, 0);
+    font-family: "Nunito Sans", sans-serif;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #000;
+
+}
+
+.textInput:focus,
+.selectInput:focus,
+.textareaInput:focus {
+    outline: none;
+    border-color: #4b6bfb;
+}
+
+.textareaInput {
+    width: 100%;
+    min-height: 96px;
+    padding: 12px 14px;
+    border-radius: 12px;
+    border: 1px solid #e0e0e0;
+    background-color: rgba(255, 255, 255, 0.1);
+    font-size: 14px;
+    line-height: 1.5;
+    color: #111111;
+
+    resize: none;
+    overflow-y: hidden;
+    box-sizing: border-box;
+}
+
+
+.actions{
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+.saveButton {
+    border: 1px solid #4169e1;
+    border-radius: 8px;
+    padding: 6px 12px;
+    width: 100%;
+    height: 48px;
+    background: #4169e1;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 1.5;
+    color: #fff;
+    cursor: pointer;
+    opacity: 1;
+    transition: background-color 0.2s ease, opacity 0.2s ease, color 0.2s ease;
+}
+
+.saveButton:hover {
+    background-color: #3658c7;
+}
+
+.saveButton:active {
+    background-color: #7a96ea;
+    color: #000;
+}
+
+
+.saveButton:disabled {
+    background: #4169e1;
+    opacity: 0.3;
+    color: #fff;
+    cursor: not-allowed;
+}
+
+.cancelButton{
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    border-radius: 8px;
+    padding: 6px 12px;
+    width: 100%;
+    height: 48px;
+}
+.errorText{
+    color: #b00101;
+    font-size: 12px;
+}
+
+@media (min-width: 768px){
+.page {
+        
+        padding: 24px 16px 40px;
+    }
+
+.title {
+    font-size: 48px;
+    margin-bottom: 32px;
+     }
+.formContainer{
+    width: 768px;
+}
+
+.image {
+    width: 704px;
+    height: 469px;
+}
+.imagePlaceholder{
+    width: 704px;
+        height: 469px;
+}
+
+.textInput,
+.selectInput,
+.textareaInput{
+    max-width:704px;
+}
+
+.saveButton{
+    width: 704px;
+    height: 48px
+}
+
+.cancelButton{
+    width: 704px;
+    height: 48px
+}
+}
+
+@media (min-width: 1440px){
+
+.formContainer {
+        width: 866px;
+    }
+    .image {
+    
+        width: 866px;
+        height: 576px;
+        }
+    
+        .imagePlaceholder {
+        width: 866px;
+        height: 576px;
+        }
+}
+
+
+.title {
+    font-size: 28px;
+    line-height: 1.2;
+    font-weight: 700;
+    color: #111827;
+    margin-bottom: 32px;
+}
+
+
+.main {
+    border: 1px solid #c4d0ff;
+    border-top: none;
+    background-color: #ffffff;
+    padding: 16px 20px 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+/* Блок з кнопками */
+.actions {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 8px;
+}
+
+/* Кнопка Зберегти */
+.saveButton {
+    width: 100%;
+    padding: 12px 16px;
+    border-radius: 6px;
+    border: none;
+    background-color: #c7d2fe;
+    color: #111827;
+    font-weight: 600;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+/* Кнопка Відмінити */
+.cancelButton {
+    width: 100%;
+    padding: 12px 16px;
+    border-radius: 6px;
+    border: none;
+    background-color: #e5e7eb;
+    color: #111827;
+    font-weight: 500;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+
+@media (min-width: 768px) {
+    .page {
+        max-width: 768px;
+        padding: 24px 16px 40px;
+    }
+
+    .title {
+        font-size: 48px;
+        margin-bottom: 32px;
+    }
+}
+
+
+@media (min-width: 1440px) {
+
+    .page {
+        width: 100%;
+        max-width: 1440px;    
+        margin: 0 auto;
+        padding: 48px 64;
+        box-sizing: border-box;
+    }
+
+    .title {
+         font-size: 58px;
+    }
+
+    .main {
+        padding-inline: 40px;
+    }
+}
