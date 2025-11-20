@@ -97,6 +97,7 @@ export default function EditStoryPage() {
 
   return (
     <div className={styles.page}>
+      <div className={styles.content}>
       <h2 className={styles.title}>Редагувати історію</h2>
 
       <AddStoryForm
@@ -110,7 +111,8 @@ export default function EditStoryPage() {
         categories={categories}
         storyId={storyId}
         isEditMode={true}
-      />
+        />
+        </div>
     </div>
   );
 }
