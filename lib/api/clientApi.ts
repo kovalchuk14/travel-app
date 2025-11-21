@@ -1,4 +1,4 @@
-import { Story } from "@/types/story";
+import { Story, SavedStory, StoriesResponse, UserSavedArticlesResponse } from "@/types/story";
 import axios, { AxiosResponse } from "axios";
 import { localAPI } from "../localAPI";
 import type { User } from "@/types/user";
@@ -70,4 +70,35 @@ export async function getCurrentStory(storyId: string): Promise<Story> {
 export async function postNewStory(params: CreateStoryFormData) {
   const response = await localAPI.post("/stories", params);
   return response.data.data;
+}
+
+
+// ================ Історії Мандрівників ========
+export async function fetchStories(
+  page = 1,
+  perPage = 3,
+  categoryId?: string
+): Promise<Story[]> {
+  const res = await backendAPI.get<StoriesResponse>("/stories", {
+    params: { page, perPage, sort: 'favoriteCount', category: categoryId },
+  });
+  return res.data?.data?.data || [];
+}
+ 
+export async function fetchSavedStoriesByUserId(
+  userId: string
+): Promise<SavedStory[]> {
+  const res = await backendAPI.get<UserSavedArticlesResponse>(
+    `/users/${userId}/saved-articles`
+  );
+  return res.data.data.savedStories;
+}
+
+// ================ для зберігання історії при натисканні на іконку ========
+export async function addStoryToFavorites(storyId: string): Promise<void> {
+  await backendAPI.post(`/users/me/saved/${storyId}`);
+}
+
+export async function deleteStoryFromFavorites(storyId: string): Promise<void> {
+  await backendAPI.delete(`/users/me/saved/${storyId}`);
 }
