@@ -17,6 +17,12 @@ export type Story = {
   isFavorite?: boolean;
 };
 
+export type StoryResponse = {
+  data: Story;
+  status: string;
+  message: string;
+};
+
 
 export interface Category {
   _id: string;
