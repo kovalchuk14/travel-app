@@ -1,7 +1,6 @@
 .backdrop {
     position: fixed;
-    top: 0;
-    left: 0;
+    inset: 0;
     z-index: 9999;
     width: 100vw;
     height: 100vh;
@@ -9,6 +8,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    overflow: hidden;
 }
 
 .modal {
@@ -16,6 +16,7 @@
     width: 100vw;
     height: 100vh;
     background-color: #F7F9FF;
+    overflow: hidden;
 }
 .closeButton {
   display: flex;

@@ -33,7 +33,6 @@ export default function RootLayout({
       <body className={`${nunito.variable} ${sora.variable}`}>
         <TanStackProvider>
           <AuthProvider>
-            <Header />
             <main>{children}</main>
             <FooterWrapper hideOn={["/auth/login", "/auth/register"]} />
           </AuthProvider>
