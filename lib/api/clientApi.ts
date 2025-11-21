@@ -1,4 +1,10 @@
-import { Story, SavedStory, StoriesResponse, UserSavedArticlesResponse } from "@/types/story";
+import {
+  Story,
+  SavedStory,
+  StoriesResponse,
+  UserSavedArticlesResponse,
+  StoryResponse,
+} from "@/types/story";
 import axios, { AxiosResponse } from "axios";
 import { localAPI } from "../localAPI";
 import type { User } from "@/types/user";
@@ -62,8 +68,8 @@ export async function logoutUser(): Promise<void> {
 //   return res.data;
 // }
 
-export async function getCurrentStory(storyId: string): Promise<Story> {
-  const res = await localAPI.get<Story>(`/stories/${storyId}`);
+export async function getCurrentStory(storyId: string): Promise<StoryResponse> {
+  const res = await backendAPI.get<StoryResponse>(`/stories/${storyId}`);
   return res.data;
 }
 
@@ -72,7 +78,6 @@ export async function postNewStory(params: CreateStoryFormData) {
   return response.data.data;
 }
 
-
 // ================ Історії Мандрівників ========
 export async function fetchStories(
   page = 1,
@@ -80,11 +85,11 @@ export async function fetchStories(
   categoryId?: string
 ): Promise<Story[]> {
   const res = await backendAPI.get<StoriesResponse>("/stories", {
-    params: { page, perPage, sort: 'favoriteCount', category: categoryId },
+    params: { page, perPage, sort: "favoriteCount", category: categoryId },
   });
   return res.data?.data?.data || [];
 }
- 
+
 export async function fetchSavedStoriesByUserId(
   userId: string
 ): Promise<SavedStory[]> {
