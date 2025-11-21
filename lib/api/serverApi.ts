@@ -1,10 +1,13 @@
-
 import { localAPI } from "../localAPI";
-import { backendAPI} from "../backendAPI";
-import { Story, Category,StoriesResponse, CategoriesResponse } from "@/types/story";
+import { backendAPI } from "../backendAPI";
+import {
+  Story,
+  Category,
+  StoriesResponse,
+  CategoriesResponse,
+} from "@/types/story";
 import { cookies } from "next/headers";
 import type { User } from "@/types/user";
-import { backendAPI } from "../backendAPI";
 
 export async function getAuthSessionServer() {
   const cookieStore = await cookies();
@@ -73,22 +76,20 @@ export const getServerCurrentStory = async (
   return res.data;
 };
 
-
-
 // ================ Історії Мандрівників ========
 export async function getStoriesServer(
   page: number = 1,
   perPage: number = 10
 ): Promise<Story[]> {
   const res = await backendAPI.get<StoriesResponse>("/stories", {
-    params: { page, perPage, sort: 'favoriteCount' },
+    params: { page, perPage, sort: "favoriteCount" },
   });
   return res.data?.data.data || [];
 }
 
 export async function fetchCategories(): Promise<Category[]> {
-  const res = await backendAPI.get<CategoriesResponse>('/categories');
-  return  res.data.data.data;
+  const res = await backendAPI.get<CategoriesResponse>("/categories");
+  return res.data.data.data;
 }
 
 export async function fetchStoriesServer(
@@ -98,7 +99,7 @@ export async function fetchStoriesServer(
   excludeId?: string
 ): Promise<Story[]> {
   const response = await backendAPI.get<StoriesResponse>(`/stories`, {
-    params: { page, perPage, sort: 'favoriteCount', excludeId },
+    params: { page, perPage, sort: "favoriteCount", excludeId },
   });
 
   return response.data?.data?.data || [];

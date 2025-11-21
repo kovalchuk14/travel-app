@@ -74,13 +74,13 @@ const Header: React.FC = () => {
               </Link>
             </li>
             <li>
-              <a href="#stories" onClick={closeMenu} className={css.mobileItem}>
+              <a href="/stories" onClick={closeMenu} className={css.mobileItem}>
                 Історії
               </a>
             </li>
             <li>
               <a
-                href="#travelers"
+                href="/travelers"
                 onClick={closeMenu}
                 className={css.mobileItem}
               >
