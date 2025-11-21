@@ -3,7 +3,6 @@
   width: 100%;
   max-width: 1440px;
   margin: 0 auto;
-  background: #f7f9ff;
 }
 
 .title {
@@ -53,17 +52,22 @@
 }
 
 .imageWrapper {
-  padding-top: 16px;
   width: 100%;
-  height: auto;
-  object-fit: cover;
-  display: block;
+  border-radius: 24px;
+  overflow: hidden;
+}
+
+.imageWrapper img {
+  padding-top: 16px;
+  width: 100%;      
+  height: auto;     
+  display: block;   
   border-radius: 24px;
 }
 
 .content {
   padding-top: 64px;
-  font-weight: 400;
+    font-weight: 400;
   font-size: 16px;
   width: 100%;
   line-height: 150%;
@@ -74,21 +78,24 @@
   margin-top: 24px;
   border: 0px solid rgb(0, 0, 0, 0.05);
   border-radius: 24px;
-  width: 335px;
+  width: 100%;
+  max-width: 355px;
   height: 217px;
   background: #f2f2f2;
 }
 
 .ctaTitle {
-  padding-top: 16px;
+  padding-top: 32px;
   padding-left: 16px;
   font-weight: 700;
   font-size: 18px;
   line-height: 140%;
   letter-spacing: -0.01em;
+  color: #000000;
 }
 
 .ctaText {
+  padding-top: 16px;
   padding-left: 16px;
   font-weight: 400px;
   font-size: 16px;
@@ -98,17 +105,18 @@
 }
 
 .saveButton {
-  margin-left: 16px;
-  margin-right: 16px;
+  margin: 16 auto;
   border: 1px solid #4169e1;
   border-radius: 8px;
-  width: 295px;
+  width: 100%;
+  max-width: 295px;
   height: 48px;
   background: #4169e1;
   font-weight: 500;
   font-size: 16px;
   line-height: 150%;
   color: #ffffff;
+  display: block;
 }
 
 .saveButton:hover {
@@ -142,33 +150,17 @@
     gap: 48px;
   }
 
-  .imageWrapper {
-    width: 704px;
-  }
   .content {
     width: 704px;
   }
   .cta {
     border-radius: 24px;
-    width: 418px;
+    max-width: 418px;
     height: 217px;
   }
 
-  .ctaTitle {
-    padding-top: 16px;
-    padding-left: 16px;
-    font-weight: 700;
-    line-height: 140%;
-    letter-spacing: -0.01em;
-    font-size: 26px;
-    color: #000000;
-  }
-
   .ctaText {
-    padding-top: 16px;
-    font-weight: 400px;
-    font-size: 16px;
-    width: 300px;
+    width: 350px;
     line-height: 150%;
     color: #000000;
     overflow-wrap: break-word;
@@ -177,7 +169,7 @@
   .saveButton {
     border: 1px solid #4169e1;
     border-radius: 8px;
-    width: 354px;
+    max-width: 354px;
     height: 48px;
     background: #4169e1;
     font-weight: 500;
@@ -197,11 +189,7 @@
 
   .info {
     margin-top: 32px;
-    width: 1312px;
-  }
-
-  .imageWrapper {
-    width: 1312px;
+    width: 100%;
   }
 
   .content {
@@ -221,7 +209,6 @@
     margin-bottom: 48px;
   }
   .cta {
-    width: 418px;
     height: 234px;
   }
   .ctaTitle {

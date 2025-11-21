@@ -24,14 +24,11 @@ export default function StoryDetails({ story }: Props) {
       </div>
 
       <picture className={css.imageWrapper}>
-        <source srcSet={story.img} media="(max-width: 767px) " />
-        {/* <source srcSet={story.img} media="(max-width: 1439px)" /> */}
-        <source srcSet={story.img} media="(min-width: 1440px)" />
         <img src={story.img} alt="story pictures " width={1312} height={874} />
       </picture>
       <div className={css.container_story_save}>
-        <article className={css.content}>
-          <p>{story.article}</p>
+        <article >
+          <p className={css.content}>{story.article}</p>
         </article>
 
         <section className={css.cta} aria-label="Saving history">

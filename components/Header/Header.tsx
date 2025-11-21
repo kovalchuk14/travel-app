@@ -41,7 +41,7 @@ const Header: React.FC = () => {
           aria-label="Open menu"
           onClick={openMenu}
         >
-          <svg width={24} height={24} aria-hidden="true" fill="#FFFFFF">
+          <svg width={24} height={24} aria-hidden="true" fill="#000000">
             <use href="/icon.svg#icon-menu" />
           </svg>
         </button>
