@@ -2,7 +2,7 @@ import css from '../../app/css/Hero.module.css';
 
 const Hero = () => {
   return (
-    <section className={css.hero}>
+    <section className={css.hero} id="hero">
             <div className={css.content}>
               <h1 className={css.title}>
                 Відкривайте світ <br/> подорожей з нами!

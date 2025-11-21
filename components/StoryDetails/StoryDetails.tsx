@@ -3,7 +3,7 @@ import css from "@/components/StoryDetails/StoryDetails.module.css";
 
 export default function StoryDetails(story : Story) {
   return (
-    <div className={css.container}>
+    <div className={css.container} id="stories">
       <h2 className={css.title}>
         {story.title}
       </h2>

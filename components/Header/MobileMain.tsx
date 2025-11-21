@@ -43,18 +43,21 @@ export default function Modal({ onClose, children }: ModalProps) {
   }, [onClose]);
 
   return createPortal(
-    <div className={css.backdrop} onClick={handleBackdropClick}>
-      <div className={css.modal}>
-        <button
-          className={css.closeButton}
-          onClick={onClose}
-          aria-label="Close menu"
-        >
-          &times;
-        </button>
-        {children}
-      </div>
-    </div>,
-    document.body
-  );
-}
+  <div className={css.backdrop} onClick={handleBackdropClick}>
+    <div className={css.modal}>
+      <button
+        className={css.closeButton}
+        onClick={onClose}
+        aria-label="Close menu"
+        type="button"
+      >
+        <svg width={24} height={24} aria-hidden="true">
+          <use href="/icon.svg#icon-close" />
+        </svg>
+      </button>
+      {children}
+    </div>
+  </div>,
+  document.body
+);
+} 
