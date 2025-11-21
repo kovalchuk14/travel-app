@@ -5,7 +5,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { useAuthStore } from "@/lib/store/authStore";
 import { getAuthSession, getCurrentUser } from "@/lib/api/clientApi";
 
-const privateRoutes = ["/profile", "/dashboard"];
+const privateRoutes = ["/profile", "/dashboard", "/stories/create"];
 
 interface AuthProviderProps {
   children: ReactNode;
@@ -40,10 +40,10 @@ export default function AuthProvider({ children }: AuthProviderProps) {
           }
         }
         clearIsAuthenticated();
-        if (isPrivateRoute) router.push("/");
+        if (isPrivateRoute) router.push("/auth/login");
       } catch {
         clearIsAuthenticated();
-        if (isPrivateRoute) router.push("/");
+        if (isPrivateRoute) router.push("/auth/login");
       } finally {
         setLoading(false);
       }

@@ -38,9 +38,11 @@ const StoryPage = async ({ params }: Props) => {
   });
 
   return (
+
     <HydrationBoundary state={dehydrate(queryClient)}>
       <StoryDetailsClient />
     </HydrationBoundary>
+
   );
 };
 

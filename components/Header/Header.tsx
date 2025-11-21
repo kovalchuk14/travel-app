@@ -14,7 +14,7 @@ const Header: React.FC = () => {
 
   return (
     <>
-      <header className={css.header}>
+      <section className={css.header}>
         <div className={css.logo}>
           <Link href="/">
             <svg width={23} height={23} aria-hidden="true">
@@ -32,14 +32,14 @@ const Header: React.FC = () => {
               </Link>
             </li>
             <li>
-              <a href="#stories" className={css.navLink}>
+              <Link href="/stories" className={css.navLink}>
                 Історії
-              </a>
+              </Link>
             </li>
             <li>
-              <a href="/travellers" className={css.navLink}>
+              <Link href="/travelers" className={css.navLink}>
                 Мандрівники
-              </a>
+              </Link>
             </li>
             <AuthNavigation />
           </ul>
@@ -55,7 +55,7 @@ const Header: React.FC = () => {
             <use href="/icon.svg#icon-menu" />
           </svg>
         </button>
-      </header>
+      </section>
 
       {isMenuOpen && (
         <Modal onClose={closeMenu}>

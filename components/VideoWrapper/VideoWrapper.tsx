@@ -1,9 +1,10 @@
 import Hero from "../Hero/Hero";
 import css from "./VideoWrapper.module.css";
+import Header from "../Header/Header";
 
 export default function VideoWrapper() {
   return (
-    <section>
+    <section className={css.videoWrapper}>
       <video
         className={css.backgroundVideo}
         src="/images/herovideo.mp4"
@@ -13,9 +14,8 @@ export default function VideoWrapper() {
         playsInline
       />
       <div className={css.videoOverlay}></div>
-      <div className={css.videoContent}>
+        <Header />
         <Hero />
-      </div>
     </section>
   );
 }
