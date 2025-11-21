@@ -4,7 +4,7 @@ import AddStoryForm from '@/components/AddStoryForm/AddStoryForm';
 export default function AddStoryPage() {
   return (
     <div>
-      <h1 >Створити нову історію</h1>
+      <h2 >Створити нову історію</h2>
 
       <div>
         <div>
@@ -14,3 +14,5 @@ export default function AddStoryPage() {
     </div>
   );
 }
+
+
