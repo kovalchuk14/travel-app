@@ -1,14 +1,14 @@
-'use client';
+"use client";
 
-import { Formik, Form, Field, ErrorMessage } from 'formik';
-import type { FieldProps } from 'formik';
-import * as Yup from 'yup';
-import { useState, useRef } from 'react';
-import { useRouter } from 'next/navigation';
-import Image from 'next/image';
-import styles from './AddStoryForm.module.css';
+import { Formik, Form, Field, ErrorMessage } from "formik";
+import type { FieldProps } from "formik";
+import * as Yup from "yup";
+import { useState, useRef } from "react";
+import { useRouter } from "next/navigation";
+import Image from "next/image";
+import styles from "./AddStoryForm.module.css";
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL;
+const LOCAL_API_URL = process.env.NEXT_PUBLIC_LOCAL_API_URL!;
 
 interface StoryFormValues {
   img: File | string | null;
@@ -31,14 +31,14 @@ interface AddStoryFormProps {
 }
 
 const validationSchema = Yup.object({
-  img: Yup.mixed().required('Обкладинка обовʼязкова'),
+  img: Yup.mixed().required("Обкладинка обовʼязкова"),
   title: Yup.string()
-    .min(3, 'Мінімум 3 символи')
-    .max(100, 'Максимум 100 символів')
-    .required('Введіть заголовок'),
-  shortDescription: Yup.string().max(61, 'Максимум 61 символ'),
-  category: Yup.string().required('Оберіть категорію'),
-  article: Yup.string().required('Розкажіть свою історію'),
+    .min(3, "Мінімум 3 символи")
+    .max(100, "Максимум 100 символів")
+    .required("Введіть заголовок"),
+  shortDescription: Yup.string().max(61, "Максимум 61 символ"),
+  category: Yup.string().required("Оберіть категорію"),
+  article: Yup.string().required("Розкажіть свою історію"),
 });
 
 export default function AddStoryForm({
@@ -52,20 +52,20 @@ export default function AddStoryForm({
 
   const autoResize = (el: HTMLTextAreaElement | null) => {
     if (!el) return;
-    el.style.height = 'auto';
-    el.style.height = el.scrollHeight + 'px';
+    el.style.height = "auto";
+    el.style.height = el.scrollHeight + "px";
   };
 
   const [imagePreview, setImagePreview] = useState<string | null>(
-    typeof initialValues?.img === 'string' ? initialValues.img : null
+    typeof initialValues?.img === "string" ? initialValues.img : null
   );
 
   const defaultValues: StoryFormValues = {
     img: null,
-    title: '',
-    category: '',
-    shortDescription: '',
-    article: '',
+    title: "",
+    category: "",
+    shortDescription: "",
+    article: "",
   };
 
   return (
@@ -78,39 +78,44 @@ export default function AddStoryForm({
       onSubmit={async (values, { setSubmitting }) => {
         try {
           const formData = new FormData();
-          formData.append('title', values.title);
-          formData.append('category', values.category);
-          formData.append('shortDescription', values.shortDescription);
-          formData.append('article', values.article);
+          formData.append("title", values.title);
+          formData.append("category", values.category);
+          // formData.append("shortDescription", values.shortDescription);
+          formData.append("description", values.article);
 
           if (values.img instanceof File) {
-            formData.append('img', values.img);
-          } else if (typeof values.img === 'string') {
-            formData.append('imgUrl', values.img);
+            formData.append("storyImage", values.img);
+          } else if (typeof values.img === "string") {
+            formData.append("imgUrl", values.img);
           }
 
-          const method = isEditMode ? 'PATCH' : 'POST';
-          const url = isEditMode
-            ? `${API_URL}/stories/${storyId}`
-            : `${API_URL}/stories`;
+          const method = isEditMode ? "PATCH" : "POST";
+          // const url = isEditMode
+          //   ? `${LOCAL_API_URL}/stories/${storyId}`
+          //   : `${LOCAL_API_URL}/stories`;
+          const url = `${LOCAL_API_URL}/stories/${storyId}`;
+
+          console.log(method, url);
 
           const res = await fetch(url, {
             method,
             body: formData,
-            credentials: 'include',
+            credentials: "include",
           });
 
           const data = await res.json();
 
           if (!res.ok) {
-            throw new Error(data.message || 'Помилка збереження історії');
+            throw new Error(data.message || "Помилка збереження історії");
           }
 
           router.push(`/stories/${data.data._id}`);
         } catch (error) {
-          console.error('Помилка:', error);
+          console.error("Помилка:", error);
           const message =
-            error instanceof Error ? error.message : 'Помилка збереження історії';
+            error instanceof Error
+              ? error.message
+              : "Помилка збереження історії";
           alert(message);
         } finally {
           setSubmitting(false);
@@ -119,7 +124,6 @@ export default function AddStoryForm({
     >
       {({ setFieldValue, isValid, values, errors, isSubmitting }) => (
         <Form className={styles.formContainer}>
-          
           <div className={styles.formMain}>
             {/* Обкладинка статті */}
             <div className={styles.formSection}>
@@ -127,7 +131,7 @@ export default function AddStoryForm({
               <div className={styles.imageUploadArea}>
                 <div className={styles.imagePlaceholder}>
                   <Image
-                    src={imagePreview || '/images/form-images.jpg'}
+                    src={imagePreview || "/images/form-images.jpg"}
                     alt="Превʼю обкладинки"
                     width={335}
                     height={223}
@@ -143,7 +147,7 @@ export default function AddStoryForm({
                   onChange={(e) => {
                     const file = e.currentTarget.files?.[0] || null;
                     if (file) {
-                      setFieldValue('img', file);
+                      setFieldValue("img", file);
                       const reader = new FileReader();
                       reader.onloadend = () => {
                         setImagePreview(reader.result as string);
@@ -157,7 +161,7 @@ export default function AddStoryForm({
                   type="button"
                   className={styles.uploadButton}
                   onClick={() =>
-                    document.getElementById('coverImageUpload')?.click()
+                    document.getElementById("coverImageUpload")?.click()
                   }
                 >
                   Завантажити фото
@@ -182,7 +186,7 @@ export default function AddStoryForm({
                 type="text"
                 placeholder="Введіть заголовок історії"
                 className={`${styles.textInput} ${
-                  errors.title ? styles.inputError : ''
+                  errors.title ? styles.inputError : ""
                 }`}
               />
               <ErrorMessage
@@ -202,7 +206,7 @@ export default function AddStoryForm({
                 id="category"
                 name="category"
                 className={`${styles.selectInput} ${
-                  errors.category ? styles.inputError : ''
+                  errors.category ? styles.inputError : ""
                 }`}
               >
                 <option value="">Оберіть категорію</option>
@@ -220,7 +224,7 @@ export default function AddStoryForm({
               />
             </div>
 
-            {/* Короткий опис */}
+            {/* Короткий опис
             <div className={styles.formField}>
               <label htmlFor="shortDescription" className={styles.label}>
                 Короткий опис
@@ -232,7 +236,7 @@ export default function AddStoryForm({
                 placeholder="Введіть короткий опис"
                 rows={3}
                 className={`${styles.textareaInput} ${
-                  errors.shortDescription ? styles.inputError : ''
+                  errors.shortDescription ? styles.inputError : ""
                 }`}
               />
               <div className={styles.fieldFooter}>
@@ -242,12 +246,12 @@ export default function AddStoryForm({
                   className={styles.errorText}
                 />
                 <span className={styles.charCount}>
-                  Залишилось{' '}
-                  {Math.max(0, 61 - (values.shortDescription?.length || 0))}{' '}
+                  Залишилось{" "}
+                  {Math.max(0, 61 - (values.shortDescription?.length || 0))}{" "}
                   символів
                 </span>
               </div>
-            </div>
+            </div> */}
 
             {/* Текст історії */}
             <div className={styles.formField}>
@@ -266,7 +270,7 @@ export default function AddStoryForm({
                     }}
                     placeholder="Ваша історія тут"
                     className={`${styles.textareaInput} ${
-                      errors.article ? styles.inputError : ''
+                      errors.article ? styles.inputError : ""
                     }`}
                     rows={3}
                     onInput={(e) => {
@@ -307,4 +311,3 @@ export default function AddStoryForm({
     </Formik>
   );
 }
-
