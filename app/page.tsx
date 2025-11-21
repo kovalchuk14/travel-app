@@ -10,7 +10,12 @@ export default function Home() {
       <VideoWrapper />
       <About />
       <Popular />
-      <OurTravellers perPage={4} />
+      <section className={css.travellersSection}>
+        <div className="container">
+          <h2 className={css.titleTraveller}>Наші мандрівники</h2>
+        </div>
+        <OurTravellers perPage={4} gap={48} />
+      </section>
       <Join isAuthenticated={false} />
     </main>
   );
