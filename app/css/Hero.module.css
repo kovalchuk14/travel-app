@@ -16,7 +16,6 @@
     justify-content: flex-start;
     padding: 0 20px;
     gap: 24px;
-    margin-bottom: 32px;
 }
 
 
@@ -42,8 +41,7 @@
 
 
 .moreButton {
-    display: block;
-    width: 335px;
+    align-self: stretch;
     text-align: center;
     border: 1px solid #4169E1;
     border-radius: 8px;
@@ -69,17 +67,15 @@
   color:#000;
 }
 @media (min-width: 320px) and (max-width:375px) {
-  .moreButton{
-  width: auto;         
-  display: block;
-  margin-left: 32px;
-  margin: 0;
 
-}
 .hero {
   display: flex;
   justify-content: center;
 }
+  .content {
+    max-width: 335px;
+    padding: 0 20px;
+  }
 }
 
 @media (min-width: 768px) and (max-width: 1439px) {
@@ -93,15 +89,15 @@
   padding-bottom: 117px;
   padding-top: 172px;
   align-items: flex-start;
+  align-items: center;
 }
-.moreButton{
-  width: auto;         
-  display: block;
-  margin-left: 32px;
-  
+.moreButton{       
+  align-self: flex-start;
+  margin-top: 8px;
 
 }
 .content {
+
   padding: 0 32px;
 }
 }
@@ -125,9 +121,8 @@
   padding: 0 64px;
 }
 .moreButton{
-  width: auto;         
-  display: block;
-  margin-left: 64px;
+  align-self: flex-start;
+  margin-top: 8px;
   
 
 }

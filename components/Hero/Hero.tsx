@@ -9,8 +9,9 @@ const Hero = () => {
               </h1>
               <p className={css.subtitle}>
                 Приєднуйтесь до нашої спільноти мандрівників, де ви зможете ділитися своїми історіями та отримувати натхнення для нових пригод. Відкрийте для себе нові місця та знайдіть однодумців!</p>
+                <a href="#aboutus" className={css.moreButton}>Доєднатися</a>
               </div>
-            <a href="#aboutus" className={css.moreButton}>Доєднатися</a>
+            
     </section>
   );
 };
