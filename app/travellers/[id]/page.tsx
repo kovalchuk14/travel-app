@@ -50,7 +50,7 @@ function formatDate(iso?: string) {
 
 function TravellerInfo({ user }: TravellerInfoProps) {
   const username = (user as any).username || (user as any).name || "Мандрівник";
-  const avatar = (user as any).avatar || "/images/story-mobile.jpg";
+  const avatar = (user as any).avatarUrl || "/images/story-mobile.jpg";
   const bio = (user as any).description;
 
   return (
@@ -90,7 +90,7 @@ function TravellersStories({
   travellerId,
 }: TravellersStoriesProps) {
   const username = (user as any).username || (user as any).name || "Мандрівник";
-  const avatar = (user as any).avatar || "/images/story-mobile.jpg";
+  const avatar = (user as any).avatarUrl || "/images/story-mobile.jpg";
 
   return (
     <section className={styles.storiesSection}>
@@ -105,7 +105,7 @@ function TravellersStories({
             }`}
           >
             <img
-              src={story.storyImage || "/images/story-desk.jpg"}
+              src={story.img || "/images/story-desk.jpg"}
               alt={story.title}
               className={styles.cardImage}
             />
@@ -117,7 +117,7 @@ function TravellersStories({
 
               <h3 className={styles.cardTitle}>{story.title}</h3>
 
-              <p className={styles.cardDescription}>{story.description}</p>
+              <p className={styles.cardDescription}>{story.article}</p>
 
               <div className={styles.cardFooter}>
                 <div className={styles.cardAuthor}>

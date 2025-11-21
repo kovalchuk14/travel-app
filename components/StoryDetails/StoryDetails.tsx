@@ -7,8 +7,10 @@ type Props = {
 
 export default function StoryDetails({ story }: Props) {
   return (
-    <div className={css.container}>
-      <h2 className={css.title}>{story.title}</h2>
+    <div className={css.container} id="stories">
+      <h2 className={css.title}>
+        {story.title}
+      </h2>
       <div className={css.info}>
         <div className={css.info_row}>
           <p className={css.meta}>

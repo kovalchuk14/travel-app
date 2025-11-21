@@ -2,6 +2,7 @@ import css from "../../app/css/Hero.module.css";
 
 const Hero = () => {
   return (
+
     <section className={css.hero}>
       <div className={css.content}>
         <h1 className={css.title}>
