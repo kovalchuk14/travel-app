@@ -199,10 +199,10 @@ export default function AddStoryPage({}: AddStoryPageProps) {
         <div className={styles.right}>
           <button
             type="submit"
-            className={`${styles.save} ${formik.isValid ? styles.acti e : ""}`}
-            disabled={!formik.isValid || createStoryMutation.isPendin }
+            className={`${styles.save} ${formik.isValid ? styles.active : ""}`}
+            disabled={!formik.isValid || createStoryMutation.isPending}
           >
-            {createStoryMutation.isPending ? "Збереження..." : "Збере ти"}
+            {createStoryMutation.isPending ? "Збереження..." : "Зберегти"}
           </button>
           <button
             type="button"
