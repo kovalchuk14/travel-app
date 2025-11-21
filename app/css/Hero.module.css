@@ -66,17 +66,6 @@
   background-color: #7A96EA;
   color:#000;
 }
-@media (min-width: 320px) and (max-width:375px) {
-
-.hero {
-  display: flex;
-  justify-content: center;
-}
-  .content {
-    max-width: 335px;
-    padding: 0 20px;
-  }
-}
 
 @media (min-width: 768px) and (max-width: 1439px) {
   .title {
