@@ -51,7 +51,7 @@ function formatDate(iso?: string) {
 function TravellerInfo({ user }: TravellerInfoProps) {
   const username = (user as any).username || (user as any).name || "Мандрівник";
   const avatar = (user as any).avatar || "/images/story-mobile.jpg";
-  const bio = (user as any).bio;
+  const bio = (user as any).description;
 
   return (
     <section className={styles.header}>
