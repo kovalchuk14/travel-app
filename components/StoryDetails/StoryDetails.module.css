@@ -165,16 +165,10 @@
   }
 
   .saveButton {
-    border: 1px solid #4169e1;
-    border-radius: 8px;
     max-width: 354px;
     height: 48px;
-    background: #4169e1;
-    font-weight: 500;
-    font-size: 16px;
-    line-height: 150%;
+
     color: #ffffff;
-    margin-top: 16px;
   }
 }
 
@@ -191,7 +185,7 @@
   }
 
   .content {
-    width: auto;
+ width: 856px;
     font-size: 18px;
   }
 
@@ -199,15 +193,15 @@
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    width: 1312px;
     height: 234px;
-    max-width: 1312px;
+    max-width: 1440px;
     gap: 24px;
     margin-top: 48px;
     margin-bottom: 48px;
   }
   .cta {
     height: 234px;
+    width: 418px;
   }
   .ctaTitle {
     font-size: 26px;
@@ -221,16 +215,12 @@
     line-height: 150%;
   }
   .saveButton {
-    border: 1px solid #4169e1;
-    border-radius: 8px;
+    
     width: 354px;
     height: 48px;
-    background: #4169e1;
-    font-weight: 500;
-    font-size: 16px;
-    line-height: 150%;
-    color: #ffffff;
-    padding: auto;
+
+    padding: auto ;
+
   }
   .category {
     border: 1px solid rgba(0, 0, 0, 0.05);
