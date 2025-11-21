@@ -37,7 +37,7 @@ const Header: React.FC = () => {
               </Link>
             </li>
             <li>
-              <Link href="/travelers" className={css.navLink}>
+              <Link href="/travellers" className={css.navLink}>
                 Мандрівники
               </Link>
             </li>
@@ -74,13 +74,13 @@ const Header: React.FC = () => {
               </Link>
             </li>
             <li>
-              <a href="#stories" onClick={closeMenu} className={css.mobileItem}>
+              <a href="/stories" onClick={closeMenu} className={css.mobileItem}>
                 Історії
               </a>
             </li>
             <li>
               <a
-                href="#travelers"
+                href="/travellers"
                 onClick={closeMenu}
                 className={css.mobileItem}
               >
