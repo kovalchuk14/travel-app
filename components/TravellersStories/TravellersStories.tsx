@@ -14,12 +14,14 @@ export default function TravellersStories({ stories, isAuthenticated, className 
 
   
     return (
-    <section>
-      <ul className={`${css.stories__list} ${className || ''}`}>
+
+        <div>
+          <ul className={`${css.storiesList} ${className || ''}`}>
         {stories.map(story => (
           <TravellersStoriesItem key={story._id} story={story} isAuthenticated={isAuthenticated} />
         ))}
       </ul>
-    </section>
+        </div>
+
   );
 }

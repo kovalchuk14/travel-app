@@ -1,9 +1,8 @@
 .label {
-    font-family: var(--font-nunito-sans);
+    font-family: "Nunito Sans", sans-serif;
     font-weight: 400;
     font-size: 16px;
     line-height: 1.5;
-    color: b;
     margin-bottom: 8px;
 }
 
@@ -24,14 +23,14 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    background-color: var(--color-bg-secondary);
-    border: 1px solid var(--color-border);
+    background: rgba(255, 255, 255, 0);
+    border: 1px solid rgba(0, 0, 0, 0.15);
     border-radius: 8px;
-    font-family: var(--font-nunito-sans), sans-serif;
+    font-family: "Nunito Sans", sans-serif;
     font-size: 14px;
     font-weight: 400;
     line-height: 1.5;
-    color: var(--color-text-primary);
+    color: #000;
     cursor: pointer;
     outline: none;
     outline-offset: 0;
@@ -40,7 +39,7 @@
 }
 
 .select:hover {
-    border-color: var(--color-primary);
+    border: 1px solid #7a96ea;;
     outline: none;
     box-shadow: none;
 }
@@ -48,7 +47,7 @@
 .selectOpen {
     border-bottom-left-radius: 0;
     border-bottom-right-radius: 0;
-    border-color: var(--color-primary);
+    background: rgba(255, 255, 255, 0);;
 }
 
 .selectText {
@@ -66,8 +65,8 @@
     width: 20px;
     height: 20px;
     pointer-events: none;
-    fill: var(--select-icon);
-    stroke: var(--select-icon);
+    fill: rgba(0, 0, 0, 0.6);
+    stroke: rgba(0, 0, 0, 0.6);
     stroke-width: 2;
     transition:
         fill 0.3s ease,
@@ -78,8 +77,8 @@
 
 .selectWrapper:hover .selectIcon,
 .selectOpen .selectIcon {
-    fill: var(--color-primary);
-    stroke: var(--color-primary);
+    fill: #7a96ea;
+    stroke: #7a96ea;
 }
 
 .dropdown {
@@ -87,8 +86,8 @@
     top: 100%;
     left: 0;
     right: 0;
-    background-color: var(--color-bg-secondary);
-    border: 1px solid var(--color-primary);
+    background-color: var(--background);
+    border: 1px solid #7a96ea;
     border-top: none;
     border-radius: 0 0 8px 8px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
@@ -100,21 +99,21 @@
 
 .dropdownItem {
     padding: 8px 12px;
-    font-family: var(--font-nunito-sans), sans-serif;
+   font-family: "Nunito Sans", sans-serif;
     font-size: 14px;
     font-weight: 400;
     line-height: 1.5;
-    color: var(--color-text-primary);
+    color: #000000;
     cursor: pointer;
     transition: background-color 0.2s ease;
 }
 
 .dropdownItem:hover {
-    background-color: var(--color-primary-hover-first);
+    background-color:#e8eeff;
 }
 
 .dropdownItemSelected {
-    background-color: var(--color-primary-hover-first);
+    background-color: #e8eeff;
 }
 
 .buttonsWrapper {
@@ -127,19 +126,19 @@
     padding: 6px 10px;
     font-size: 16px;
     cursor: pointer;
-    color: var(--color-light-date);
+    color: #555555;
     border-radius: 6px;
     transition: all 0.2s ease;
 }
 
 .categoryBtn:hover {
-    color: var(--color-text-primary);
+    color:#000000;
 }
 
 .active {
     font-weight: 600;
-    color: var(--color-text-primary);
-    background-color: var(--category-bg);
+    color:#000000;
+    background-color:#f2f2f2;
 }
 
 @media screen and (min-width: 768px) {
@@ -153,13 +152,18 @@
     }
 }
 
-/* Tablet */
 @media (min-width: 768px) {
     .selectWrapper {
         display: none;
     }
-
     .label {
         display: none;
     }
+}
+
+@media (min-width: 1440px){
+    .categoryBtn{
+        font-size: 18px;
+    }
+
 }

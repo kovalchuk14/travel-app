@@ -29,37 +29,27 @@ export default function StoriesPageClient({
   const [loading, setLoading] = useState(false);
   
 
-  //  Дані про користувача
   const user = useAuthStore(state => state.user);
   const userId = user?._id || null;
   const isAuthenticated = !!userId;
 
-  // Тягнемо збережені історії юзера (як у PopularClient)
   const { data: savedStories = [] } = useQuery<SavedStory[]>({
     queryKey: ['savedStoriesByUser', userId],
     queryFn: () => fetchSavedStoriesByUserId(userId as string),
     enabled: isAuthenticated,
   });
 
-  // Масив ID збережених історій
   const savedIds = isAuthenticated ? savedStories.map(story => story._id) : [];
 
+  const mergedStories: Story[] = Array.isArray(stories) ? stories.map(story => ({ ...story, isFavorite: isAuthenticated ? savedIds.includes(story._id) : false, })) : [];
 
-  // Мерджимо: додаємо isFavorite до історій цієї сторінки
-
-    const mergedStories: Story[] = Array.isArray(stories) ? stories.map(story => ({ ...story, isFavorite: isAuthenticated ? savedIds.includes(story._id) : false, })) : [];
-
-  // Вираховуємо, планшет чи ні  
   useEffect(() => {
     const updateScreen = () => { const width = window.innerWidth; setIsTablet(width >= 768 && width < 1440); };
-    
     updateScreen(); window.addEventListener('resize', updateScreen); return () => window.removeEventListener('resize', updateScreen);
   }, []);
   
-  
   const STORIES_PER_PAGE = isTablet ? 8 : 9;
 
-  // Перша порція історій (від сервера) + скидання пагінації
   useEffect(() => {
   const safeStories = Array.isArray(firstStories) ? firstStories : [];
     

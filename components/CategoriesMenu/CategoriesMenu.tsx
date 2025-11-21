@@ -3,8 +3,7 @@
 import { useState, useRef, useEffect } from "react";
 import { Category } from "@/types/story";
 import css from "./CategoriesMenu.module.css";
-import { log } from "console";
-// import { Icon } from "../Icon/Icon";
+import { Icon } from "../Icon/Icon";
 
 interface Props {
   categories: Category[];
@@ -21,13 +20,10 @@ export default function CategoriesMenu({ categories, value, onChange }: Props) {
     ...(Array.isArray(categories) ? categories : [])
   ];
 
-   const currentOption =
-   allOptions.find(opt => opt._id === value) || allOptions[0];
-
+   const currentOption = allOptions.find(opt => opt._id === value) || allOptions[0];
 
   useEffect(() => {
     if (!menuVisible) return;
-
     const closeOnOutsideClick = (event: MouseEvent) => {
       if (
         containerRef.current &&
@@ -36,16 +32,15 @@ export default function CategoriesMenu({ categories, value, onChange }: Props) {
         setMenuVisible(false);
       }
       };
-      
       document.addEventListener("mousedown", closeOnOutsideClick);
     return () => document.removeEventListener("mousedown", closeOnOutsideClick);
   }, [menuVisible]);
 
 
-    const chooseCategory = (id: string) => {
-    onChange(id);
-    setMenuVisible(false);
-  };
+  const chooseCategory = (id: string) => {
+     onChange(id);
+      setMenuVisible(false);
+    };
 
  return (
     <>
@@ -59,14 +54,13 @@ export default function CategoriesMenu({ categories, value, onChange }: Props) {
           onClick={() => setMenuVisible((prev) => !prev)}
         >
           <span className={css.selectText}>{currentOption.name}</span>
-          {/* <Icon
+          <Icon
             name={
               menuVisible
-                ? "icon-keyboard_arrow_up"
-                : "icon-keyboard_arrow_down"
-            }
+                ? "icon-keyboard_up"
+                : "icon-keyboard_down"}
             className={css.selectIcon}
-          /> */}
+          />
         </div>
 
         {menuVisible && (

@@ -7,6 +7,7 @@ import toast from 'react-hot-toast';
 import { Story } from '@/types/story';
 import { addStoryToFavorites, deleteStoryFromFavorites } from '@/lib/api/clientApi';
 import css from './TravellersStoriesItem.module.css';
+import { Icon } from '../Icon/Icon';
 
 interface TravellersStoriesItemProps {
   story: Story;
@@ -57,8 +58,8 @@ export default function TravellersStoriesItem({ story, isAuthenticated }: Travel
       <Image
         src={story.img}
         alt={story.title}
-        width={400}
-        height={200}
+        width={335}
+        height={223}
         className={css.storyImg}
       />
       <div className={css.contentCard}>
@@ -80,11 +81,8 @@ export default function TravellersStoriesItem({ story, isAuthenticated }: Travel
             <div className={css.favWrapper}>
               <p className={css.storyDate}>{dateStory}</p>
               <p className={css.  storyFavoriteCount}>
-                {favoriteCount}
-                <svg className={css.storySaveSvg} width="16" height="16">
-                  <use href="/svg-sprite.svg#icon-bookmark"></use>
-                </svg>
-              </p>
+                {favoriteCount}</p>
+                 <Icon name="icon-bookmark" className={css.storySaveSvg} />
             </div>
           </div>
         </div>
@@ -96,16 +94,12 @@ export default function TravellersStoriesItem({ story, isAuthenticated }: Travel
             Переглянути статтю
             </button> 
 
-
           <button
               onClick={pushSave}
               disabled={isSaving}
               className={`${css.storySave} ${isSaved ? css.saved : ''}`}
                  >
-                <svg className={`${isSaved ? css.storySaved : css.storySaveSvg}`}
-                 width="16" height="16">
-                  <use href="/svg-sprite.svg#icon-bookmark"></use>
-                </svg>
+                <Icon name="icon-bookmark" className={`${isSaved ? css.storySaved : css.storySaveSvg}`} />
             
                   </button>     
 

@@ -1,6 +1,6 @@
 
 import { localAPI } from "../localAPI";
-// import { api } from "./api";
+import { backendAPI} from "../backendAPI";
 import { Story, Category,StoriesResponse, CategoriesResponse } from "@/types/story";
 import { cookies } from "next/headers";
 import type { User } from "@/types/user";
@@ -74,23 +74,19 @@ export const getServerCurrentStory = async (
 
 
 
-
-
-
-
-
+// ================ Історії Мандрівників ========
 export async function getStoriesServer(
   page: number = 1,
   perPage: number = 10
 ): Promise<Story[]> {
-  const res = await localAPI.get<StoriesResponse>("/stories", {
+  const res = await backendAPI.get<StoriesResponse>("/stories", {
     params: { page, perPage, sort: 'favoriteCount' },
   });
   return res.data?.data.data || [];
 }
 
 export async function fetchCategories(): Promise<Category[]> {
-  const res = await localAPI.get<CategoriesResponse>('/categories');
+  const res = await backendAPI.get<CategoriesResponse>('/categories');
   return  res.data.data.data;
 }
 
@@ -100,7 +96,7 @@ export async function fetchStoriesServer(
 
   excludeId?: string
 ): Promise<Story[]> {
-  const response = await localAPI.get<StoriesResponse>(`/stories`, {
+  const response = await backendAPI.get<StoriesResponse>(`/stories`, {
     params: { page, perPage, sort: 'favoriteCount', excludeId },
   });
 
