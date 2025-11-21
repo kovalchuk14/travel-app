@@ -1,8 +1,9 @@
 import { Story, SavedStory, StoriesResponse, UserSavedArticlesResponse } from "@/types/story";
-import { AxiosResponse } from "axios";
+import axios, { AxiosResponse } from "axios";
 import { localAPI } from "../localAPI";
 import type { User } from "@/types/user";
 import { backendAPI } from "../backendAPI";
+import { CreateStoryFormData } from "@/types/createStoryFormData";
 
 interface AuthPayload {
   email: string;
@@ -14,11 +15,21 @@ interface RegisterPayload {
   password: string;
 }
 
-// ================ Session and Login ========
-
 export async function getAuthSession() {
-  const res = await localAPI.post("/auth/refresh-session");
-  return res.data;
+  try {
+    const res = await localAPI.post("/auth/refresh-session");
+    return res.data;
+  } catch (error) {
+    if (
+      axios.isAxiosError(error) &&
+      error.response &&
+      error.response.status === 401
+    ) {
+      return null;
+    }
+
+    throw error;
+  }
 }
 
 export async function getCurrentUser(): Promise<User> {
@@ -54,6 +65,11 @@ export async function logoutUser(): Promise<void> {
 export async function getCurrentStory(storyId: string): Promise<Story> {
   const res = await localAPI.get<Story>(`/stories/${storyId}`);
   return res.data;
+}
+
+export async function postNewStory(params: CreateStoryFormData) {
+  const response = await localAPI.post("/stories", params);
+  return response.data.data;
 }
 
 
