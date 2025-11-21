@@ -10,9 +10,13 @@ import toast, { Toaster } from "react-hot-toast";
 
 interface OurTravellersProps {
   perPage: number;
+  gap: number;
 }
 
-export default function OurTravellers({ perPage }: OurTravellersProps) {
+export default function OurTravellers({
+  perPage,
+  gap = 48,
+}: OurTravellersProps) {
   const [travellers, setTravellers] = useState<Traveller[]>([]);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState<number | null>(null);
@@ -47,11 +51,11 @@ export default function OurTravellers({ perPage }: OurTravellersProps) {
     }
   };
 
-  const isDisabled = totalPages !== null && page > totalPages;
+  const hideButton = totalPages !== null && page === totalPages;
 
   return (
-    <section className={css.section}>
-      <div className={css.container}>
+    <>
+      <div className="container">
         <Toaster position="top-right" />
         {travellers.length > 0 && <TravellersList items={travellers} />}
         {isLoading && (
@@ -65,14 +69,14 @@ export default function OurTravellers({ perPage }: OurTravellersProps) {
             />
           </div>
         )}
-        <button
-          className={css.btnTraveller}
-          onClick={handleClick}
-          disabled={isDisabled}
-        >
-          Переглянути ще
-        </button>
+        {!hideButton && (
+          <div style={{ marginTop: gap }}>
+            <button className={css.btnTraveller} onClick={handleClick}>
+              Переглянути ще
+            </button>
+          </div>
+        )}
       </div>
-    </section>
+    </>
   );
 }

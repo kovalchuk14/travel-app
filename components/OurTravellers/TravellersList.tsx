@@ -13,7 +13,7 @@ export default function TravellersList({ items }: TravellersListProps) {
         <li className={css.item} key={item._id}>
           <img
             className={css.img}
-            src={item.avatarUrl || "/auth-no-avatar.jpg"}
+            src={item.avatarUrl || "/images/auth-no-avatar.jpg"}
             alt="Avatar image"
           />
 

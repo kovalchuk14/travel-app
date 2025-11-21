@@ -11,8 +11,10 @@ export default function Home() {
       <About />
       <Popular />
       <section className={css.travellersSection}>
-        <h2 className={css.titleTraveller}>Наші мандрівники</h2>
-        <OurTravellers perPage={4} />
+        <div className="container">
+          <h2 className={css.titleTraveller}>Наші мандрівники</h2>
+        </div>
+        <OurTravellers perPage={4} gap={48} />
       </section>
       <Join isAuthenticated={false} />
     </main>

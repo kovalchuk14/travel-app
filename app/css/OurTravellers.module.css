@@ -1,17 +1,13 @@
 /*     MOBILE FIRST       */
 
-.container {
-  width: 100%;
-  max-width: 320px;
-  margin: 0 auto;
-  padding: 0 20px;
-}
 .section {
   padding-top: 32px;
   padding-bottom: 64px;
+  background-color: #f7f9ff;
 }
 
 .title {
+  font-family: "Sora";
   font-weight: 700;
   font-size: 32px;
   line-height: 1.1;
@@ -41,6 +37,7 @@
   width: 112px;
   aspect-ratio: 1;
   border-radius: 100%;
+  object-fit: cover;
   margin-bottom: 24px;
 }
 
@@ -83,7 +80,7 @@
 
 .btnTraveller {
   display: block;
-  margin: 48px auto 0;
+  margin: 0 auto;
   width: 156px;
   height: 48px;
   font-family: inherit;
@@ -98,15 +95,11 @@
     background-color 200ms ease-in-out,
     border-color 250ms ease-in-out;
 }
-.btnTraveller:hover:not(:disabled) {
+.btnTraveller:hover {
   background-color: #152862;
   border-color: #152862;
 }
 
-.btnTraveller:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
 .loaderContainer {
   display: flex;
   justify-content: center;
@@ -114,20 +107,9 @@
   height: 100px;
 }
 
-@media (min-width: 376px) {
-  .container {
-    max-width: 375px;
-  }
-}
-
 /*      TABLET 768px      */
 
 @media (min-width: 768px) {
-  .container {
-    max-width: 768px;
-    padding: 0 32px;
-  }
-
   .title {
     font-size: 48px;
   }
@@ -157,10 +139,6 @@
 /*     DESKTOP    */
 
 @media (min-width: 1440px) {
-  .container {
-    max-width: 1440px;
-    padding: 0 64px;
-  }
   .section {
     padding-top: 48px;
     padding-bottom: 72px;
