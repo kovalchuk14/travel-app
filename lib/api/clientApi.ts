@@ -1,5 +1,5 @@
 import { Story } from "@/types/story";
-import { AxiosResponse } from "axios";
+import axios, { AxiosResponse } from "axios";
 import { localAPI } from "../localAPI";
 import type { User } from "@/types/user";
 import { backendAPI } from "../backendAPI";
@@ -15,11 +15,21 @@ interface RegisterPayload {
   password: string;
 }
 
-// ================ Session and Login ========
-
 export async function getAuthSession() {
-  const res = await localAPI.post("/auth/refresh-session");
-  return res.data;
+  try {
+    const res = await localAPI.post("/auth/refresh-session");
+    return res.data;
+  } catch (error) {
+    if (
+      axios.isAxiosError(error) &&
+      error.response &&
+      error.response.status === 401
+    ) {
+      return null;
+    }
+
+    throw error;
+  }
 }
 
 export async function getCurrentUser(): Promise<User> {
