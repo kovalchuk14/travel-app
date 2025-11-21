@@ -8,6 +8,13 @@ type Story = BaseStory & {
   storyImage?: string;
   createdAt?: string;
   category?: { name?: string };
+    description?: string;
+};
+
+type UserResponse = {
+  status: number;
+  message: string;
+  data: User;
 };
 
 type StoriesResponse = {
@@ -17,10 +24,9 @@ type StoriesResponse = {
     total: number;
     page: number;
     totalPages: number;
-    stories: Story[];
+    data: Story[];
   };
 };
-
 type TravellerPageProps = {
   params: { id: string };
   searchParams?: { page?: string };
@@ -120,42 +126,46 @@ function TravellersStories({
               <p className={styles.cardDescription}>{story.description}</p>
 
               <div className={styles.cardFooter}>
-                <div className={styles.cardAuthor}>
-                  <img
-                    src={avatar}
-                    alt={username}
-                    className={styles.cardAuthorAvatar}
-                  />
-                  <div>
-                    <p className={styles.cardAuthorName}>{username}</p>
-                    <p className={styles.cardMeta}>
-                      {formatDate(story.createdAt)}
-                    </p>
-                  </div>
-                </div>
+  <Link
+    href={`/travellers/${travellerId}`}
+    className={styles.cardAuthor}
+  >
+    <img
+      src={avatar}
+      alt={username}
+      className={styles.cardAuthorAvatar}
+    />
+    <div>
+      <p className={styles.cardAuthorName}>{username}</p>
+      <p className={styles.cardMeta}>
+        {formatDate(story.createdAt)}
+      </p>
+    </div>
+  </Link>
 
-                <Link
-                  href={`/stories/${story._id}`}
-                  className={styles.cardButton}
-                >
-                  Переглянути статтю
-                </Link>
-              </div>
+  <Link
+    href={`/stories/${story._id}`}
+    className={styles.cardButton}
+  >
+    Переглянути статтю
+  </Link>
+</div>
+
             </div>
           </article>
         ))}
       </div>
 
       {page < totalPages && (
-        <div className={styles.showMoreWrapper}>
-          <Link
-            href={`/travellers/${travellerId}?page=${page + 1}`}
-            className={styles.showMoreButton}
-          >
-            Показати ще
-          </Link>
-        </div>
-      )}
+  <div className={styles.showMoreWrapper}>
+    <Link
+      href={`/travellers/${travellerId}?page=${page + 1}`}
+      className={styles.showMoreButton}
+    >
+      Показати ще
+    </Link>
+  </div>
+)}
     </section>
   );
 }
@@ -169,11 +179,12 @@ export default async function TravellerPage({
   const currentPage = Number(searchParams?.page || "1") || 1;
 
   const [userRes, storiesRes] = await Promise.all([
-    backendAPI.get<User>(`/users/${travellerId}`),
-    backendAPI.get<StoriesResponse>("/stories", {
-      params: { userId: travellerId, page: currentPage, limit: 6 },
-    }),
-  ]);
+  backendAPI.get<UserResponse>(`/users/${travellerId}`),
+  backendAPI.get<StoriesResponse>("/stories", {
+    params: { userId: travellerId, page: currentPage, limit: 6 },
+  }),
+]);
+
 
   console.log(userRes.data.data, storiesRes.data.data.data);
 
