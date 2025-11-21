@@ -40,10 +40,10 @@ export default function AuthProvider({ children }: AuthProviderProps) {
           }
         }
         clearIsAuthenticated();
-        if (isPrivateRoute) router.push("/");
+        if (isPrivateRoute) router.push("/auth/login");
       } catch {
         clearIsAuthenticated();
-        if (isPrivateRoute) router.push("/");
+        if (isPrivateRoute) router.push("/auth/login");
       } finally {
         setLoading(false);
       }

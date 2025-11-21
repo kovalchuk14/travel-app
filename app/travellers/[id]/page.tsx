@@ -1,8 +1,8 @@
-import { api } from "@/lib/api/api";
 import type { User } from "@/types/user";
 import type { Story as BaseStory } from "@/types/story";
 import Link from "next/link";
 import styles from "./page.module.css";
+import { backendAPI } from "@/lib/backendAPI";
 
 type Story = BaseStory & {
   storyImage?: string;
@@ -49,8 +49,7 @@ function formatDate(iso?: string) {
 }
 
 function TravellerInfo({ user }: TravellerInfoProps) {
-  const username =
-    (user as any).username || (user as any).name || "Мандрівник";
+  const username = (user as any).username || (user as any).name || "Мандрівник";
   const avatar = (user as any).avatar || "/images/story-mobile.jpg";
   const bio = (user as any).bio;
 
@@ -90,8 +89,7 @@ function TravellersStories({
   totalPages,
   travellerId,
 }: TravellersStoriesProps) {
-  const username =
-    (user as any).username || (user as any).name || "Мандрівник";
+  const username = (user as any).username || (user as any).name || "Мандрівник";
   const avatar = (user as any).avatar || "/images/story-mobile.jpg";
 
   return (
@@ -166,18 +164,21 @@ export default async function TravellerPage({
   params,
   searchParams,
 }: TravellerPageProps) {
-  const travellerId = params.id;
+  const { id: travellerId } = await params;
+  console.log(travellerId);
   const currentPage = Number(searchParams?.page || "1") || 1;
 
   const [userRes, storiesRes] = await Promise.all([
-    api.get<User>(`/users/${travellerId}`),
-    api.get<StoriesResponse>("/stories", {
+    backendAPI.get<User>(`/users/${travellerId}`),
+    backendAPI.get<StoriesResponse>("/stories", {
       params: { userId: travellerId, page: currentPage, limit: 6 },
     }),
   ]);
 
-  const user = userRes.data;
-  const { page, totalPages, stories } = storiesRes.data.data;
+  console.log(userRes.data.data, storiesRes.data.data.data);
+
+  const user = userRes.data.data;
+  const { page, totalPages, data: stories } = storiesRes.data.data; //колись я дізнаюсь хто таке робить і отримаю докладне пояснення
 
   return (
     <main className={styles.page}>
