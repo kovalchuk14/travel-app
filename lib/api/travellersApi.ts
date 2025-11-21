@@ -1,11 +1,17 @@
-import { api } from "./api";
+// lib/api/travellersApi.ts
+
+import type { Traveller } from "@/types/traveller";
 
 interface RawTraveller {
   _id: string;
   name: string;
-  avatar?: string;
-  bio?: string;
-  socialLinks?: string[];
+  avatarUrl?: string;        // ← теперь avatarUrl, а не avatar
+  description?: string;      // ← у тебя в бэкенде description, а не bio
+  savedArticles?: any[];
+  articlesAmount?: number;
+  createdAt?: string;
+  updatedAt?: string;
+  __v?: number;
 }
 
 export interface TravellerProfile {
@@ -16,22 +22,36 @@ export interface TravellerProfile {
   socialLinks: string[];
 }
 
-function normalizeAvatar(avatar?: string) {
-  if (!avatar || avatar.trim() === "") return "/icons/avatar.svg";
-  return avatar;
+/** Дефолтная аватарка, если ничего нет */
+function normalizeAvatar(avatarUrl?: string) {
+  if (!avatarUrl || avatarUrl.trim() === "") {
+    return "/icons/avatar.svg";
+  }
+  return avatarUrl;
 }
 
+/** Главная функция — теперь использует прокси-роут и credentials */
 export async function getTravellerById(id: string): Promise<TravellerProfile> {
-  const res = await api.get<{ data?: { user?: RawTraveller } }>(`/users/${id}`);
+  const res = await fetch(`/api/users/${id}`, {
+    credentials: "include", // ← куки передаются → 200 OK
+  });
 
-  const user = res.data?.data?.user;
-  if (!user) throw new Error("User not found");
+  if (!res.ok) {
+    throw new Error("Failed to fetch traveller");
+  }
+
+  const json = await res.json();
+  const user: RawTraveller = json.data; // ← твой бэкенд возвращает { data: { …user } }
+
+  if (!user) {
+    throw new Error("User not found");
+  }
 
   return {
     _id: String(user._id),
     name: user.name,
-    bio: user.bio ?? "",
-    avatar: normalizeAvatar(user.avatar),
-    socialLinks: user.socialLinks ?? [],
+    avatar: normalizeAvatar(user.avatarUrl),          // ← avatarUrl!
+    bio: user.description ?? "Мандрівник поки не додав опис.", // ← description!
+    socialLinks: [], // если захочешь — добавишь позже
   };
 }
