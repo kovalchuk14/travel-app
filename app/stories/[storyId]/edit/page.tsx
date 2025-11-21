@@ -24,6 +24,20 @@ interface Category {
   name: string;
 }
 
+interface StoryResponseFromBackend {
+  status: number;
+  message: string;
+  data: StoryFromApi;
+}
+
+interface CategoriesResponseFromBackend {
+  status: number;
+  message: string;
+  data: {
+    data: Category[];
+  };
+}
+
 export default function EditStoryPage() {
   const { storyId } = useParams<{ storyId: string }>();
 
@@ -38,32 +52,50 @@ export default function EditStoryPage() {
       setError(null);
 
       try {
-        //  Отримати історію
-        const storyRes = await fetch(`${API_URL}/stories/${storyId}`);
-        if (!storyRes.ok) {
-          const body = await storyRes.json().catch(() => null);
-          throw new Error(body?.message || 'Історію не знайдено');
-        }
-        const storyData = await storyRes.json();
+        const url = `${API_URL}/stories/${storyId}`;
 
-        // Отримати категорії
-        const categoriesRes = await fetch(`${API_URL}/categories`);
-        if (!categoriesRes.ok) {
-          const body = await categoriesRes.json().catch(() => null);
+        const storyRes = await fetch(url, {
+          credentials: 'include',
+        });
+
+        const rawText = await storyRes.text();
+        let storyBody: StoryResponseFromBackend | null = null;
+
+        try {
+          storyBody = JSON.parse(rawText);
+        } catch (e) {
+          throw new Error('Не вдалося розпарсити відповідь від сервера');
+        }
+
+        if (!storyRes.ok || !storyBody?.data) {
+          if (storyRes.status === 401) {
+            throw new Error('Потрібно увійти в акаунт для редагування історії');
+          }
           throw new Error(
-            body?.message || 'Не вдалося завантажити категорії'
+            storyBody?.message || 'Історію не знайдено або помилка бекенда'
           );
         }
-        const categoriesData = await categoriesRes.json();
 
-        setStory(storyData.data as StoryFromApi);
-        setCategories(categoriesData.data.data as Category[]);
+        setStory(storyBody.data);
+
+        // Завантажуємо категорії
+        const categoriesRes = await fetch(`${API_URL}/categories`, {
+          credentials: 'include',
+        });
+        const categoriesJson: CategoriesResponseFromBackend =
+          await categoriesRes.json();
+
+        if (!categoriesRes.ok || !categoriesJson?.data?.data) {
+          throw new Error('Не вдалося завантажити категорії');
+        }
+
+        setCategories(categoriesJson.data.data);
       } catch (err) {
-       console.error('Помилка завантаження:', err);
-       const message =
-         err instanceof Error ? err.message : 'Помилка завантаження даних';
-      setError(message);
-      }finally {
+        console.error('Помилка завантаження:', err);
+        const message =
+          err instanceof Error ? err.message : 'Помилка завантаження даних';
+        setError(message);
+      } finally {
         setLoading(false);
       }
     };
@@ -74,7 +106,9 @@ export default function EditStoryPage() {
   if (loading) {
     return (
       <div className={styles.page}>
-        <div className={styles.loading}>Завантаження...</div>
+        <div className={styles.content}>
+          <div className={styles.loading}>Завантаження...</div>
+        </div>
       </div>
     );
   }
@@ -82,7 +116,9 @@ export default function EditStoryPage() {
   if (error) {
     return (
       <div className={styles.page}>
-        <div className={styles.error}>{error}</div>
+        <div className={styles.content}>
+          <div className={styles.error}>{error}</div>
+        </div>
       </div>
     );
   }
@@ -90,7 +126,9 @@ export default function EditStoryPage() {
   if (!story) {
     return (
       <div className={styles.page}>
-        <div className={styles.error}>Історію не знайдено</div>
+        <div className={styles.content}>
+          <div className={styles.error}>Історію не знайдено</div>
+        </div>
       </div>
     );
   }
@@ -98,21 +136,21 @@ export default function EditStoryPage() {
   return (
     <div className={styles.page}>
       <div className={styles.content}>
-      <h2 className={styles.title}>Редагувати історію</h2>
+        <h2 className={styles.title}>Редагувати історію</h2>
 
-      <AddStoryForm
-        initialValues={{
-          img: story.img,
-          title: story.title,
-          article: story.article,                 
-          shortDescription: story.shortDescription || '',
-          category: story.category._id,             
-        }}
-        categories={categories}
-        storyId={storyId}
-        isEditMode={true}
+        <AddStoryForm
+          initialValues={{
+            img: story.img,
+            title: story.title,
+            article: story.article,
+            shortDescription: story.shortDescription || '',
+            category: story.category._id,
+          }}
+          categories={categories}
+          storyId={story._id}
+          isEditMode={true}
         />
-        </div>
+      </div>
     </div>
   );
 }
