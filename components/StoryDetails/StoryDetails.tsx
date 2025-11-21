@@ -27,17 +27,15 @@ export default function StoryDetails({ story }: Props) {
         <img src={story.img} alt="story pictures " width={1312} height={874} />
       </picture>
       <div className={css.container_story_save}>
-        <article >
-          <p className={css.content}>{story.article}</p>
-        </article>
+        <p className={css.content}>{story.article}</p>
 
-        <section className={css.cta} aria-label="Saving history">
+        <div className={css.cta} aria-label="Saving history">
           <h2 className={css.ctaTitle}>Збережіть собі історію</h2>
           <p className={css.ctaText}>
             Вона буде доступна у вашому профілі у розділі збережене
           </p>
           <button className={css.saveButton}>Зберегти</button>
-        </section>
+        </div>
       </div>
     </div>
   );
