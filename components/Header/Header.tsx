@@ -1,4 +1,4 @@
-'use client'
+"use client";
 
 import AuthNavigation from "../AuthNavigation/AuthNavigation";
 import { useState } from "react";
@@ -14,7 +14,7 @@ const Header: React.FC = () => {
 
   return (
     <>
-      <header className={css.header}>
+      <section className={css.header}>
         <div className={css.logo}>
           <Link href="/">
             <svg width={23} height={23} aria-hidden="true">
@@ -24,47 +24,73 @@ const Header: React.FC = () => {
           <span className={css.title}>Подорожники</span>
         </div>
 
-    
         <nav className={css.desktopNav} aria-label="Main Navigation">
           <ul className={css.navigation}>
-            <li><Link href="/" className={css.navLink}>Головна</Link></li>
-            <li><a href="#stories" className={css.navLink}>Історії</a></li>
-            <li><a href="#travelers" className={css.navLink}>Мандрівники</a></li>
+            <li>
+              <Link href="/" className={css.navLink}>
+                Головна
+              </Link>
+            </li>
+            <li>
+              <Link href="/stories" className={css.navLink}>
+                Історії
+              </Link>
+            </li>
+            <li>
+              <Link href="/travellers" className={css.navLink}>
+                Мандрівники
+              </Link>
+            </li>
             <Link href="/profile" >
                 Мій Профіль
               </Link>
-            <AuthNavigation/>
+            <AuthNavigation />
           </ul>
         </nav>
 
-       
         <button
           type="button"
           className={css.burger}
           aria-label="Open menu"
           onClick={openMenu}
         >
-          <svg width={24} height={24} aria-hidden="true" fill="#FFFFFF">
+          <svg width={24} height={24} aria-hidden="true" fill="#000000">
             <use href="/icon.svg#icon-menu" />
           </svg>
         </button>
-      </header>
+      </section>
 
       {isMenuOpen && (
         <Modal onClose={closeMenu}>
           <div className={css.mobilelogo}>
-          <Link href="/">
-            <svg width={23} height={23} aria-hidden="true">
-              <use href="/icon.svg#icon-plant" />
-            </svg>
-          </Link>
-          <span className={css.mobileTitle}>Подорожники</span>
-        </div>
+            <Link href="/">
+              <svg width={23} height={23} aria-hidden="true">
+                <use href="/icon.svg#icon-plant" />
+              </svg>
+            </Link>
+            <span className={css.mobileTitle}>Подорожники</span>
+          </div>
           <ul className={css.mobileNavigation}>
-            <li ><Link href="/" onClick={closeMenu} className={css.mobileItem}>Головна</Link></li>
-            <li ><a href="#stories" onClick={closeMenu} className={css.mobileItem}>Історії</a></li>
-            <li ><a href="#travelers" onClick={closeMenu} className={css.mobileItem}>Мандрівники</a></li>
-            <AuthNavigation/>
+            <li>
+              <Link href="/" onClick={closeMenu} className={css.mobileItem}>
+                Головна
+              </Link>
+            </li>
+            <li>
+              <a href="/stories" onClick={closeMenu} className={css.mobileItem}>
+                Історії
+              </a>
+            </li>
+            <li>
+              <a
+                href="/travellers"
+                onClick={closeMenu}
+                className={css.mobileItem}
+              >
+                Мандрівники
+              </a>
+            </li>
+            <AuthNavigation />
           </ul>
         </Modal>
       )}
