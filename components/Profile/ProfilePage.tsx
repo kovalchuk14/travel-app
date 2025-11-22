@@ -10,6 +10,7 @@ import { Story } from "@/types/story";
 
 import css from "./ProfilePage.module.css";
 import MessageNoStories from "../MessageNoStories/MessageNoStories";
+import { useAuthStore } from "@/lib/store/authStore";
 
 type SavedStoryRef = string | { _id: string };
 
@@ -42,10 +43,7 @@ type activeTab = (typeof TABS)[keyof typeof TABS];
 export default function ProfilePage() {
   const [activeTab, setActiveTab] = useState<activeTab>(TABS.SAVED);
 
-  const {
-    data: currentUser,
-    isLoading: isUserLoading,
-  } = useQuery({
+  const { data: currentUser, isLoading: isUserLoading } = useQuery({
     queryKey: ["currentUser"],
     queryFn: async (): Promise<CurrentUser | null> => {
       try {
@@ -75,7 +73,9 @@ export default function ProfilePage() {
     enabled: Boolean(userId) && activeTab === TABS.MINE,
     queryFn: async () => {
       if (!userId) return [];
-      const res = await fetch(`/api/users/${userId}`, { credentials: "include" });
+      const res = await fetch(`/api/users/${userId}`, {
+        credentials: "include",
+      });
       if (!res.ok) return [];
       const json = await res.json();
       return json.data?.articles || [];
@@ -94,7 +94,7 @@ export default function ProfilePage() {
       const responses = await Promise.all(
         savedIds.map((id) =>
           fetch(`/api/stories/${id}`, { credentials: "include" })
-            .then((r) => r.ok ? r.json() : null)
+            .then((r) => (r.ok ? r.json() : null))
             .then((json) => json?.data || null)
             .catch(() => null)
         )
@@ -103,7 +103,8 @@ export default function ProfilePage() {
     },
   });
 
-  const isStoriesLoading = activeTab === TABS.SAVED ? isSavedLoading : isMyLoading;
+  const isStoriesLoading =
+    activeTab === TABS.SAVED ? isSavedLoading : isMyLoading;
   const isStoriesError = activeTab === TABS.SAVED ? isSavedError : isMyError;
   const stories = activeTab === TABS.SAVED ? savedStories : myStories;
 
@@ -164,25 +165,27 @@ export default function ProfilePage() {
               </p>
             )}
 
-            {!isStoriesLoading &&
-              !isStoriesError &&
-              stories.length === 0 && (
-                <MessageNoStories
-                  text={
-                    activeTab === TABS.SAVED
-                      ? "У вас ще немає збережених історій, мерщій збережіть вашу першу історію!"
-                      : "Ви ще нічого не публікували, поділіться своєю першою історією!"
-                  }
-                  buttonText={
-                    activeTab === TABS.SAVED ? "До історій" : "Опублікувати історію"
-                  }
-                  redirectTo={activeTab === TABS.SAVED ? "/stories" : "/new-story"}
-                />
-              )}
+            {!isStoriesLoading && !isStoriesError && stories.length === 0 && (
+              <MessageNoStories
+                text={
+                  activeTab === TABS.SAVED
+                    ? "У вас ще немає збережених історій, мерщій збережіть вашу першу історію!"
+                    : "Ви ще нічого не публікували, поділіться своєю першою історією!"
+                }
+                buttonText={
+                  activeTab === TABS.SAVED
+                    ? "До історій"
+                    : "Опублікувати історію"
+                }
+                redirectTo={
+                  activeTab === TABS.SAVED ? "/stories" : "/new-story"
+                }
+              />
+            )}
 
-            { !isStoriesLoading && !isStoriesError && stories.length > 0 && (
+            {!isStoriesLoading && !isStoriesError && stories.length > 0 && (
               <TravellersStories stories={stories} key={activeTab} />
-            ) }
+            )}
           </div>
         </section>
       </div>

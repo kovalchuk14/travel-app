@@ -10,11 +10,12 @@ type Props = {
 
 export async function POST(request: Request, { params }: Props) {
   try {
+    const { storyId } = await params;
     const cookieStore = await cookies();
     const accessToken = cookieStore.get("accessToken")?.value;
 
     const res = await backendAPI.post(
-      `/saved-stories/${params.storyId}`,
+      `/users/saved-articles/${storyId}`,
       {},
       {
         headers: {

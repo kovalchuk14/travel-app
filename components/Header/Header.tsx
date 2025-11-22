@@ -5,9 +5,11 @@ import { useState } from "react";
 import Link from "next/link";
 import css from "../../app/css/Header.module.css";
 import Modal from "./MobileMain";
+import { useAuthStore } from "@/lib/store/authStore";
 
 const Header: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { isAuthenticated } = useAuthStore();
 
   const openMenu = () => setIsMenuOpen(true);
   const closeMenu = () => setIsMenuOpen(false);
@@ -41,9 +43,13 @@ const Header: React.FC = () => {
                 Мандрівники
               </Link>
             </li>
-            <Link href="/profile" >
-                Мій Профіль
-              </Link>
+            {isAuthenticated && (
+              <li>
+                <Link href="/profile" className={css.navLink}>
+                  Мій Профіль
+                </Link>
+              </li>
+            )}
             <AuthNavigation />
           </ul>
         </nav>
@@ -77,19 +83,34 @@ const Header: React.FC = () => {
               </Link>
             </li>
             <li>
-              <a href="/stories" onClick={closeMenu} className={css.mobileItem}>
+              <Link
+                href="/stories"
+                onClick={closeMenu}
+                className={css.mobileItem}
+              >
                 Історії
-              </a>
+              </Link>
             </li>
             <li>
-              <a
+              <Link
                 href="/travellers"
                 onClick={closeMenu}
                 className={css.mobileItem}
               >
                 Мандрівники
-              </a>
+              </Link>
             </li>
+            {isAuthenticated && (
+              <li>
+                <Link
+                  href="/profile"
+                  onClick={closeMenu}
+                  className={css.mobileItem}
+                >
+                  Мій Профіль
+                </Link>
+              </li>
+            )}
             <AuthNavigation />
           </ul>
         </Modal>
