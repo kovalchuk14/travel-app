@@ -101,9 +101,9 @@ export async function fetchSavedStoriesByUserId(
 
 // ================ для зберігання історії при натисканні на іконку ========
 export async function addStoryToFavorites(storyId: string): Promise<void> {
-  await backendAPI.post(`/users/me/saved/${storyId}`);
+  await localAPI.post(`/users/saved-articles/${storyId}`);
 }
 
 export async function deleteStoryFromFavorites(storyId: string): Promise<void> {
-  await backendAPI.delete(`/users/me/saved/${storyId}`);
+  await localAPI.delete(`/users/saved-articles/${storyId}`);
 }
