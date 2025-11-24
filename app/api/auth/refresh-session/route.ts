@@ -8,10 +8,9 @@ import { logErrorResponse } from "../../_utils/utils";
 export async function POST() {
   try {
     const cookieStore = await cookies();
-    const cookieHeader = cookieStore.toString();
 
-    const hasAccess = cookieStore.get("accessToken")?.value;
-    if (hasAccess) {
+    const accessToken = cookieStore.get("accessToken")?.value;
+    if (accessToken) {
       return NextResponse.json({ success: true }, { status: 200 });
     }
 
@@ -19,34 +18,42 @@ export async function POST() {
     if (!refreshToken) {
       return NextResponse.json({ success: false }, { status: 401 });
     }
-    
+
+    const cookieHeader = Object.entries(cookieStore.getAll().reduce((acc, c) => {
+      acc[c.name] = c.value;
+      return acc;
+    }, {} as Record<string, string>))
+      .map(([k, v]) => `${k}=${v}`)
+      .join("; ");
+
+
     const apiRes = await api.post(
       "/auth/refresh-session",
       {},
-      {
-        headers: {
-          Cookie: cookieHeader,
-        },
-      }
+      { headers: { Cookie: cookieHeader } }
     );
 
-    const setCookie = apiRes.headers["set-cookie"];
+    const setCookies = apiRes.headers["set-cookie"];
+    if (setCookies) {
+      const cookieArray = Array.isArray(setCookies) ? setCookies : [setCookies];
 
-    if (setCookie) {
-      for (const c of setCookie) {
+      for (const c of cookieArray) {
         const parsed = parse(c);
 
-        const opts = {
-          path: parsed.Path,
+        const options = {
+          path: parsed.Path || "/",
           expires: parsed.Expires ? new Date(parsed.Expires) : undefined,
           maxAge: parsed["Max-Age"] ? Number(parsed["Max-Age"]) : undefined,
         };
 
         if (parsed.accessToken)
-          cookieStore.set("accessToken", parsed.accessToken, opts);
+          cookieStore.set("accessToken", parsed.accessToken, options);
 
         if (parsed.refreshToken)
-          cookieStore.set("refreshToken", parsed.refreshToken, opts);
+          cookieStore.set("refreshToken", parsed.refreshToken, options);
+
+        if (parsed.sessionId)
+          cookieStore.set("sessionId", parsed.sessionId, options);
       }
     }
 
@@ -55,10 +62,16 @@ export async function POST() {
   } catch (error) {
     if (isAxiosError(error)) {
       logErrorResponse(error.response?.data);
-      return NextResponse.json({ success: false }, { status: 401 });
+      return NextResponse.json(
+        { error: error.message, response: error.response?.data },
+        { status: error.response?.status || 500 }
+      );
     }
 
     logErrorResponse({ message: (error as Error).message });
-    return NextResponse.json({ success: false }, { status: 500 });
+    return NextResponse.json(
+      { error: "Internal Server Error" },
+      { status: 500 }
+    );
   }
 }
