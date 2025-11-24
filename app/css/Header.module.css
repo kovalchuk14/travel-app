@@ -14,8 +14,9 @@
     display:flex;
     align-items: center;
     justify-content: flex-end;
-    background-color:rgb(255, 255, 255, 0.1) ;
-    border-radius: 8px;
+    background-color:rgba(0, 0, 0, 0.05) ;
+    border: 1px solid  rgba(0, 0, 0, 0.15);
+    border-radius: 8px ;
     padding: 4px;
     border: 1px solid transparent;
  }
@@ -48,7 +49,7 @@
   font-size: 17px;
   line-height: 110%;
   letter-spacing: -0.01em;
-  color: #ffffff;
+  /* color: #ffffff; */
 }
   .mobilelogo {
     display: flex;
@@ -151,7 +152,7 @@
   font-size: 17px;
   line-height: 110%;
   letter-spacing: -0.01em;
-  color: #FFFFFF;
+  /* color: #FFFFFF; */
 
 }
 

@@ -1,0 +1,147 @@
+.page {
+  min-height: 100vh;
+  background: #f7f9ff;
+  padding: 96px 0 72px;
+
+  box-sizing: border-box;
+}
+
+.container {
+  max-width: 1312px;
+  width: 100%;
+  margin: 0 auto;
+
+  padding: 0 16px;
+}
+
+.travellerHeader {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.error,
+.empty {
+  text-align: center;
+  padding: 60px 20px;
+  font-size: 16px;
+  color: #6b4560;
+  background: rgba(255, 255, 255, 0.6);
+  border-radius: 12px;
+  margin: 60px 0 20px;
+}
+
+.error {
+  color: #c41e3a;
+  background: rgba(255, 220, 230, 0.6);
+}
+
+.storiesSection {
+  margin-top: 32px;
+}
+
+.tabs {
+  display: flex;
+  gap: 8px;
+  background: #e8eeff;
+  padding: 4px;
+  border-radius: 10px;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0);
+  margin-bottom: 40px;
+
+  width: 100%;
+  max-width: 335px;
+}
+
+.tabButton {
+  flex: 1;
+  padding: 4px 12px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+
+  font-family: "Nunito Sans", sans-serif;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 1.5;
+  color: #000;
+  background: transparent;
+}
+
+.tabButtonActive {
+  border-radius: 8px;
+  font-size: 16px;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  background: #f7f9ff;
+  color: #000;
+  font-weight: 500;
+}
+
+.storiesInner {
+  margin-top: 24px;
+}
+
+@media (min-width: 375px) {
+  .tabs {
+    max-width: 335px;
+  }
+}
+
+@media (min-width: 768px) {
+  .page {
+    padding: 96px 24px 72px;
+  }
+
+  .container {
+    padding: 0 24px;
+  }
+
+  .travellerHeader{
+    display: flex;
+    justify-content: left;
+  }
+
+  .tabs {
+    max-width: 422px;
+  }
+
+  .storiesSection {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+@media (min-width: 1440px) {
+  .page {
+    padding: 96px 0 72px;
+  }
+
+  .container {
+    padding: 0;
+  }
+
+  .travellerHeader{
+    display: flex;
+    justify-content: left;
+  }
+
+  .tabs {
+    margin-left: 0;
+  }
+
+  .tabButton {
+    font-size: 18px;
+  }
+
+  .storiesSection {
+    margin-top: 48px;
+  }
+
+  .error {
+    margin: 100px 0 20px;
+  }
+}

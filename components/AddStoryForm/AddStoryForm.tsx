@@ -1,14 +1,14 @@
-'use client';
+"use client";
 
-import { Formik, Form, Field, ErrorMessage } from 'formik';
-import type { FieldProps } from 'formik';
-import * as Yup from 'yup';
-import { useState, useRef } from 'react';
-import { useRouter } from 'next/navigation';
-import Image from 'next/image';
-import styles from './AddStoryForm.module.css';
-import { createStory, updateStory } from '@/lib/api/stories'; 
-import type { Story } from '@/types/story'; 
+import { Formik, Form, Field, ErrorMessage } from "formik";
+import type { FieldProps } from "formik";
+import * as Yup from "yup";
+import { useState, useRef } from "react";
+import { useRouter } from "next/navigation";
+import Image from "next/image";
+import styles from "./AddStoryForm.module.css";
+import { updateStory } from "@/lib/api/stories";
+import type { Story } from "@/types/story";
 
 interface StoryFormValues {
   img: File | string | null;
@@ -26,92 +26,76 @@ interface Category {
 interface AddStoryFormProps {
   initialValues?: StoryFormValues;
   categories?: Category[];
-  storyId?: string;
-  isEditMode?: boolean;
+  storyId: string;
+  isEditMode?: boolean; 
 }
 
 const validationSchema = Yup.object({
-  img: Yup.mixed().required('Обкладинка обовʼязкова'),
+  img: Yup.mixed().required("Обкладинка обовʼязкова"),
   title: Yup.string()
-    .min(3, 'Мінімум 3 символи')
-    .max(100, 'Максимум 100 символів')
-    .required('Введіть заголовок'),
-  shortDescription: Yup.string().max(61, 'Максимум 61 символ'),
-  category: Yup.string().required('Оберіть категорію'),
-  article: Yup.string().required('Розкажіть свою історію'),
+    .min(3, "Мінімум 3 символи")
+    .max(100, "Максимум 100 символів")
+    .required("Введіть заголовок"),
+  category: Yup.string().required("Оберіть категорію"),
+  article: Yup.string().required("Розкажіть свою історію"),
 });
 
 export default function AddStoryForm({
   initialValues,
   categories = [],
   storyId,
-  isEditMode = false,
 }: AddStoryFormProps) {
   const router = useRouter();
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
 
   const autoResize = (el: HTMLTextAreaElement | null) => {
     if (!el) return;
-    el.style.height = 'auto';
-    el.style.height = el.scrollHeight + 'px';
+    el.style.height = "auto";
+    el.style.height = el.scrollHeight + "px";
   };
 
   const [imagePreview, setImagePreview] = useState<string | null>(
-    typeof initialValues?.img === 'string' ? initialValues.img : null
+    typeof initialValues?.img === "string" ? initialValues.img : null
   );
 
   const defaultValues: StoryFormValues = {
     img: null,
-    title: '',
-    category: '',
-    shortDescription: '',
-    article: '',
+    title: "",
+    category: "",
+    shortDescription: "",
+    article: "",
   };
 
-  // ❗ стейт для модалки помилки
   const [isErrorModalOpen, setIsErrorModalOpen] = useState(false);
-  const [errorMessage, setErrorMessage] = useState('Помилка збереження');
+  const [errorMessage, setErrorMessage] = useState("Помилка збереження");
 
   return (
     <>
-      {/* TODO: ConfirmModal додамо нижче, поки форма як є */}
-
       <Formik
         enableReinitialize
         initialValues={initialValues || defaultValues}
         validationSchema={validationSchema}
-        validateOnChange={true}
+        validateOnChange
         validateOnBlur={false}
         onSubmit={async (values, { setSubmitting }) => {
           try {
-            const payload = {
-              title: values.title,
-              category: values.category,
-              shortDescription: values.shortDescription,
-              article: values.article,
-              ...(values.img instanceof File
-                ? { img: values.img }
-                : values.img
-                ? { imgUrl: values.img as string }
-                : {}),
-            };
+            const formData = new FormData();
+            formData.append("title", values.title);
+            formData.append("category", values.category);
+            formData.append("description", values.article);
 
-            let story: Story;
-            if (isEditMode && storyId) {
-              story = await updateStory(storyId, payload);
-            } else {
-              story = await createStory(payload);
+            if (values.img instanceof File) {
+              formData.append("storyImage", values.img);
             }
 
-            router.push(`/stories/${story._id}`);
+            await updateStory(storyId, formData);
+
+            router.push(`/stories/${storyId}`);
           } catch (error) {
-            console.error('Помилка:', error);
-            const message =
-              error instanceof Error
-                ? error.message
-                : 'Помилка збереження історії';
-            setErrorMessage(message);
-            setIsErrorModalOpen(true); // ❗ відкриваємо модалку
+            setErrorMessage(
+              error instanceof Error ? error.message : "Помилка збереження історії"
+            );
+            setIsErrorModalOpen(true);
           } finally {
             setSubmitting(false);
           }
@@ -126,7 +110,7 @@ export default function AddStoryForm({
                 <div className={styles.imageUploadArea}>
                   <div className={styles.imagePlaceholder}>
                     <Image
-                      src={imagePreview || '/images/form-images.jpg'}
+                      src={imagePreview || "/images/form-images.jpg"}
                       alt="Превʼю обкладинки"
                       width={335}
                       height={223}
@@ -142,7 +126,7 @@ export default function AddStoryForm({
                     onChange={(e) => {
                       const file = e.currentTarget.files?.[0] || null;
                       if (file) {
-                        setFieldValue('img', file);
+                        setFieldValue("img", file);
                         const reader = new FileReader();
                         reader.onloadend = () => {
                           setImagePreview(reader.result as string);
@@ -156,7 +140,7 @@ export default function AddStoryForm({
                     type="button"
                     className={styles.uploadButton}
                     onClick={() =>
-                      document.getElementById('coverImageUpload')?.click()
+                      document.getElementById("coverImageUpload")?.click()
                     }
                   >
                     Завантажити фото
@@ -181,7 +165,7 @@ export default function AddStoryForm({
                   type="text"
                   placeholder="Введіть заголовок історії"
                   className={`${styles.textInput} ${
-                    errors.title && touched.title ? styles.inputError : ''
+                    errors.title && touched.title ? styles.inputError : ""
                   }`}
                 />
                 <ErrorMessage
@@ -201,16 +185,17 @@ export default function AddStoryForm({
                   id="category"
                   name="category"
                   className={`${styles.selectInput} ${
-                    errors.category && touched.category ? styles.inputError : ''
+                    errors.category && touched.category
+                      ? styles.inputError
+                      : ""
                   }`}
                 >
                   <option value="">Оберіть категорію</option>
-                  {Array.isArray(categories) &&
-                    categories.map((cat) => (
-                      <option key={cat._id} value={cat._id}>
-                        {cat.name}
-                      </option>
-                    ))}
+                  {categories.map((cat) => (
+                    <option key={cat._id} value={cat._id}>
+                      {cat.name}
+                    </option>
+                  ))}
                 </Field>
                 <ErrorMessage
                   name="category"
@@ -230,11 +215,7 @@ export default function AddStoryForm({
                   name="shortDescription"
                   placeholder="Введіть короткий опис"
                   rows={3}
-                  className={`${styles.textareaInput} ${
-                    errors.shortDescription && touched.shortDescription
-                      ? styles.inputError
-                      : ''
-                  }`}
+                  className={styles.textareaInput}
                 />
                 <div className={styles.fieldFooter}>
                   <ErrorMessage
@@ -243,8 +224,8 @@ export default function AddStoryForm({
                     className={styles.errorText}
                   />
                   <span className={styles.charCount}>
-                    Залишилось{' '}
-                    {Math.max(0, 61 - (values.shortDescription?.length || 0))}{' '}
+                    Залишилось{" "}
+                    {Math.max(0, 61 - (values.shortDescription?.length || 0))}{" "}
                     символів
                   </span>
                 </div>
@@ -269,12 +250,10 @@ export default function AddStoryForm({
                       className={`${styles.textareaInput} ${
                         errors.article && touched.article
                           ? styles.inputError
-                          : ''
+                          : ""
                       }`}
                       rows={3}
-                      onInput={(e) => {
-                        autoResize(e.currentTarget);
-                      }}
+                      onInput={(e) => autoResize(e.currentTarget)}
                     />
                   )}
                 </Field>
@@ -311,6 +290,5 @@ export default function AddStoryForm({
     </>
   );
 }
-
 
 

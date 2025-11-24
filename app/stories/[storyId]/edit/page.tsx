@@ -4,14 +4,14 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
 import AddStoryForm from '@/components/AddStoryForm/AddStoryForm';
 import styles from './page.module.css';
-
-const API_URL = process.env.NEXT_PUBLIC_API_URL;
+import { getStoryById, getCategories } from '@/lib/api/stories';
 
 interface StoryFromApi {
   _id: string;
   img: string;
   title: string;
-  article: string;
+  description?: string;
+  article?: string;
   shortDescription?: string;
   category: {
     _id: string;
@@ -22,20 +22,6 @@ interface StoryFromApi {
 interface Category {
   _id: string;
   name: string;
-}
-
-interface StoryResponseFromBackend {
-  status: number;
-  message: string;
-  data: StoryFromApi;
-}
-
-interface CategoriesResponseFromBackend {
-  status: number;
-  message: string;
-  data: {
-    data: Category[];
-  };
 }
 
 export default function EditStoryPage() {
@@ -52,49 +38,21 @@ export default function EditStoryPage() {
       setError(null);
 
       try {
-        const url = `${API_URL}/stories/${storyId}`;
+        const [storyData, categoriesData] = await Promise.all([
+          getStoryById(storyId),
+          getCategories(),
+        ]);
 
-        const storyRes = await fetch(url, {
-          credentials: 'include',
-        });
-
-        const rawText = await storyRes.text();
-        let storyBody: StoryResponseFromBackend | null = null;
-
-        try {
-          storyBody = JSON.parse(rawText);
-        } catch (e) {
-          throw new Error('Не вдалося розпарсити відповідь від сервера');
+        setStory(storyData);
+        setCategories(categoriesData);
+      } catch (err: any) {
+        if (err.response?.status === 401) {
+          setError("Потрібно увійти в акаунт для редагування історії");
+        } else {
+          const message =
+            err.response?.data?.message || err.message || "Помилка завантаження даних";
+          setError(message);
         }
-
-        if (!storyRes.ok || !storyBody?.data) {
-          if (storyRes.status === 401) {
-            throw new Error('Потрібно увійти в акаунт для редагування історії');
-          }
-          throw new Error(
-            storyBody?.message || 'Історію не знайдено або помилка бекенда'
-          );
-        }
-
-        setStory(storyBody.data);
-
-        // Завантажуємо категорії
-        const categoriesRes = await fetch(`${API_URL}/categories`, {
-          credentials: 'include',
-        });
-        const categoriesJson: CategoriesResponseFromBackend =
-          await categoriesRes.json();
-
-        if (!categoriesRes.ok || !categoriesJson?.data?.data) {
-          throw new Error('Не вдалося завантажити категорії');
-        }
-
-        setCategories(categoriesJson.data.data);
-      } catch (err) {
-        console.error('Помилка завантаження:', err);
-        const message =
-          err instanceof Error ? err.message : 'Помилка завантаження даних';
-        setError(message);
       } finally {
         setLoading(false);
       }
@@ -142,7 +100,7 @@ export default function EditStoryPage() {
           initialValues={{
             img: story.img,
             title: story.title,
-            article: story.article,
+            article: story.article || story.description || '',
             shortDescription: story.shortDescription || '',
             category: story.category._id,
           }}
@@ -154,3 +112,4 @@ export default function EditStoryPage() {
     </div>
   );
 }
+

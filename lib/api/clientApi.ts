@@ -1,5 +1,11 @@
-import { Story } from "@/types/story";
-import { AxiosResponse } from "axios";
+import {
+  Story,
+  SavedStory,
+  StoriesResponse,
+  UserSavedArticlesResponse,
+  StoryResponse,
+} from "@/types/story";
+import axios, { AxiosResponse } from "axios";
 import { localAPI } from "../localAPI";
 import type { User } from "@/types/user";
 import { backendAPI } from "../backendAPI";
@@ -15,11 +21,21 @@ interface RegisterPayload {
   password: string;
 }
 
-// ================ Session and Login ========
-
 export async function getAuthSession() {
-  const res = await localAPI.post("/auth/refresh-session");
-  return res.data;
+  try {
+    const res = await localAPI.post("/auth/refresh-session");
+    return res.data;
+  } catch (error) {
+    if (
+      axios.isAxiosError(error) &&
+      error.response &&
+      error.response.status === 401
+    ) {
+      return null;
+    }
+
+    throw error;
+  }
 }
 
 export async function getCurrentUser(): Promise<User> {
@@ -52,12 +68,42 @@ export async function logoutUser(): Promise<void> {
 //   return res.data;
 // }
 
-export async function getCurrentStory(storyId: string): Promise<Story> {
-  const res = await localAPI.get<Story>(`/stories/${storyId}`);
+export async function getCurrentStory(storyId: string): Promise<StoryResponse> {
+  const res = await backendAPI.get<StoryResponse>(`/stories/${storyId}`);
   return res.data;
 }
 
 export async function postNewStory(params: CreateStoryFormData) {
   const response = await localAPI.post("/stories", params);
   return response.data.data;
+}
+
+// ================ Історії Мандрівників ========
+export async function fetchStories(
+  page = 1,
+  perPage = 3,
+  categoryId?: string
+): Promise<Story[]> {
+  const res = await backendAPI.get<StoriesResponse>("/stories", {
+    params: { page, perPage, sort: "favoriteCount", category: categoryId },
+  });
+  return res.data?.data?.data || [];
+}
+
+export async function fetchSavedStoriesByUserId(
+  userId: string
+): Promise<SavedStory[]> {
+  const res = await backendAPI.get<UserSavedArticlesResponse>(
+    `/users/${userId}/saved-articles`
+  );
+  return res.data.data.savedStories;
+}
+
+// ================ для зберігання історії при натисканні на іконку ========
+export async function addStoryToFavorites(storyId: string): Promise<void> {
+  await localAPI.post(`/users/saved-articles/${storyId}`);
+}
+
+export async function deleteStoryFromFavorites(storyId: string): Promise<void> {
+  await localAPI.delete(`/users/saved-articles/${storyId}`);
 }

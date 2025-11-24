@@ -55,7 +55,7 @@ export default function OurTravellers({
 
   return (
     <>
-      <div className="container">
+      <div className="container" id="travelers">
         <Toaster position="top-right" />
         {travellers.length > 0 && <TravellersList items={travellers} />}
         {isLoading && (

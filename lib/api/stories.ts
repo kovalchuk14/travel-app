@@ -1,4 +1,6 @@
-import { Story } from "@/types/story";
+export const __testStoriesModule = true;
+
+import { Story, StoryResponse } from "@/types/story";
 import { backendAPI } from "../backendAPI";
 import { localAPI } from "../localAPI";
 
@@ -8,60 +10,13 @@ export async function savedArticles(articleId: string) {
   return res.data;
 }
 
-// ===== функції для AddStoryForm / EditStoryPage =====
+export async function updateStory(storyId: string, formData: FormData): Promise<Story> {
+  const token = typeof window !== "undefined" ? localStorage.getItem("token") : null;
 
-interface StoryFormData {
-  title: string;
-  category: string;
-  shortDescription: string;
-  article: string;
-  img?: File;
-  imgUrl?: string;
-}
+  const res = await localAPI.patch(`/stories/${storyId}`, formData, {
+    headers: token ? { Authorization: `Bearer ${token}` } : {},
+  });
 
-interface StoryResponse {
-  status: number;
-  message: string;
-  data: Story;
-}
-
-export async function createStory(data: StoryFormData): Promise<Story> {
-  const formData = new FormData();
-  formData.append('title', data.title);
-  formData.append('category', data.category);
-  formData.append('shortDescription', data.shortDescription);
-  formData.append('article', data.article);
-
-  if (data.img) {
-    formData.append('img', data.img);
-  } else if (data.imgUrl) {
-    formData.append('imgUrl', data.imgUrl);
-  }
-
-  const res = await localAPI.post<StoryResponse>('/stories', formData);
-  return res.data.data;
-}
-
-export async function updateStory(
-  storyId: string,
-  data: StoryFormData
-): Promise<Story> {
-  const formData = new FormData();
-  formData.append('title', data.title);
-  formData.append('category', data.category);
-  formData.append('shortDescription', data.shortDescription);
-  formData.append('article', data.article);
-
-  if (data.img) {
-    formData.append('img', data.img);
-  } else if (data.imgUrl) {
-    formData.append('imgUrl', data.imgUrl);
-  }
-
-  const res = await localAPI.patch<StoryResponse>(
-    `/stories/${storyId}`,
-    formData
-  );
   return res.data.data;
 }
 
@@ -71,6 +26,6 @@ export async function getStoryById(storyId: string): Promise<Story> {
 }
 
 export async function getCategories(): Promise<Array<{ _id: string; name: string }>> {
-  const res = await localAPI.get('/categories');
+  const res = await backendAPI.get('/categories');
   return res.data.data.data;
 }
