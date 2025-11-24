@@ -1,0 +1,65 @@
+.stories_title {
+    font-family: "Sora", sans-serif;
+    color: #000000;
+    line-height: 1.2;
+    font-weight: 700;
+    font-size: 28px;
+    letter-spacing: -0.01em;
+    margin-bottom: 24px;
+}
+
+.wraper_btn{
+    display: flex;
+    justify-content: center;
+    display: none;
+}
+
+.stories_btn {
+    font-family: "Nunito Sans", sans-serif;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 1.5;
+    cursor: pointer;
+    background: #4169e1;
+    border: 1px solid #4169e1;
+    color: #ffffff;
+    border-radius: 8px;
+    padding: 6px 12px;
+    transition: all 0.3s ease;
+    height: 48px;
+    margin-top: 48px;
+}
+
+.stories_btn:hover {
+    background-color: #e8eeff;
+    transform: translateY(-1px);
+    color: #000000;
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.08);
+}
+
+.stories_btn:active {
+    transform: translateY(0);
+    color: #000000;
+    background-color: #7a96ea;
+}
+
+@media screen and (min-width: 768px) {
+    .stories_title {
+        font-size: 44px;
+    }
+
+    .wraper_btn {
+        display: flex;
+    }
+}
+
+@media screen and (min-width: 1440px) {
+    .stories_title {
+        font-size: 52px;
+        margin-bottom: 40px;
+    }
+
+    .stories_btn {
+        font-size: 18px;
+    }
+}
