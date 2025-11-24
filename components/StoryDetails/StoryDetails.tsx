@@ -1,16 +1,43 @@
 import { Story } from "@/types/story";
 import css from "@/components/StoryDetails/StoryDetails.module.css";
+import { backendAPI } from "@/lib/backendAPI";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 type Props = {
   story: Story;
 };
 
 export default function StoryDetails({ story }: Props) {
+  const [saved, setSaved] = useState(false);
+
+  const router = useRouter();
+
+  const isAuthenticated = () => {
+    return document.cookie.includes("accessToken=");
+  };
+
+  const handleSave = async () => {
+    if (!isAuthenticated()) {
+      router.push("/auth/register");
+      return;
+    }
+
+    if (saved) return;
+
+    try {
+      const res = await backendAPI.post(
+        `/users/saved-articles/${story._id}`,
+        {}
+      );
+    } catch (error) {
+      console.error("Помилка:", error);
+    }
+  };
+
   return (
     <div className={css.container} id="stories">
-      <h2 className={css.title}>
-        {story.title}
-      </h2>
+      <h2 className={css.title}>{story.title}</h2>
       <div className={css.info}>
         <div className={css.info_row}>
           <p className={css.meta}>
@@ -36,7 +63,9 @@ export default function StoryDetails({ story }: Props) {
           <p className={css.ctaText}>
             Вона буде доступна у вашому профілі у розділі збережене
           </p>
-          <button className={css.saveButton}>Зберегти</button>
+          <button onClick={handleSave} disabled={saved} className="saveButton">
+            {saved ? "Збережено ✓" : "Зберегти"}
+          </button>
         </div>
       </div>
     </div>
