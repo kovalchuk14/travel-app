@@ -178,7 +178,7 @@ export default function ProfilePage() {
                     : "Опублікувати історію"
                 }
                 redirectTo={
-                  activeTab === TABS.SAVED ? "/stories" : "/new-story"
+                  activeTab === TABS.SAVED ? "/stories" : "/stories/create"
                 }
               />
             )}
