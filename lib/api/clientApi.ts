@@ -69,7 +69,7 @@ export async function logoutUser(): Promise<void> {
 // }
 
 export async function getCurrentStory(storyId: string): Promise<StoryResponse> {
-  const res = await backendAPI.get<StoryResponse>(`/stories/${storyId}`);
+  const res = await localAPI.get<StoryResponse>(`/stories/${storyId}`);
   return res.data;
 }
 
