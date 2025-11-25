@@ -1,8 +1,9 @@
 import { Story } from "@/types/story";
 import css from "@/components/StoryDetails/StoryDetails.module.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { localAPI } from "@/lib/localAPI";
+import { useAuthStore } from "@/lib/store/authStore";
 
 type Props = {
   story: Story;
@@ -10,23 +11,25 @@ type Props = {
 
 export default function StoryDetails({ story }: Props) {
   const [saved, setSaved] = useState(false);
+  const { user } = useAuthStore();
 
-  const router = useRouter();
-
-  const isAuthenticated = () => {
-    return document.cookie.includes("accessToken=");
-  };
+  useEffect(() => {
+    if (user?.savedArticles.includes(story._id)) {
+      setSaved(true);
+    } else {
+      setSaved(false);
+    }
+  }, [story]);
 
   const handleSave = async () => {
-    if (!isAuthenticated()) {
-      router.push("/auth/register");
-      return;
-    }
-
-    if (saved) return;
-
     try {
-      const res = await localAPI.post(`/users/saved-articles/${story._id}`, {});
+      if (!saved) {
+        await localAPI.post(`/users/saved-articles/${story._id}`);
+        setSaved(true);
+      } else {
+        await localAPI.delete(`/users/saved-articles/${story._id}`);
+        setSaved(false);
+      }
     } catch (error) {
       console.error("Помилка:", error);
     }
@@ -60,7 +63,7 @@ export default function StoryDetails({ story }: Props) {
           <p className={css.ctaText}>
             Вона буде доступна у вашому профілі у розділі збережене
           </p>
-          <button onClick={handleSave} disabled={saved} className="saveButton">
+          <button onClick={handleSave} className={css.saveButton}>
             {saved ? "Збережено ✓" : "Зберегти"}
           </button>
         </div>
