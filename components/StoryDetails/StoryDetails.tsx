@@ -1,16 +1,43 @@
 import { Story } from "@/types/story";
 import css from "@/components/StoryDetails/StoryDetails.module.css";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import { localAPI } from "@/lib/localAPI";
+import { useAuthStore } from "@/lib/store/authStore";
 
 type Props = {
   story: Story;
 };
 
 export default function StoryDetails({ story }: Props) {
+  const [saved, setSaved] = useState(false);
+  const { user } = useAuthStore();
+
+  useEffect(() => {
+    if (user?.savedArticles.includes(story._id)) {
+      setSaved(true);
+    } else {
+      setSaved(false);
+    }
+  }, [story]);
+
+  const handleSave = async () => {
+    try {
+      if (!saved) {
+        await localAPI.post(`/users/saved-articles/${story._id}`);
+        setSaved(true);
+      } else {
+        await localAPI.delete(`/users/saved-articles/${story._id}`);
+        setSaved(false);
+      }
+    } catch (error) {
+      console.error("Помилка:", error);
+    }
+  };
+
   return (
     <div className={css.container} id="stories">
-      <h2 className={css.title}>
-        {story.title}
-      </h2>
+      <h2 className={css.title}>{story.title}</h2>
       <div className={css.info}>
         <div className={css.info_row}>
           <p className={css.meta}>
@@ -36,7 +63,9 @@ export default function StoryDetails({ story }: Props) {
           <p className={css.ctaText}>
             Вона буде доступна у вашому профілі у розділі збережене
           </p>
-          <button className={css.saveButton}>Зберегти</button>
+          <button onClick={handleSave} className={css.saveButton}>
+            {saved ? "Збережено ✓" : "Зберегти"}
+          </button>
         </div>
       </div>
     </div>

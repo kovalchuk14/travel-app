@@ -9,15 +9,15 @@ type Props = {
   params: Promise<{ id: string }>;
 };
 
-export async function GET(req: Request, { params }: Props) {
+export async function GET(req: NextRequest, { params }: Props) {
   try {
     const cookieStore = await cookies();
     const { id } = await params;
+    console.log("id");
 
     const res = await backendAPI.get(`/stories/${id}`, {
       headers: {
         Cookie: cookieStore.toString(),
-        // Authorization: `Bearer ${accessToken}`, // если нужен токен
       },
     });
 
