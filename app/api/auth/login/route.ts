@@ -3,41 +3,56 @@ import { api } from "../../api";
 import { cookies } from "next/headers";
 import { parse } from "cookie";
 import { logErrorResponse } from "../../_utils/utils";
+import { isAxiosError } from "axios";
 
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
+
     const apiRes = await api.post("/auth/login", body);
-
+    const setCookieHeader = apiRes.headers["set-cookie"];
     const cookieStore = await cookies();
-    const setCookie = apiRes.headers["set-cookie"];
 
-    if (setCookie) {
-      const cookieArray = Array.isArray(setCookie) ? setCookie : [setCookie];
-      for (const cookieStr of cookieArray) {
-        const parsed = parse(cookieStr);
-
-        const options = {
-          expires: parsed.Expires ? new Date(parsed.Expires) : undefined,
-          path: parsed.Path,
-          maxAge: Number(parsed["Max-Age"]),
-        };
-
-        if (parsed.accessToken)
-          cookieStore.set("accessToken", parsed.accessToken, options);
-        if (parsed.refreshToken)
-          cookieStore.set("refreshToken", parsed.refreshToken, options);
-        if (parsed.sessionId)
-          cookieStore.set("sessionId", parsed.sessionId, options);
-      }
-
-      return NextResponse.json(apiRes.data, { status: apiRes.status });
+    if (!setCookieHeader) {
+      console.warn("Login successful but no cookies received from backend.");
+      return NextResponse.json({ message: "No cookie" }, { status: 567 });
     }
-    console.log("NO COOKIE");
 
-    return NextResponse.json({ message: "No cookie" }, { status: 567 });
+    const cookieStrings = Array.isArray(setCookieHeader)
+      ? setCookieHeader
+      : [setCookieHeader];
+
+    for (const cookieStr of cookieStrings) {
+      const parsed = parse(cookieStr);
+
+      const { Expires, Path, ["Max-Age"]: maxAge } = parsed;
+
+      const options = {
+        path: Path || "/",
+        ...(Expires && { expires: new Date(Expires) }),
+        ...(maxAge && { maxAge: Number(maxAge) }),
+      };
+
+      ["accessToken", "refreshToken", "sessionId"].forEach((key) => {
+        if (parsed[key]) {
+          cookieStore.set(key, parsed[key], options);
+        }
+      });
+    }
+
+    return NextResponse.json(apiRes.data, { status: apiRes.status });
   } catch (error) {
-    logErrorResponse({ message: (error as Error).message });
-    return NextResponse.json({ full: error }, { status: 567 });
-  }
+      if (isAxiosError(error)) {
+        logErrorResponse(error.response?.data);
+        return NextResponse.json(
+          { error: error.message, response: error.response?.data },
+          { status: error.status || 500 }
+        );
+      }
+      logErrorResponse({ message: (error as Error).message });
+      return NextResponse.json(
+        { error: "Internal Server Error" },
+        { status: 500 }
+      );
+    }
 }
