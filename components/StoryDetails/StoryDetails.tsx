@@ -1,8 +1,8 @@
 import { Story } from "@/types/story";
 import css from "@/components/StoryDetails/StoryDetails.module.css";
-import { backendAPI } from "@/lib/backendAPI";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { localAPI } from "@/lib/localAPI";
 
 type Props = {
   story: Story;
@@ -26,10 +26,7 @@ export default function StoryDetails({ story }: Props) {
     if (saved) return;
 
     try {
-      const res = await backendAPI.post(
-        `/users/saved-articles/${story._id}`,
-        {}
-      );
+      const res = await localAPI.post(`/users/saved-articles/${story._id}`, {});
     } catch (error) {
       console.error("Помилка:", error);
     }

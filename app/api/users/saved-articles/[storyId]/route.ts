@@ -25,6 +25,8 @@ export async function POST(request: Request, { params }: Props) {
       }
     );
 
+    console.log(res.data);
+
     return NextResponse.json(res.data, { status: res.status });
   } catch (error) {
     if (isAxiosError(error)) {
