@@ -1,283 +1,274 @@
 .formContainer {
-    display: flex;
-    flex-direction: column;
-    gap: 24px;
-    width: 335px;
-    height: auto;
-    background-color: #f7f9ff;
-    margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  width: 335px;
+  height: auto;
+  background-color: #f7f9ff;
+  margin: 0 auto;
 }
 
 .formMain {
-    display: flex;
-    flex-direction: column;
-    gap: 24px;
-  
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
 }
 .actionsColumn {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
 }
 
 .formSection {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
 }
 
-
 .label {
-        font-weight: 400;
-        font-size: 16px;
-        line-height: 1.5;
-        color: #000;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 1.5;
+  color: #000;
 }
 
 .image {
-    border-radius: 18px;
-    width: 335px;
-    height: 223px;
-  
+  border-radius: 18px;
+  width: 335px;
+  height: 223px;
 }
 
 .imageUploadArea {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
 }
 
 .imagePlaceholder {
-    border-radius: 16px;
-    width: 335px;
-    height: 223px;
-    overflow: hidden;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  border-radius: 16px;
+  width: 335px;
+  height: 223px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .imageText {
-    color: #9ca3af;
-    font-size: 14px;
+  color: #9ca3af;
+  font-size: 14px;
 }
 
 .hiddenInput {
-    display: none;
-    border-radius: 16px;
+  display: none;
+  border-radius: 16px;
 }
 
 .uploadButton {
-    padding: 4px 10px;
-    border-radius: 8px;
-    border: 1px solid rgba(0, 0, 0, 0.15);
-    background-color: rgba(0, 0, 0, 0.05);
-    font-size: 16px;
-    cursor: pointer;
-    width: 163px;
-    height: 32px;
+  padding: 4px 10px;
+  border-radius: 8px;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  background-color: rgba(0, 0, 0, 0.05);
+  font-size: 16px;
+  cursor: pointer;
+  width: 163px;
+  height: 32px;
 }
 
 .uploadButton:hover {
-    background-color: #4169e1;
-    color: #fff;
+  background-color: #4169e1;
+  color: #fff;
 }
 
 /* Інпути */
 .formField {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
 }
 
 .textInput,
 .selectInput,
 .textareaInput {
-    border: 1px solid rgba(0, 0, 0, 0.15);
-    width: 335px;
-    padding: 8px ;
-    border-radius: 8px;
-    font-size: 14px;
-    background-color: rgba(255, 255, 255, 0);
-    font-family: "Nunito Sans", sans-serif;
-    font-weight: 400;
-    line-height: 1.5;
-    color: #000;
-
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  width: 335px;
+  padding: 8px;
+  border-radius: 8px;
+  font-size: 14px;
+  background-color: rgba(255, 255, 255, 0);
+  font-family: "Nunito Sans", sans-serif;
+  font-weight: 400;
+  line-height: 1.5;
+  color: #000;
 }
 
 .textInput:focus,
 .selectInput:focus,
 .textareaInput:focus {
-    outline: none;
-    border-color: #4b6bfb;
+  outline: none;
+  border-color: #4b6bfb;
 }
 
 .textareaInput {
-    width: 100%;
-    min-height: 96px;
-    padding: 12px 14px;
-    border-radius: 12px;
-    border: 1px solid #e0e0e0;
-    background-color: rgba(255, 255, 255, 0.1);
-    font-size: 14px;
-    line-height: 1.5;
-    color: #111111;
-    resize: none;
-    overflow-y: hidden;
-    box-sizing: border-box;
+  width: 100%;
+  min-height: 96px;
+  padding: 12px 14px;
+  border-radius: 12px;
+  border: 1px solid #e0e0e0;
+  background-color: rgba(255, 255, 255, 0.1);
+  font-size: 14px;
+  line-height: 1.5;
+  color: #111111;
+  resize: none;
+  overflow-y: hidden;
+  box-sizing: border-box;
 }
 
-
-.actions{
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
+.actions {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
 }
 .saveButton {
-    border: 1px solid #4169e1;
-    border-radius: 8px;
-    padding: 6px 12px;
-    width: 100%;
-    height: 48px;
-    background: #4169e1;
-    font-weight: 500;
-    font-size: 16px;
-    line-height: 1.5;
-    color: #fff;
-    cursor: pointer;
-    opacity: 1;
-    transition: background-color 0.2s ease, opacity 0.2s ease, color 0.2s ease;
+  border: 1px solid #4169e1;
+  border-radius: 8px;
+  padding: 6px 12px;
+  width: 100%;
+  height: 48px;
+  background: #4169e1;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 1.5;
+  color: #fff;
+  cursor: pointer;
+  opacity: 1;
+  transition:
+    background-color 0.2s ease,
+    opacity 0.2s ease,
+    color 0.2s ease;
 }
 
 .saveButton:hover {
-    background-color: #3658c7;
+  background-color: #3658c7;
 }
 
 .saveButton:active {
-    background-color: #7a96ea;
-    color: #000;
+  background-color: #7a96ea;
+  color: #000;
 }
-
 
 .saveButton:disabled {
-    background: #4169e1;
-    opacity: 0.3;
-    color: #fff;
-    cursor: not-allowed;
+  background: #4169e1;
+  opacity: 0.3;
+  color: #fff;
+  cursor: not-allowed;
 }
 
-.cancelButton{
-    border: 1px solid rgba(0, 0, 0, 0.15);
-    border-radius: 8px;
-    padding: 6px 12px;
-    width: 100%;
-    height: 48px;
+.cancelButton {
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  border-radius: 8px;
+  padding: 6px 12px;
+  width: 100%;
+  height: 48px;
 }
 
 .inputError {
-    border-color: #b00101 !important;
+  border-color: #b00101 !important;
 }
-.errorText{
-    color: #b00101;
-    font-size: 12px;
+.errorText {
+  color: #b00101;
+  font-size: 12px;
 }
 
 @media (max-width: 360px) {
-    .formContainer {
-        padding: 0 8px;
-        max-width: 100%;
-    }
+  .formContainer {
+    padding: 0 8px;
+    max-width: 100%;
+  }
 
- 
-
-    .textInput,
-    .selectInput,
-    .textareaInput,
-    .imagePlaceholder,
-    .image {
-        max-width: 100%;
-
-    }
-
+  .textInput,
+  .selectInput,
+  .textareaInput,
+  .imagePlaceholder,
+  .image {
+    max-width: 100%;
+  }
 }
 
-@media (min-width: 768px){
-
-.formContainer{
+@media (min-width: 768px) {
+  .formContainer {
     width: 704px;
-}
+  }
 
-.image {
+  .image {
     width: 704px;
     height: 469px;
-}
-.imagePlaceholder{
+  }
+  .imagePlaceholder {
     width: 704px;
-        height: 469px;
-}
+    height: 469px;
+  }
 
-.textInput,
-.selectInput,
-.textareaInput{
-    max-width:704px;
+  .textInput,
+  .selectInput,
+  .textareaInput {
+    max-width: 704px;
     font-size: 16px;
-}
+  }
 
-.saveButton{
+  .saveButton {
     width: 704px;
-    height: 48px
-}
+    height: 48px;
+  }
 
-.cancelButton{
+  .cancelButton {
     width: 704px;
-    height: 48px
+    height: 48px;
+  }
 }
-}
 
-@media (min-width: 1440px){
+@media (min-width: 1440px) {
+  .hidden {
+    display: none;
+  }
 
-    
-.formContainer {
+  .formContainer {
+    width: 1312px;
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 24px;
+  }
 
-        width: 1312px;
-        flex-direction: row;
-        align-items: flex-start;
-        gap: 24px;
-    }
+  .image {
+    width: 866px;
+    height: 576px;
+  }
 
-.image {
-    
- width: 866px;
- height: 576px;
- }
-    
-.imagePlaceholder {
-  width: 866px;
-  height: 576px;
- }
+  .imagePlaceholder {
+    width: 866px;
+    height: 576px;
+  }
 
-.textInput,
-.selectInput,
-.textareaInput {
-     width: 866px;
+  .textInput,
+  .selectInput,
+  .textareaInput {
+    width: 866px;
     font-size: 18px;
-}
+  }
 
-.actionsColumn{
+  .actionsColumn {
     margin-top: 36px;
-    }
+  }
 
-    .saveButton{
-         width: 422px;
-        font-size: 18px;
-        padding: 6px 12px;
-         }
+  .saveButton {
+    width: 422px;
+    font-size: 18px;
+    padding: 6px 12px;
+  }
 
-        .cancelButton {
-        width: 422px;
-        font-size: 18px;
-        padding: 6px 12px;
-        
-        }
+  .cancelButton {
+    width: 422px;
+    font-size: 18px;
+    padding: 6px 12px;
+  }
 }

@@ -1,16 +1,17 @@
 "use client";
 
-import { Formik, Form, Field, ErrorMessage } from "formik";
-import type { FieldProps } from "formik";
+import { Formik, Form, Field, ErrorMessage, FieldProps } from "formik";
 import * as Yup from "yup";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
+import { useMutation } from "@tanstack/react-query";
 import styles from "./AddStoryForm.module.css";
+import type { Category, CategoriesResponse } from "@/types/story";
 
 const LOCAL_API_URL = process.env.NEXT_PUBLIC_LOCAL_API_URL!;
 
-interface StoryFormValues {
+export interface StoryFormValues {
   img: File | string | null;
   title: string;
   category: string;
@@ -18,14 +19,8 @@ interface StoryFormValues {
   article: string;
 }
 
-interface Category {
-  _id: string;
-  name: string;
-}
-
 interface AddStoryFormProps {
   initialValues?: StoryFormValues;
-  categories?: Category[];
   storyId?: string;
   isEditMode?: boolean;
 }
@@ -43,12 +38,34 @@ const validationSchema = Yup.object({
 
 export default function AddStoryForm({
   initialValues,
-  categories = [],
   storyId,
   isEditMode = false,
 }: AddStoryFormProps) {
   const router = useRouter();
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
+
+  const [imagePreview, setImagePreview] = useState<string | null>(
+    typeof initialValues?.img === "string" ? initialValues.img : null
+  );
+
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [loadingCategories, setLoadingCategories] = useState(true);
+
+  // --- Fetch categories з бекенду ---
+  useEffect(() => {
+    async function loadCategories() {
+      try {
+        const res = await fetch(`${LOCAL_API_URL}/categories`);
+        const data: CategoriesResponse = await res.json();
+        setCategories(data.data.data); // масив Category[]
+      } catch (err) {
+        console.error("Помилка завантаження категорій:", err);
+      } finally {
+        setLoadingCategories(false);
+      }
+    }
+    loadCategories();
+  }, []);
 
   const autoResize = (el: HTMLTextAreaElement | null) => {
     if (!el) return;
@@ -56,9 +73,47 @@ export default function AddStoryForm({
     el.style.height = el.scrollHeight + "px";
   };
 
-  const [imagePreview, setImagePreview] = useState<string | null>(
-    typeof initialValues?.img === "string" ? initialValues.img : null
-  );
+  const saveStoryMutation = useMutation({
+    mutationFn: async (values: StoryFormValues) => {
+      const formData = new FormData();
+      formData.append("title", values.title);
+      formData.append("category", values.category);
+      formData.append("description", values.article);
+
+      if (values.img instanceof File) {
+        formData.append("storyImage", values.img);
+      } else if (typeof values.img === "string") {
+        formData.append("imgUrl", values.img);
+      }
+
+      const method = isEditMode ? "PATCH" : "POST";
+      const url = isEditMode
+        ? `${LOCAL_API_URL}/stories/${storyId}`
+        : `${LOCAL_API_URL}/stories`;
+
+      const res = await fetch(url, {
+        method,
+        body: formData,
+        credentials: "include",
+      });
+
+      const data = await res.json();
+
+      if (!res.ok)
+        throw new Error(data.message || "Помилка збереження історії");
+
+      return data;
+    },
+    onSuccess: (data) => {
+      const id = isEditMode ? storyId : data.data._id;
+      router.push(`/stories/${id}`);
+    },
+    onError: (error: any) => {
+      alert(
+        error instanceof Error ? error.message : "Помилка збереження історії"
+      );
+    },
+  });
 
   const defaultValues: StoryFormValues = {
     img: null,
@@ -68,71 +123,31 @@ export default function AddStoryForm({
     article: "",
   };
 
+  if (loadingCategories) return <div>Завантаження категорій...</div>;
+
   return (
     <Formik
       enableReinitialize
       initialValues={initialValues || defaultValues}
       validationSchema={validationSchema}
-      validateOnChange={true}
+      validateOnChange
       validateOnBlur={false}
-      onSubmit={async (values, { setSubmitting }) => {
-        try {
-          const formData = new FormData();
-          formData.append("title", values.title);
-          formData.append("category", values.category);
-          // formData.append("shortDescription", values.shortDescription);
-          formData.append("description", values.article);
-
-          if (values.img instanceof File) {
-            formData.append("storyImage", values.img);
-          } else if (typeof values.img === "string") {
-            formData.append("imgUrl", values.img);
-          }
-
-          const method = isEditMode ? "PATCH" : "POST";
-          // const url = isEditMode
-          //   ? `${LOCAL_API_URL}/stories/${storyId}`
-          //   : `${LOCAL_API_URL}/stories`;
-          const url = `${LOCAL_API_URL}/stories/${storyId}`;
-
-          console.log(method, url);
-
-          const res = await fetch(url, {
-            method,
-            body: formData,
-            credentials: "include",
-          });
-
-          const data = await res.json();
-
-          if (!res.ok) {
-            throw new Error(data.message || "Помилка збереження історії");
-          }
-
-          router.push(`/stories/${data.data._id}`);
-        } catch (error) {
-          console.error("Помилка:", error);
-          const message =
-            error instanceof Error
-              ? error.message
-              : "Помилка збереження історії";
-          alert(message);
-        } finally {
-          setSubmitting(false);
-        }
+      onSubmit={(values, { setSubmitting }) => {
+        saveStoryMutation.mutate(values);
+        setSubmitting(false);
       }}
     >
-      {({ setFieldValue, isValid, values, errors, isSubmitting }) => (
+      {({ setFieldValue, isValid, values, errors, touched, isSubmitting }) => (
         <Form className={styles.formContainer}>
           <div className={styles.formMain}>
-            {/* Обкладинка статті */}
+            {/* Обкладинка */}
             <div className={styles.formSection}>
               <label className={styles.label}>Обкладинка статті</label>
               <div className={styles.imageUploadArea}>
                 <div className={styles.imagePlaceholder}>
                   <Image
                     src={imagePreview || "/images/form-images.jpg"}
-                    alt="Превʼю обкладинки"
+                    alt="Превʼю"
                     width={335}
                     height={223}
                     className={styles.image}
@@ -149,9 +164,8 @@ export default function AddStoryForm({
                     if (file) {
                       setFieldValue("img", file);
                       const reader = new FileReader();
-                      reader.onloadend = () => {
+                      reader.onloadend = () =>
                         setImagePreview(reader.result as string);
-                      };
                       reader.readAsDataURL(file);
                     }
                   }}
@@ -184,10 +198,10 @@ export default function AddStoryForm({
                 id="title"
                 name="title"
                 type="text"
-                placeholder="Введіть заголовок історії"
                 className={`${styles.textInput} ${
-                  errors.title ? styles.inputError : ""
+                  errors.title && touched.title ? styles.inputError : ""
                 }`}
+                placeholder="Введіть заголовок"
               />
               <ErrorMessage
                 name="title"
@@ -198,24 +212,20 @@ export default function AddStoryForm({
 
             {/* Категорія */}
             <div className={styles.formField}>
-              <label htmlFor="category" className={styles.label}>
-                Категорія
-              </label>
+              <label className={styles.label}>Категорія</label>
               <Field
                 as="select"
-                id="category"
                 name="category"
                 className={`${styles.selectInput} ${
-                  errors.category ? styles.inputError : ""
+                  errors.category && touched.category ? styles.inputError : ""
                 }`}
               >
                 <option value="">Оберіть категорію</option>
-                {Array.isArray(categories) &&
-                  categories.map((cat) => (
-                    <option key={cat._id} value={cat._id}>
-                      {cat.name}
-                    </option>
-                  ))}
+                {categories.map((c) => (
+                  <option key={c._id} value={c._id}>
+                    {c.name}
+                  </option>
+                ))}
               </Field>
               <ErrorMessage
                 name="category"
@@ -224,20 +234,15 @@ export default function AddStoryForm({
               />
             </div>
 
-            {/* Короткий опис
-            <div className={styles.formField}>
-              <label htmlFor="shortDescription" className={styles.label}>
-                Короткий опис
-              </label>
+            {/* Короткий опис */}
+            <div className={`${styles.formField} ${styles.hidden}`}>
+              <label className={styles.label}>Короткий опис</label>
               <Field
                 as="textarea"
-                id="shortDescription"
                 name="shortDescription"
-                placeholder="Введіть короткий опис"
+                className={styles.textareaInput}
                 rows={3}
-                className={`${styles.textareaInput} ${
-                  errors.shortDescription ? styles.inputError : ""
-                }`}
+                placeholder="Введіть короткий опис"
               />
               <div className={styles.fieldFooter}>
                 <ErrorMessage
@@ -246,58 +251,50 @@ export default function AddStoryForm({
                   className={styles.errorText}
                 />
                 <span className={styles.charCount}>
-                  Залишилось{" "}
-                  {Math.max(0, 61 - (values.shortDescription?.length || 0))}{" "}
+                  Залишилось {61 - (values.shortDescription?.length || 0)}{" "}
                   символів
                 </span>
               </div>
-            </div> */}
+            </div>
 
             {/* Текст історії */}
             <div className={styles.formField}>
-              <label htmlFor="article" className={styles.label}>
-                Текст історії
-              </label>
-
+              <label className={styles.label}>Текст історії</label>
               <Field name="article">
                 {({ field }: FieldProps) => (
                   <textarea
                     {...field}
-                    id="article"
                     ref={(el) => {
                       textareaRef.current = el;
                       autoResize(el);
                     }}
+                    onInput={(e) => autoResize(e.currentTarget)}
+                    rows={3}
                     placeholder="Ваша історія тут"
                     className={`${styles.textareaInput} ${
-                      errors.article ? styles.inputError : ""
+                      errors.article && touched.article ? styles.inputError : ""
                     }`}
-                    rows={3}
-                    onInput={(e) => {
-                      autoResize(e.currentTarget);
-                    }}
                   />
                 )}
               </Field>
-
-              <div className={styles.fieldFooter}>
-                <ErrorMessage
-                  name="article"
-                  component="span"
-                  className={styles.errorText}
-                />
-              </div>
+              <ErrorMessage
+                name="article"
+                component="div"
+                className={styles.errorText}
+              />
             </div>
           </div>
 
+          {/* Кнопки */}
           <div className={styles.actionsColumn}>
             <button
               type="submit"
               className={styles.saveButton}
-              disabled={!isValid || isSubmitting}
+              disabled={!isValid || isSubmitting || saveStoryMutation.isPending}
             >
-              Зберегти
+              {saveStoryMutation.isPending ? "Збереження..." : "Зберегти"}
             </button>
+
             <button
               type="button"
               className={styles.cancelButton}
