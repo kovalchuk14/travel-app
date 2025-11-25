@@ -3,8 +3,8 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  margin-top: 124px;
-  margin-bottom: 331px;
+  padding-top: 124px;
+  padding-bottom: 331px;
 
   
 }
@@ -16,7 +16,6 @@
     justify-content: flex-start;
     padding: 0 20px;
     gap: 24px;
-    margin-bottom: 32px;
 }
 
 
@@ -42,8 +41,7 @@
 
 
 .moreButton {
-    display: block;
-    width: 335px;
+    align-self: stretch;
     text-align: center;
     border: 1px solid #4169E1;
     border-radius: 8px;
@@ -77,18 +75,18 @@
   font-size: 16px;
 }
 .hero {
-  margin-bottom: 117px;
-  margin-top: 172px;
+  padding-bottom: 117px;
+  padding-top: 172px;
   align-items: flex-start;
+  align-items: center;
 }
-.moreButton{
-  width: auto;         
-  display: block;
-  margin-left: 32px;
-  
+.moreButton{       
+  align-self: flex-start;
+  margin-top: 8px;
 
 }
 .content {
+
   padding: 0 32px;
 }
 }
@@ -103,18 +101,17 @@
     font-size: 20px;
   }
   .hero {
-  margin-bottom: 346px;
-  margin-top: 172px;
-  margin-right: 553px;
+  padding-bottom: 346px;
+  padding-top: 172px;
+  padding-right: 553px;
   align-items: flex-start;
 }
 .content {
   padding: 0 64px;
 }
 .moreButton{
-  width: auto;         
-  display: block;
-  margin-left: 64px;
+  align-self: flex-start;
+  margin-top: 8px;
   
 
 }

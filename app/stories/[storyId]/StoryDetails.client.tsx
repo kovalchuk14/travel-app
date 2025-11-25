@@ -5,21 +5,21 @@ import Popular from "@/components/Popular/Popular";
 import { getCurrentStory } from "@/lib/api/clientApi";
 import { useParams } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
-import { Story } from "@/types/story";
+import { StoryResponse, Story } from "@/types/story";
 
 const StoryDetailsClient = () => {
   const { storyId } = useParams<{ storyId: string }>();
-
-  const { data: story } = useQuery<Story>({
+  const { data: story } = useQuery<StoryResponse>({
     queryKey: ["story", storyId],
     queryFn: () => getCurrentStory(storyId),
     refetchOnMount: false,
   });
-  console.log("StoryDetailsClient", story);
+
+  if (!story) return null;
 
   return (
     <div>
-      <StoryDetails data={story.data} />
+      <StoryDetails story={story.data} />
       <Popular />
     </div>
   );

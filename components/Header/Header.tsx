@@ -5,16 +5,18 @@ import { useState } from "react";
 import Link from "next/link";
 import css from "../../app/css/Header.module.css";
 import Modal from "./MobileMain";
+import { useAuthStore } from "@/lib/store/authStore";
 
 const Header: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { isAuthenticated } = useAuthStore();
 
   const openMenu = () => setIsMenuOpen(true);
   const closeMenu = () => setIsMenuOpen(false);
 
   return (
     <>
-      <header className={css.header}>
+      <section className={css.header}>
         <div className={css.logo}>
           <Link href="/">
             <svg width={23} height={23} aria-hidden="true">
@@ -32,15 +34,22 @@ const Header: React.FC = () => {
               </Link>
             </li>
             <li>
-              <a href="#stories" className={css.navLink}>
+              <Link href="/stories" className={css.navLink}>
                 Історії
-              </a>
+              </Link>
             </li>
             <li>
-              <a href="/travellers" className={css.navLink}>
+              <Link href="/travellers" className={css.navLink}>
                 Мандрівники
-              </a>
+              </Link>
             </li>
+            {isAuthenticated && (
+              <li>
+                <Link href="/profile" className={css.navLink}>
+                  Мій Профіль
+                </Link>
+              </li>
+            )}
             <AuthNavigation />
           </ul>
         </nav>
@@ -51,11 +60,11 @@ const Header: React.FC = () => {
           aria-label="Open menu"
           onClick={openMenu}
         >
-          <svg width={24} height={24} aria-hidden="true" fill="#FFFFFF">
+          <svg width={24} height={24} aria-hidden="true" fill="#000000">
             <use href="/icon.svg#icon-menu" />
           </svg>
         </button>
-      </header>
+      </section>
 
       {isMenuOpen && (
         <Modal onClose={closeMenu}>
@@ -74,19 +83,34 @@ const Header: React.FC = () => {
               </Link>
             </li>
             <li>
-              <a href="#stories" onClick={closeMenu} className={css.mobileItem}>
+              <Link
+                href="/stories"
+                onClick={closeMenu}
+                className={css.mobileItem}
+              >
                 Історії
-              </a>
+              </Link>
             </li>
             <li>
-              <a
-                href="#travelers"
+              <Link
+                href="/travellers"
                 onClick={closeMenu}
                 className={css.mobileItem}
               >
                 Мандрівники
-              </a>
+              </Link>
             </li>
+            {isAuthenticated && (
+              <li>
+                <Link
+                  href="/profile"
+                  onClick={closeMenu}
+                  className={css.mobileItem}
+                >
+                  Мій Профіль
+                </Link>
+              </li>
+            )}
             <AuthNavigation />
           </ul>
         </Modal>
