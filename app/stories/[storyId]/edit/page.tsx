@@ -4,14 +4,14 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
 import AddStoryForm from '@/components/AddStoryForm/AddStoryForm';
 import styles from './page.module.css';
-
-const API_URL = process.env.NEXT_PUBLIC_API_URL;
+import { getStoryById, getCategories } from '@/lib/api/stories';
 
 interface StoryFromApi {
   _id: string;
   img: string;
   title: string;
-  article: string;
+  description?: string;
+  article?: string;
   shortDescription?: string;
   category: {
     _id: string;
@@ -38,32 +38,22 @@ export default function EditStoryPage() {
       setError(null);
 
       try {
-        //  Отримати історію
-        const storyRes = await fetch(`${API_URL}/stories/${storyId}`);
-        if (!storyRes.ok) {
-          const body = await storyRes.json().catch(() => null);
-          throw new Error(body?.message || 'Історію не знайдено');
-        }
-        const storyData = await storyRes.json();
+        const [storyData, categoriesData] = await Promise.all([
+          getStoryById(storyId),
+          getCategories(),
+        ]);
 
-        // Отримати категорії
-        const categoriesRes = await fetch(`${API_URL}/categories`);
-        if (!categoriesRes.ok) {
-          const body = await categoriesRes.json().catch(() => null);
-          throw new Error(
-            body?.message || 'Не вдалося завантажити категорії'
-          );
+        setStory(storyData);
+        setCategories(categoriesData);
+      } catch (err: any) {
+        if (err.response?.status === 401) {
+          setError("Потрібно увійти в акаунт для редагування історії");
+        } else {
+          const message =
+            err.response?.data?.message || err.message || "Помилка завантаження даних";
+          setError(message);
         }
-        const categoriesData = await categoriesRes.json();
-
-        setStory(storyData.data as StoryFromApi);
-        setCategories(categoriesData.data.data as Category[]);
-      } catch (err) {
-       console.error('Помилка завантаження:', err);
-       const message =
-         err instanceof Error ? err.message : 'Помилка завантаження даних';
-      setError(message);
-      }finally {
+      } finally {
         setLoading(false);
       }
     };
@@ -74,7 +64,9 @@ export default function EditStoryPage() {
   if (loading) {
     return (
       <div className={styles.page}>
-        <div className={styles.loading}>Завантаження...</div>
+        <div className={styles.content}>
+          <div className={styles.loading}>Завантаження...</div>
+        </div>
       </div>
     );
   }
@@ -82,7 +74,9 @@ export default function EditStoryPage() {
   if (error) {
     return (
       <div className={styles.page}>
-        <div className={styles.error}>{error}</div>
+        <div className={styles.content}>
+          <div className={styles.error}>{error}</div>
+        </div>
       </div>
     );
   }
@@ -90,7 +84,9 @@ export default function EditStoryPage() {
   if (!story) {
     return (
       <div className={styles.page}>
-        <div className={styles.error}>Історію не знайдено</div>
+        <div className={styles.content}>
+          <div className={styles.error}>Історію не знайдено</div>
+        </div>
       </div>
     );
   }
@@ -98,21 +94,22 @@ export default function EditStoryPage() {
   return (
     <div className={styles.page}>
       <div className={styles.content}>
-      <h2 className={styles.title}>Редагувати історію</h2>
+        <h2 className={styles.title}>Редагувати історію</h2>
 
-      <AddStoryForm
-        initialValues={{
-          img: story.img,
-          title: story.title,
-          article: story.article,                 
-          shortDescription: story.shortDescription || '',
-          category: story.category._id,             
-        }}
-        categories={categories}
-        storyId={storyId}
-        isEditMode={true}
+        <AddStoryForm
+          initialValues={{
+            img: story.img,
+            title: story.title,
+            article: story.article || story.description || '',
+            shortDescription: story.shortDescription || '',
+            category: story.category._id,
+          }}
+          categories={categories}
+          storyId={story._id}
+          isEditMode={true}
         />
-        </div>
+      </div>
     </div>
   );
 }
+

@@ -25,6 +25,46 @@ export async function POST(request: Request, { params }: Props) {
       }
     );
 
+    console.log(res.data);
+
+    return NextResponse.json(res.data, { status: res.status });
+  } catch (error) {
+    if (isAxiosError(error)) {
+      logErrorResponse(error.response?.data);
+
+      return NextResponse.json(
+        {
+          error: error.message,
+          response: error.response?.data,
+        },
+        { status: error.response?.status || 500 }
+      );
+    }
+
+    logErrorResponse({ message: (error as Error).message });
+
+    return NextResponse.json(
+      { error: "Internal Server Error" },
+      { status: 500 }
+    );
+  }
+}
+
+export async function DELETE(request: Request, { params }: Props) {
+  try {
+    const { storyId } = await params;
+    const cookieStore = await cookies();
+    const accessToken = cookieStore.get("accessToken")?.value;
+
+    const res = await backendAPI.delete(`/users/saved-articles/${storyId}`, {
+      headers: {
+        Cookie: cookieStore.toString(),
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+
+    console.log(res.data);
+
     return NextResponse.json(res.data, { status: res.status });
   } catch (error) {
     if (isAxiosError(error)) {
