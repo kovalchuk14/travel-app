@@ -230,17 +230,18 @@
     fill: #000000;
 }
 
-.storySave .storySaveSvg{
-    color: #0a0a0a;
+.storySaveFav{
+    background-color: #1A2A5A;
+}
+
+.storySave.storySaveSvg{
     width: 24px; 
-     height: 24px;
+    height: 24px;
 }
 
-.storySave:hover .storySaveSvg,
-.storySave:focus .storySaveSvg{
-    color: #fff;
+.storySaveFav .storySaveSvg {
+    fill: #fff;
 }
-
 
 .storySave:hover,
 .storySave:focus {

@@ -1,6 +1,7 @@
 'use client'
 
-import React, { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef } from "react";
+import { useRouter } from 'next/navigation';
 import { Story } from "@/types/story";
 import { fetchStories } from "@/lib/api/clientApi";
 import TravellersStories from "../TravellersStories/TravellersStories";
@@ -20,8 +21,9 @@ export default function PopularClient({
     const [perPage, setPerPage] = useState(3);
     const [visibleCount, setVisibleCount] = useState<number>(3);
     const [stories, setStories] = useState<Story[]>(firstStories ||[]);
-    const [hasMore, setHasMore] = useState(true);
-
+   const [hasMore, setHasMore] = useState(true);
+  
+  const router = useRouter();
 
     useEffect(() => {
     const updatePerPage = () => {
@@ -81,14 +83,12 @@ export default function PopularClient({
 
         <TravellersStories
              stories={visibleStories}
-             isAuthenticated={true}
         />
 
         {withPagination && hasMore && (
           <div className={css.wraper_btn}>
-              <button onClick={handleLoadMore} className={css.stories_btn}>
-                Переглянути всі
-              </button>
+              <button onClick={() => router.push(`/stories`)}
+            className={css.stories_btn}>Переглянути всі</button>
           </div>
         )}
       </div>

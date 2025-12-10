@@ -119,7 +119,6 @@ export default function StoriesPageClient({ firstStories, categories }: Props) {
       <TravellersStories
         stories={mergedStories}
         className={css.storiesList}
-        isAuthenticated={isAuthenticated}
       />
 
       {canLoadMore && mergedStories.length > 0 && (
