@@ -6,11 +6,10 @@ import { Story } from "@/types/story";
 
 interface TravellersStoriesProps{
   stories: Story[];
-  isAuthenticated: boolean;
   className?: string;
 }
 
-export default function TravellersStories({ stories, isAuthenticated, className }: TravellersStoriesProps) {
+export default function TravellersStories({ stories,  className }: TravellersStoriesProps) {
 
   
     return (
@@ -18,7 +17,7 @@ export default function TravellersStories({ stories, isAuthenticated, className 
         <div>
           <ul className={`${css.storiesList} ${className || ''}`}>
         {stories.map(story => (
-          <TravellersStoriesItem key={story._id} story={story} isAuthenticated={isAuthenticated} />
+          <TravellersStoriesItem key={story._id} story={story} />
         ))}
       </ul>
         </div>

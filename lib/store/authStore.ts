@@ -12,6 +12,7 @@ interface AuthState {
   setUser: (user: User) => void;
   clearIsAuthenticated: () => void;
   setLoading: (value: boolean) => void;
+  updateFavorites: (newFavorites: string[]) => void;
 }
 
 export const useAuthStore = create<AuthState>()(
@@ -24,6 +25,11 @@ export const useAuthStore = create<AuthState>()(
       setUser: (user: User) => set({ user, isAuthenticated: true }),
       clearIsAuthenticated: () => set({ user: null, isAuthenticated: false }),
       setLoading: (value: boolean) => set({ loading: value }),
+      updateFavorites: (newFavorites) => set((state) => ({
+        user: state.user
+          ? { ...state.user, favouriteArticles: newFavorites }
+          :null,
+      })),
     }),
     {
       name: "auth-store", // key in localStorage
