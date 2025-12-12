@@ -1,11 +1,10 @@
 "use client";
 import React from "react";
 import StoryDetails from "@/components/StoryDetails/StoryDetails";
-import Popular from "@/components/Popular/Popular";
 import { getCurrentStory } from "@/lib/api/clientApi";
 import { useParams } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
-import { StoryResponse, Story } from "@/types/story";
+import { StoryResponse } from "@/types/story";
 
 const StoryDetailsClient = () => {
   const { storyId } = useParams<{ storyId: string }>();
@@ -20,7 +19,6 @@ const StoryDetailsClient = () => {
   return (
     <div>
       <StoryDetails story={story.data} />
-      <Popular />
     </div>
   );
 };
