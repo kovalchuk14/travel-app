@@ -2,7 +2,7 @@ export type Story = {
   _id: string;
   img: string;
   title: string;
-  article: string;
+  description: string;
   category: {
     _id: string;
     name: string;
@@ -23,12 +23,10 @@ export type StoryResponse = {
   message: string;
 };
 
-
 export interface Category {
   _id: string;
   name: string;
 }
-
 
 export interface StoriesResponse {
   status: number;
@@ -41,7 +39,6 @@ export interface StoriesResponse {
     totalPages: number;
   };
 }
-  
 
 export interface SavedStory {
   _id: string;
@@ -52,7 +49,6 @@ export interface SavedStory {
   date: string;
   favoriteCount: number;
 }
-
 
 export interface UserSavedArticlesResponse {
   status: number;
@@ -69,11 +65,10 @@ export interface UserSavedArticlesResponse {
   };
 }
 
-
-export interface CategoriesResponse{
+export interface CategoriesResponse {
   status: number;
   message: string;
   data: {
     data: Category[];
-  }
+  };
 }

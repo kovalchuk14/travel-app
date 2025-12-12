@@ -1,64 +1,34 @@
 "use client";
-
-import { useEffect, useState } from "react";
+import { Story } from "@/types/story";
+import css from "./PopularItem.module.css";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
-import toast from "react-hot-toast";
-import { Story } from "@/types/story";
-import {
-  addStoryToFavorites,
-  deleteStoryFromFavorites,
-} from "@/lib/api/clientApi";
-import css from "./TravellersStoriesItem.module.css";
 import { Icon } from "../Icon/Icon";
+import React from "react";
 
-interface TravellersStoriesItemProps {
+type Props = {
   story: Story;
   isAuthenticated: boolean;
-}
+};
 
-export default function TravellersStoriesItem({
-  story,
-  isAuthenticated,
-}: TravellersStoriesItemProps) {
+export default function PopularItem({ story, isAuthenticated }: Props) {
   const router = useRouter();
-  const [isSaved, setIsSaved] = useState<boolean>(story.isFavorite ?? false);
-  const [isSaving, setIsSaving] = useState(false);
-  const [favoriteCount, setFavoriteCount] = useState<number>(
-    story.favoriteCount
-  );
 
-  useEffect(() => {
-    setIsSaved(story.isFavorite ?? false);
-  }, [story.isFavorite]);
+  const dateStory = new Date(story.date).toLocaleDateString("uk-UA");
+  const favoriteCount = story.favoriteCount ?? 0;
+
+  const [isSaved, setIsSaved] = React.useState(false);
+  const [isSaving, setIsSaving] = React.useState(false);
 
   const pushSave = async () => {
-    if (!isAuthenticated) {
-      router.push("/auth/register");
-      return;
-    }
-
+    if (!isAuthenticated) return;
+    setIsSaving(true);
     try {
-      setIsSaving(true);
-      if (!isSaved) {
-        await addStoryToFavorites(story._id);
-        setFavoriteCount((prev) => prev + 1);
-        setIsSaved(true);
-        toast.success("Додано до збережених!");
-      } else {
-        await deleteStoryFromFavorites(story._id);
-        setFavoriteCount((prev) => prev - 1);
-        setIsSaved(false);
-        toast("Видалено із збережених");
-      }
-    } catch (error) {
-      console.error(error);
+      setIsSaved(!isSaved);
     } finally {
       setIsSaving(false);
     }
   };
-
-  const dateStory = getDate(story.date);
 
   return (
     <li className={css.StoryItem}>
@@ -91,6 +61,7 @@ export default function TravellersStoriesItem({
             </div>
           </div>
         </div>
+
         <div className={css.buttonsWrapper}>
           <button
             onClick={() => router.push(`/stories/${story._id}`)}
@@ -113,14 +84,4 @@ export default function TravellersStoriesItem({
       </div>
     </li>
   );
-}
-
-function getDate(date: string): string {
-  const formattedDate = new Date(date).toLocaleDateString("uk-UA", {
-    day: "2-digit",
-    month: "2-digit",
-    year: "numeric",
-  });
-
-  return formattedDate;
 }

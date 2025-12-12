@@ -20,7 +20,7 @@ const StoryDetailsClient = () => {
   return (
     <div>
       <StoryDetails story={story.data} />
-      <Popular />
+      <Popular isAuthenticated={false} />
     </div>
   );
 };

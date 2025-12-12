@@ -9,8 +9,8 @@ export default function Home() {
     <main>
       <VideoWrapper />
       <About />
-      <Popular />
-      <OurTravellers perPage={4} />
+      <Popular isAuthenticated={false} showLoadMore={true} />
+      <OurTravellers perPage={4} gap={48} />
       <Join isAuthenticated={false} />
     </main>
   );

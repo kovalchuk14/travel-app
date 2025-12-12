@@ -3,6 +3,7 @@
   width: 100%;
   max-width: 1440px;
   margin: 0 auto;
+  background: #f7f9ff;
 }
 
 .title {
@@ -59,15 +60,15 @@
 
 .imageWrapper img {
   padding-top: 16px;
-  width: 100%;      
-  height: auto;     
-  display: block;   
+  width: 100%;
+  height: auto;
+  display: block;
   border-radius: 24px;
 }
 
 .content {
   padding-top: 64px;
-    font-weight: 400;
+  font-weight: 400;
   font-size: 16px;
   width: 100%;
   line-height: 150%;
@@ -84,7 +85,7 @@
   background: #f2f2f2;
 }
 
- .ctaTitle {
+.ctaTitle {
   padding-top: 32px;
   padding-left: 16px;
   font-weight: 700;
@@ -102,10 +103,10 @@
   line-height: 150%;
   color: #000000;
   overflow-wrap: break-word;
-}  
+}
 
 .saveButton {
-  margin: 16 auto;
+  margin: 0 auto;
   border: 1px solid #4169e1;
   border-radius: 8px;
   width: 100%;
@@ -185,7 +186,7 @@
   }
 
   .content {
- width: 856px;
+    width: 856px;
     font-size: 18px;
   }
 
@@ -215,12 +216,10 @@
     line-height: 150%;
   }
   .saveButton {
-    
     width: 354px;
     height: 48px;
 
-    padding: auto ;
-
+    padding: auto;
   }
   .category {
     border: 1px solid rgba(0, 0, 0, 0.05);
