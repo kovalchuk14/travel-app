@@ -5,6 +5,7 @@ import {
   UserSavedArticlesResponse,
   StoryResponse,
 } from "@/types/story";
+import { StoryFavoriteHttpResponse } from "@/types/story";
 import axios, { AxiosResponse } from "axios";
 import { localAPI } from "../localAPI";
 import type { User } from "@/types/user";
@@ -100,10 +101,13 @@ export async function fetchSavedStoriesByUserId(
 }
 
 // ================ для зберігання історії при натисканні на іконку ========
-export async function addStoryToFavorites(storyId: string): Promise<void> {
-  await localAPI.post(`/users/saved-articles/${storyId}`);
-}
 
-export async function deleteStoryFromFavorites(storyId: string): Promise<void> {
-  await localAPI.delete(`/users/saved-articles/${storyId}`);
+export async function addStoryToFavorites(storyId: string): Promise<StoryFavoriteHttpResponse> {
+  const response = await localAPI.post(`/users/saved-articles/${storyId}`);
+  return response.data.data
+} 
+
+export async function deleteStoryFromFavorites(storyId: string): Promise<StoryFavoriteHttpResponse> {
+  const response = await localAPI.delete(`/users/saved-articles/${storyId}`);
+  return response.data.data.data
 }

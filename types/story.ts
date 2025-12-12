@@ -1,3 +1,5 @@
+import {User }from './user';
+
 export type Story = {
   _id: string;
   img: string;
@@ -64,9 +66,21 @@ export interface UserSavedArticlesResponse {
       avatarUrl: string;
       description?: string;
       createdAt?: string;
+      savedArticles: string
     };
     savedStories: SavedStory[];
   };
+}
+
+
+export interface StoryFavoriteHttpResponse {
+  status: number;
+  message: string;
+  data: {
+    user: User;
+    story: Story; 
+  }
+  
 }
 
 

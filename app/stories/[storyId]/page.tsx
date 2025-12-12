@@ -6,6 +6,7 @@ import {
 } from "@tanstack/react-query";
 import StoryDetailsClient from "@/app/stories/[storyId]/StoryDetails.client";
 import { Metadata } from "next";
+import Popular from "@/components/Popular/Popular";
 
 type Props = {
   params: Promise<{ storyId: string }>;
@@ -38,11 +39,10 @@ const StoryPage = async ({ params }: Props) => {
   });
 
   return (
-
     <HydrationBoundary state={dehydrate(queryClient)}>
       <StoryDetailsClient />
+      <Popular />
     </HydrationBoundary>
-
   );
 };
 

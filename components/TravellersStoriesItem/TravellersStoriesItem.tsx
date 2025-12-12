@@ -7,48 +7,83 @@ import toast from 'react-hot-toast';
 import { Story } from '@/types/story';
 import { addStoryToFavorites, deleteStoryFromFavorites } from '@/lib/api/clientApi';
 import css from './TravellersStoriesItem.module.css';
+import { useAuthStore } from '@/lib/store/authStore';
+import { useMutation } from "@tanstack/react-query";
 import { Icon } from '../Icon/Icon';
 
 interface TravellersStoriesItemProps {
   story: Story;
-  isAuthenticated: boolean;
 }
 
 
-export default function TravellersStoriesItem({ story, isAuthenticated }: TravellersStoriesItemProps) {
+export default function TravellersStoriesItem({ story}: TravellersStoriesItemProps) {
 
   const router = useRouter();
-  const [isSaved, setIsSaved] = useState<boolean>(story.isFavorite ?? false);
-  const [isSaving, setIsSaving] = useState(false);
+  
   const [favoriteCount, setFavoriteCount] = useState<number>(story.favoriteCount);
+  const [isFavorite, setIsFavorite] = useState(false);
+  const [isOwner, setIsOwner] = useState(false);
 
-  useEffect(()=>{ setIsSaved(story.isFavorite??false)}, [story.isFavorite])
 
-  const pushSave = async () => {
-    if (!isAuthenticated) {
-      router.push('/auth/register');
-      return;
-      }
+  const user = useAuthStore((state) => state.user);
+  const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
+  const updateFavorites = useAuthStore((state) => state.updateFavorites);
 
-      try {
-      setIsSaving(true);
-      if (!isSaved) {
-        await addStoryToFavorites(story._id);
-        setFavoriteCount(prev => prev + 1);
-        setIsSaved(true);
-        toast.success('Додано до збережених!');
-      } else {
-        await deleteStoryFromFavorites(story._id);
-        setFavoriteCount(prev => prev - 1);
-        setIsSaved(false);
-        toast('Видалено із збережених');
-      }
-    } catch (error) {
-        console.error(error);
-    } finally {
-      setIsSaving(false);
-    }
-  };
+  const ownerId =
+    typeof story.ownerId === "string" ? story.ownerId : story.ownerId._id;
+
+
+  useEffect(() => { 
+    const updateStates = () => {
+      if (!isAuthenticated || !user) return;
+      if (ownerId === user._id) setIsOwner(true);
+      if (!user.savedArticles) return;
+      setIsFavorite(user.savedArticles.includes(story._id));
+    };
+    updateStates();
+  }, [isAuthenticated, user, story._id, ownerId])
+
+  
+  const deleteStoryMutation = useMutation({
+  mutationFn: (id: string) => deleteStoryFromFavorites(id),
+  onSuccess(data) {
+    updateFavorites(data.data.user.savedArticles);
+    setFavoriteCount(data.data.story.favoriteCount);
+    setIsFavorite(false)
+  },
+  onError(error: any) {
+    toast.error(error.message);
+  },
+});
+
+const addStoryMutation = useMutation({
+  mutationFn: (id: string) => addStoryToFavorites(id),
+  onSuccess(data) {
+    updateFavorites(data.data.user.savedArticles);
+    setFavoriteCount(data.data.story.favoriteCount);
+    setIsFavorite(true)
+  },
+  onError(error: any) {
+    toast.error(error.message);
+  },
+});
+
+
+const handleOnClick = () => {
+  if (!isAuthenticated) {
+    router.push("/auth/register");
+    return;
+  }
+
+  if (isFavorite) {
+    toast.success("Видалено із збережених", { duration: 1200 });
+    deleteStoryMutation.mutate(story._id);
+  } else {
+    toast.success("Додано до збережених!", { duration: 1200 });
+    addStoryMutation.mutate(story._id);
+  }
+};
+
 
   const dateStory = getDate(story.date);
 
@@ -95,13 +130,18 @@ export default function TravellersStoriesItem({ story, isAuthenticated }: Travel
             </button> 
 
           <button
-              onClick={pushSave}
-              disabled={isSaving}
-              className={`${css.storySave} ${isSaved ? css.saved : ''}`}
-                 >
-                <Icon name="icon-bookmark" className={`${isSaved ? css.storySaved : css.storySaveSvg}`} />
+            onClick={handleOnClick}
+            className={isFavorite?`${css.storySave} ${css.storySaveFav}`: css.storySave} 
+          >
+            <svg className={css.storySaveSvg} >
+                {isOwner ? (
+                  <use href="/icons/sprite.svg#icon-edit"></use>
+                ) : (
+                  <use href="/icons/sprite.svg#icon-bookmark"></use>
+                )}
+              </svg>
             
-                  </button>     
+          </button>     
 
         </div>
       </div>
