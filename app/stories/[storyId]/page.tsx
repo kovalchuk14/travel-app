@@ -18,10 +18,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   return {
     title: `Story: ${story.title}`,
-    description: `Story description: ${story.article?.slice(0, 10)}...`,
+    description: `Story description: ${story.description?.slice(0, 10)}...`,
     openGraph: {
       title: `Story: ${story.title}`,
-      description: `Story description: ${story.article?.slice(0, 10)} ...`,
+      description: `Story description: ${story.description?.slice(0, 10)} ...`,
       siteName: "Подорожнік",
       url: `travel-app-teal-kappa.vercel.app/stories/${storyId}`,
     },
@@ -41,7 +41,7 @@ const StoryPage = async ({ params }: Props) => {
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
       <StoryDetailsClient />
-      <Popular />
+      <Popular withPagination={false} />
     </HydrationBoundary>
   );
 };
