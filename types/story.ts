@@ -1,10 +1,10 @@
-import {User }from './user';
+import { User } from "./user";
 
 export type Story = {
   _id: string;
   img: string;
   title: string;
-  article: string;
+  description: string;
   category: {
     _id: string;
     name: string;
@@ -25,12 +25,10 @@ export type StoryResponse = {
   message: string;
 };
 
-
 export interface Category {
   _id: string;
   name: string;
 }
-
 
 export interface StoriesResponse {
   status: number;
@@ -43,7 +41,6 @@ export interface StoriesResponse {
     totalPages: number;
   };
 }
-  
 
 export interface SavedStory {
   _id: string;
@@ -55,7 +52,6 @@ export interface SavedStory {
   favoriteCount: number;
 }
 
-
 export interface UserSavedArticlesResponse {
   status: number;
   message: string;
@@ -66,28 +62,25 @@ export interface UserSavedArticlesResponse {
       avatarUrl: string;
       description?: string;
       createdAt?: string;
-      savedArticles: string
+      savedArticles: string;
     };
     savedStories: SavedStory[];
   };
 }
-
 
 export interface StoryFavoriteHttpResponse {
   status: number;
   message: string;
   data: {
     user: User;
-    story: Story; 
-  }
-  
+    story: Story;
+  };
 }
 
-
-export interface CategoriesResponse{
+export interface CategoriesResponse {
   status: number;
   message: string;
   data: {
     data: Category[];
-  }
+  };
 }

@@ -56,7 +56,7 @@ export default function StoryDetails({ story }: Props) {
         <img src={story.img} alt="story pictures " width={1312} height={874} />
       </picture>
       <div className={css.container_story_save}>
-        <p className={css.content}>{story.article}</p>
+        <p className={css.content}>{story.description}</p>
 
         <div className={css.cta} aria-label="Saving history">
           <h2 className={css.ctaTitle}>Збережіть собі історію</h2>
