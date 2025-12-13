@@ -41,7 +41,7 @@ const StoryPage = async ({ params }: Props) => {
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
       <StoryDetailsClient />
-      <Popular />
+      <Popular withPagination={false} />
     </HydrationBoundary>
   );
 };
